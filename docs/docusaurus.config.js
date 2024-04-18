@@ -12,7 +12,7 @@ const organizationName = '2024-1B-T02-EC10-G04';
 const config = {
   title: 'Grupo 4 - GoMedicine',
   tagline: 'Desenvolvimento de aplicações hiperescalavéis',
-  favicon: 'icons/logo-eng-comp.png',
+  favicon: 'icons/inteli.svg',
 
   // Set the production url of your site here
   url: `https://${organizationName}.github.io`,
