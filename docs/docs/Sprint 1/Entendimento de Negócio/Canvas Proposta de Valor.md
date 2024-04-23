@@ -8,7 +8,7 @@ Este segmento foca em compreender o cliente através de três aspectos:
 
 - **Dores**: Identifica os desafios e problemas enfrentados pelos clientes.
 - **Ganhos**: Capta os benefícios e resultados esperados pelos clientes.
-- **Tarefas do Cliente**: Relaciona as atividades que os clientes pretendem realizar.
+- **Tarefas do Cliente**: As atividades que os clientes realizam hoje.
 
 ## Mapa de Valor
 
