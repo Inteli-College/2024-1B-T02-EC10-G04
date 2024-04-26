@@ -2,36 +2,66 @@
 
 O Design System é um conjunto de padrões, diretrizes e componentes utilizados para garantir um design consistente e coeso em um produto. Essa ferramenta é crucial para manter a consistência do design e a qualidade do produto, facilitando o processo de desenvolvimento e manutenção. Além disso, assegura que o produto final seja intuitivo e acessível para os usuários.
 
-## Spalla
+## O que é o Design System?
 
-Em uma orquestra, o spalla é o primeiro violinista e lidera a seção de violinos. Ele é responsável por coordenar o grupo, assegurando que todos os músicos toquem de forma sincronizada e harmoniosa. Analogamente, o Spalla serve como uma metáfora para o Design System, atuando como o "líder" do design. Assim como um violino é formado por várias peças que, juntas, criam um instrumento completo, o Design System reúne diversos componentes que, combinados, resultam em um produto harmonioso e funcional.
+O Design System é um sistema unificado que compreende elementos, componentes, regras e princípios destinados a orientar o desenvolvimento de interfaces em uma empresa. Ele serve como uma fonte crucial para garantir a consistência e a padronização dos elementos em produtos digitais. Além de facilitar o trabalho de designers e desenvolvedores, o Design System confere uma identidade visual característica ao produto, tornando-o facilmente reconhecível pelos usuários. Portanto, ele atua como uma ferramenta essencial de suporte ao desenvolvimento de interfaces.
 
-### Material 3
+## Componentes do Design System
 
-Material 3 é a mais recente evolução do Material Design, um sistema de design desenvolvido pelo Google. Este sistema foi concebido para auxiliar os desenvolvedores a criar interfaces que sejam não apenas esteticamente agradáveis, mas também funcionais. Ele se baseia em princípios de design como materialidade, movimento e hierarquia visual. O Material Design incorpora uma variedade de elementos, tais como botões, cards, listas e tipografias, que facilitam a criação de interfaces consistentes e coesas.
-
-![alt text](../../../static/img/material-3.png)
-
-### Material Icons
-
-Material Icons é uma coleção de ícones desenvolvida pelo Google, projetada para ser empregada em interfaces de usuário. Esses ícones facilitam a representação visual de ações, objetos e conceitos, tornando a interface mais intuitiva e amigável. Os ícones do Material Icons seguem um estilo simples e limpo, harmonizando perfeitamente com os princípios do Material Design.
-
-![Material Icons](../../../static/img/material-icons.png)
-
-### Color Palette
-
-A paleta de cores é essencial para estabelecer uma identidade visual coerente e atraente em um design. Ela deve consistir em cores que se complementam e sejam agradáveis aos olhos, ajudando a criar uma hierarquia visual que destaca elementos importantes e gera contraste. No projeto atual, a cor azul foi escolhida como a cor principal. Associada à confiança, segurança e tranquilidade, esta cor também faz parte da identidade visual do Hospital Sírio-Libanês, reforçando sua importância e simbolismo.
-
-![alt text](../../../static/img/spalla-colors.png)
-
-### Typography
-
-A tipografia é um elemento chave do design, utilizado para transmitir informações de maneira clara e eficiente. Ela contribui para a criação de uma hierarquia visual, ressaltando elementos significativos e proporcionando contraste. Para este projeto, as fontes Roboto e Inter foram selecionadas como as principais. Ambas são modernas e legíveis, alinhando-se perfeitamente com os princípios do Material Design.
-
-![alt text](../../../static/img/spalla-typography.png)
+Um Design System bem estruturado é composto por vários elementos que trabalham juntos para criar um ambiente de design e desenvolvimento coerente e eficiente. Alguns dos principais componentes de um Design System incluem:
 
 
-Todos esses elementos se combinam, formando os "team components" do Design System. Eles são componentes de design e desenvolvimento criados e mantidos por equipes individuais dentro de uma organização. Eles são projetados para atender a requisitos exclusivos de projetos específicos ou necessidades de times particulares. 
+### 1. Princípios de Design
+
+Os princípios de design são as fundações sobre as quais todo o sistema é construído. Eles definem a filosofia de design da organização e guiam as decisões de design para garantir que todos os produtos estejam alinhados com os valores da marca. Exemplos comuns incluem:
+
+- **Clareza**: Garantir que a comunicação seja compreensível e direta.
+- **Eficiência**: Otimizar as interfaces para agilizar as interações do usuário.
+- **Consistência**: Manter um estilo visual e funcional uniforme através de todos os produtos.
+
+### 2. Diretrizes de Estilo
+
+As diretrizes de estilo detalham como os elementos visuais e de interação devem ser usados. Isso inclui:
+
+- **Cores**: Definição da paleta de cores, incluindo cores primárias, secundárias e de alerta.
+- **Tipografia**: Especificação das fontes, pesos de fonte, tamanhos de texto e tratamentos de cabeçalho.
+- **Ícones e Gráficos**: Diretrizes para o uso de ícones e outros elementos gráficos.
+- **Espaçamento e Layout**: Regras para margens, preenchimentos, grids e alinhamentos.
+
+### 3. Componentes
+
+Os componentes são os elementos de construção que podem ser reutilizados em diferentes partes do produto. Cada componente tem especificações detalhadas sobre seu uso, estados e variantes. Exemplos comuns de componentes incluem:
+
+- **Botões**: Estilos de botões para diferentes ações (primário, secundário, etc.).
+- **Cards**: Templates para cartões que podem conter imagens, texto e ações.
+- **Formulários**: Elementos para entrada de dados, incluindo campos de texto, caixas de seleção e switches.
+- **Menus**: Menus de navegação e suas variantes, como menus suspensos.
+
+### 4. Padrões de UI
+
+Padrões de UI são conjuntos de regras que guiam como os componentes devem ser combinados para criar interfaces funcionais. Eles ajudam a manter a consistência através das diferentes partes do sistema. Incluem:
+
+- **Navegação**: Padrões para a criação de barras de navegação, menus laterais e abas.
+- **Feedback**: Diretrizes para mensagens de erro, alertas, toasts e outros feedbacks visuais.
+- **Interatividade**: Como os elementos respondem a interações do usuário, como hover, clique e toque.
+
+### 5. Documentação
+
+A documentação é um aspecto vital do Design System, garantindo que todos os envolvidos compreendam como e quando usar os componentes. A documentação deve ser clara e acessível, incluindo:
+
+- **Guias de uso**: Como implementar e personalizar componentes.
+- **Exemplos de código**: Snippets que mostram como os componentes devem ser codificados.
+- **Melhores práticas**: Orientações sobre como utilizar os componentes para garantir acessibilidade e responsividade.
+
+### 6. Ferramentas e Recursos
+
+Inclui ferramentas que ajudam na implementação do Design System, como:
+
+- **Bibliotecas de componentes**: Repositórios digitais onde os componentes estão disponíveis para download e uso.
+- **Plugins e extensões**: Ferramentas que integram o Design System diretamente com softwares de design e desenvolvimento.
+- **Templates e modelos**: Arquivos pré-fabricados que podem ser utilizados como ponto de partida para novos projetos.
+
+Implementar um Design System robusto e bem documentado é crucial para a coesão, eficiência e sucesso de longo prazo em projetos de design e desenvolvimento de produtos digitais.
 
 ## Por que usar um Design System?
 
@@ -49,6 +79,10 @@ Desenvolver um Design System pode até parecer um tanto trabalhoso, porém, este
 - **Reutilização de componentes:** o Design System pode atuar na difusão do desenvolvimento modular e na reutilização de componentes, de acordo com a abordagem de Brad Frost, o Atomic Design. Ou seja, consiste na criação de um único componente capaz de servir às mais diversas plataformas.
 
 ![alt text](../../../static/img/design-fluxo.png)
+
+## Spalla - Design System
+
+Em uma orquestra, o spalla é o primeiro violinista e lidera a seção de violinos. Ele é responsável por coordenar o grupo, assegurando que todos os músicos toquem de forma sincronizada e harmoniosa. Analogamente, o Spalla serve como uma metáfora para o Design System, atuando como o "líder" do design. Assim como um violino é formado por várias peças que, juntas, criam um instrumento completo, o Design System reúne diversos componentes que, combinados, resultam em um produto harmonioso e funcional.
 
 ## Conclusão
 
