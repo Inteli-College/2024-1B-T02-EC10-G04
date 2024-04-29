@@ -57,3 +57,7 @@ A prototipação abordou o fluxo de dois perfis de usuário distintos: **técnic
 **Tela de especificações da entrega**: Ao clicar em um pedido, o usuário terá acesso a informações detalhadas, incluindo os remédios solicitados, suas quantidades, números de lote e outras informações relevantes. Além disso, será possível marcar a entrega como concluída para atualizar o status do pedido
 
 ![alt text](../../../static/img/fluxo-entrega.png)
+
+## Conclusão
+
+Acima, foram explorados os diversos fluxos de casos de uso da aplicação, priorizando a estrutura e funcionalidades essenciais. A utilização de wireframes de baixa fidelidade se revela como uma prática que otimiza tempo e recursos, evitando investimentos excessivos em detalhes visuais que podem ser ajustados posteriormente. Essa abordagem não apenas ajuda a identificar precocemente questões de usabilidade e navegação, mas também facilita a validação com os parceiros de projeto. Em síntese, a prototipação é um estágio crucial no processo de design de aplicativos, proporcionando uma visualização rápida e econômica da sua estrutura, facilitando a obtenção de feedback e promovendo economia de tempo e recursos a longo prazo.
