@@ -26,4 +26,5 @@ type UserRepository interface {
 	FindByID(id string) (*User, error)
 	Create(user *User) error
 	Update(user *User) error
+	FindAll() ([]*User, error)
 }
