@@ -1,0 +1,54 @@
+name: Node.js CI
+
+on:
+  push:
+    branches:
+      - main
+      - uat
+      - developer
+    paths:
+      - "backend/**"
+  pull_request:
+    branches:
+      - main
+      - uat
+      - developer
+
+    paths:
+      - "backend/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+          cache: "npm"
+
+      - name: Install dependencies
+        working-directory: ./src/backend
+        run: npm ci
+
+      - name: Build project
+        working-directory: ./src/backend
+        run: npm run build
+
+      - name: Run tests
+        working-directory: ./src/backend
+        run: npm test
+
+      - name: Notify Discord
+        if: always()
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Test Results"
+          description: "Tests ran in the main branch of your repository"
+          color: ${{ job.status }}
+          username: GitHub Actions
+          avatar_url: ${{ secrets.AVATAR_URL }}
