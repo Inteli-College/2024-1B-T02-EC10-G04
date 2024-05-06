@@ -6,16 +6,16 @@ on:
       - main
       - uat
       - developer
-    paths:
-      - "backend/**"
   pull_request:
     branches:
       - main
       - uat
       - developer
-
     paths:
       - "backend/**"
+
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
