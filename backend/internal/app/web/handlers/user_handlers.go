@@ -1,4 +1,4 @@
-package web
+package handlers
 
 import (
 	"net/http"
@@ -15,15 +15,6 @@ type UserHandler struct {
 
 func NewUserHandler(userUsecase *usecase.UserUsecase) *UserHandler {
 	return &UserHandler{userUsecase: userUsecase}
-}
-
-func (h *UserHandler) RegisterUserRoutes(rg *gin.RouterGroup) {
-	routerGroup := rg.Group("/users")
-	{
-		routerGroup.GET("/:id", h.GetUser)
-		routerGroup.POST("/", h.CreateUser)
-		routerGroup.GET("/", h.GetUsers)
-	}
 }
 
 func (h *UserHandler) GetUser(c *gin.Context) {
