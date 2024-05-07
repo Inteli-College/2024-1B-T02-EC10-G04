@@ -1,23 +1,23 @@
 version: "3"
 services:
-  backend:
-    build: ./backend
-    environment:
-      - PORT=3001
-    deploy:
-      replicas: 4
-    networks:
-      - loadbalancing
+  # backend:
+  #   build: ./backend
+  #   environment:
+      # - PORT=3001
+    # deploy:
+    #   replicas: 4
+    # networks:
+    #   - loadbalancing
 
-  nginx:
-    build: ../nginx
-    container_name: nginx
-    ports:
-      - "80:80"
-    networks:
-      - loadbalancing
-    depends_on:
-      - backend
+  # nginx:
+  #   build: ./nginx
+  #   container_name: nginx
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - loadbalancing
+  #   depends_on:
+  #     - backend
 
   db:
     image: postgres:latest
@@ -35,6 +35,5 @@ services:
 volumes:
   postgres_data:
 
-networks:
-  loadbalancing:
-
+# networks:
+#   loadbalancing:

@@ -3,11 +3,10 @@ package entity
 import "time"
 
 type UserRepository interface {
-	CreateUser(user *User) error
-	UpdateUser(user *User) error
-	FindUserByID(id string) (*User, error)
-	FindAllUsers() ([]*User, error)
-	DeleteUser(id string) error
+	Create(user *User) error
+	Update(user *User) error
+	FindByID(id string) (*User, error)
+	FindAll() ([]*User, error)
 }
 
 type Role string

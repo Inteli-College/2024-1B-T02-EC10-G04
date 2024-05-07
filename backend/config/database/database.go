@@ -21,7 +21,6 @@ func SetupDatabase() *sql.DB {
 	if err != nil {
 		logger.Log.Fatal(err)
 	}
-	fmt.Println(db)
 
 	// Check if the connection is working
 	err = db.Ping()
