@@ -32,9 +32,3 @@ run:
 		-f ./deployments/compose.packages.yaml up \
 		--build -d
 	$(END_LOG)
-
-.PHONY: swagger
-swagger:
-	$(START_LOG)
-	@cd ./cmd/server && swag init --output ./api
-	$(END_LOG)
