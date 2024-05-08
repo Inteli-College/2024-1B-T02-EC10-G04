@@ -29,7 +29,7 @@ type Medicine struct {
 	UpdatedAt time.Time  `json:"updated_at" db:"updated_at"`
 }
 
-func NewMedice(batch string, name string, stipe StripeType) *Medicine {
+func NewMedice(batch string, name string, stripe StripeType) *Medicine {
 	return &Medicine{
 		Batch:  batch,
 		Name:   name,
