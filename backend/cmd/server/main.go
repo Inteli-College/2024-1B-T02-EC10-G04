@@ -64,5 +64,22 @@ func main() {
 			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
 		}
 	}
+
+	///////////////////////// Orders ///////////////////////////
+	ordersRepository := repository.NewOrdersRepositoryPostgres(db)
+	ordersUseCase := usecase.NewOrdersUseCase(ordersRepository)
+	ordersHandlers := handler.NewOrdersHandlers(ordersUseCase)
+
+	{
+		ordersGroup := api.Group("/orders")
+		{
+			ordersGroup.POST("", ordersHandlers.CreateOrdersHandler)
+			ordersGroup.GET("", ordersHandlers.FindAllOrdersHandler)
+			ordersGroup.GET("/:id", ordersHandlers.FindOrdersByIdHandler)
+			ordersGroup.PUT("/:id", ordersHandlers.UpdateOrdersHandler)
+			ordersGroup.DELETE("/:id", ordersHandlers.DeleteOrdersHandler)
+		}
+	}
+
 	router.Run()
 }

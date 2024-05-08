@@ -20,8 +20,8 @@ func (p *PyxisUseCase) CreatePyxis(input *dto.CreatePyxisInputDTO) (*dto.CreateP
 		return nil, err
 	}
 	return &dto.CreatePyxisOutputDTO{
-		ID:    res.ID,
-		Label: res.Label,
+		ID:        res.ID,
+		Label:     res.Label,
 		CreatedAt: res.CreatedAt,
 	}, nil
 }
@@ -34,8 +34,8 @@ func (p *PyxisUseCase) FindAllPyxis() ([]*dto.FindPyxisOutputDTO, error) {
 	var output []*dto.FindPyxisOutputDTO
 	for _, pyxis := range res {
 		output = append(output, &dto.FindPyxisOutputDTO{
-			ID:    pyxis.ID,
-			Label: pyxis.Label,
+			ID:        pyxis.ID,
+			Label:     pyxis.Label,
 			UpdatedAt: pyxis.UpdatedAt,
 			CreatedAt: pyxis.CreatedAt,
 		})
@@ -49,8 +49,8 @@ func (p *PyxisUseCase) FindPyxisById(id string) (*dto.FindPyxisOutputDTO, error)
 		return nil, err
 	}
 	return &dto.FindPyxisOutputDTO{
-		ID:    res.ID,
-		Label: res.Label,
+		ID:        res.ID,
+		Label:     res.Label,
 		UpdatedAt: res.UpdatedAt,
 		CreatedAt: res.CreatedAt,
 	}, nil
@@ -67,8 +67,8 @@ func (p *PyxisUseCase) UpdatePyxis(input *dto.UpdatePyxisInputDTO) (*dto.UpdateP
 		return nil, err
 	}
 	return &dto.UpdatePyxisOutputDTO{
-		ID:    res.ID,
-		Label: res.Label,
+		ID:       res.ID,
+		Label:    res.Label,
 		UpdateAt: res.UpdatedAt,
 	}, nil
 }
