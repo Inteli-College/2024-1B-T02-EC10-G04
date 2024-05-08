@@ -25,14 +25,14 @@ class NavBarContainer extends StatelessWidget {
         ),
         child: Row(
             mainAxisAlignment: MainAxisAlignment
-                .spaceAround, // alinha os ícones ao redor do espaço disponível
+                .spaceAround, 
             children: <Widget>[
               CustomIconButton(
                 icon: const Icon(Icons.home_rounded,
                     size: 25, color: Color.fromARGB(255, 130, 130, 130)),
                 label: 'Home',
                 onPressed: () {
-                  // Adicione a ação desejada quando o ícone for pressionado
+                  // 
                 },
               ),
               CustomIconButton(
@@ -40,7 +40,7 @@ class NavBarContainer extends StatelessWidget {
                     size: 25, color: Color.fromARGB(255, 130, 130, 130)),
                 label: 'Create',
                 onPressed: () {
-                  // Adicione a ação desejada quando o ícone for pressionado
+                  // 
                 },
               ),
               CustomIconButton(
@@ -48,7 +48,7 @@ class NavBarContainer extends StatelessWidget {
                     size: 25, color: Color.fromARGB(255, 130, 130, 130)),
                 label: 'Profile',
                 onPressed: () {
-                  // Adicione a ação desejada quando o ícone for pressionado
+                  // 
                 },
               ),
               CustomIconButton(
@@ -56,7 +56,7 @@ class NavBarContainer extends StatelessWidget {
                     size: 25, color: Color.fromARGB(255, 130, 130, 130)),
                 label: 'Settings',
                 onPressed: () {
-                  // Adicione a ação desejada quando o ícone for pressionado
+                  // 
                 },
               ),
             ]));
