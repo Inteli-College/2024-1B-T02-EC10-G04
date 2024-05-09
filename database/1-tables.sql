@@ -1,5 +1,14 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
+-- Functions
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
 -- Criar tipos ENUM
 CREATE TYPE role_type AS ENUM ('admin', 'user', 'collector', 'manager');
 CREATE TYPE stripe_type AS ENUM ('red', 'yellow', 'black');
@@ -72,3 +81,29 @@ CREATE TABLE User_Order_responsibility (
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (order_id) REFERENCES Orders(id)
 );
+
+-- Triggers
+CREATE TRIGGER set_updated_at_before_update_medices
+BEFORE UPDATE ON Medicines
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER set_updated_at_before_update_orders
+BEFORE UPDATE Orders 
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER set_updated_at_before_update_blocked_users
+BEFORE UPDATE Blocked_users 
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER set_updated_at_before_update_pyxis
+BEFORE UPDATE Pyxis 
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER set_updated_at_before_update_users
+BEFORE UPDATE Users 
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();

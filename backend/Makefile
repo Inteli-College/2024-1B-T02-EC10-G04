@@ -14,8 +14,15 @@ env: ./.env.develop.tmpl
 infra:
 	$(START_LOG)
 	@docker compose \
+<<<<<<< HEAD
 		-f ./deployments/compose.infra.yaml up \
 		--build -d
+=======
+         -f ./deployments/compose.packages.yaml \
+         --env-file ./.env.develop \
+         up --build
+
+>>>>>>> aac7334f593b3b23917d753411f389f9cfc54872
 	@echo "Creating kafka topics..."
 	@sleep 30
 	@docker compose \
@@ -25,16 +32,24 @@ infra:
 		--partitions 10
 	$(END_LOG)
 
+<<<<<<< HEAD
 .PHONY: dev
 dev:
+=======
+.PHONY: run
+run:
+>>>>>>> aac7334f593b3b23917d753411f389f9cfc54872
 	$(START_LOG)
 	@docker compose \
 		-f ./deployments/compose.packages.yaml up \
 		--build -d
+<<<<<<< HEAD
 	$(END_LOG)
 
 .PHONY: swagger
 swagger:
 	$(START_LOG)
 	@cd ./cmd/server && swag init --output ./api
+=======
+>>>>>>> aac7334f593b3b23917d753411f389f9cfc54872
 	$(END_LOG)

@@ -9,6 +9,12 @@
 # https://github.com/docker/awesome-compose
 version: "3.9"
 
+<<<<<<< HEAD
+=======
+volumes:
+  mongodb-data:
+
+>>>>>>> aac7334f593b3b23917d753411f389f9cfc54872
 services:
   app:
     container_name: app
@@ -18,6 +24,10 @@ services:
     restart: always
     build:
       context: ..
+<<<<<<< HEAD
       dockerfile: build/Dockerfile.server
+=======
+      dockerfile: build/Dockerfile.app
+>>>>>>> aac7334f593b3b23917d753411f389f9cfc54872
     ports:
       - 8080:8080

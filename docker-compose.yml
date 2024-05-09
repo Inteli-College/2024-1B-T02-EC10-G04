@@ -1,23 +1,39 @@
-version: '3'
+version: "3"
 services:
-  backend:
-    build: ./backend
+  # backend:
+  #   build: ./backend
+  #   environment:
+      # - PORT=3001
+    # deploy:
+    #   replicas: 4
+    # networks:
+    #   - loadbalancing
+
+  # nginx:
+  #   build: ./nginx
+  #   container_name: nginx
+  #   ports:
+  #     - "80:80"
+  #   networks:
+  #     - loadbalancing
+  #   depends_on:
+  #     - backend
+
+  db:
+    image: postgres:latest
+    container_name: postgres_db
     environment:
-      - PORT=3001 
-    deploy:
-      replicas: 4
-    networks:
-      - loadbalancing
-
-  nginx:
-    build: ../nginx
-    container_name: nginx
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     ports:
-      - "80:80"
-    networks:
-      - loadbalancing
-    depends_on:
-      - backend
+      - "5432:5432"
+    volumes:
+      - ./database:/docker-entrypoint-initdb.d
+      - postgres_data:/var/lib/postgresql/data
 
-networks:
-  loadbalancing:
+volumes:
+  postgres_data:
+
+# networks:
+#   loadbalancing:
