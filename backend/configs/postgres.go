@@ -1,14 +1,15 @@
 package config
 
 import (
-	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
 	"log"
 	"os"
+
+	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 )
 
 func SetupPostgres() *sqlx.DB {
-	connStr := os.Getenv("POSTGRES_URL")
+	connStr := os.Getenv("DB_URL")
 	if connStr == "" {
 		log.Fatal("DB_URL is not set")
 	}
