@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
+	config "github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
@@ -64,5 +64,23 @@ func main() {
 			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
 		}
 	}
+
+	///////////////////////// Medicine ///////////////////////////
+
+	medicineRepository := repository.NewMediceRepositoryPostgres(db)
+	medicineUseCase := usecase.NewMedicineUseCase(medicineRepository)
+	medicineHandlers := handler.NewMedicineHandlers(medicineUseCase)
+
+	{
+		medicineGroup := api.Group("/medicines")
+		{
+			medicineGroup.POST("", medicineHandlers.CreateMedicineHandler)
+			medicineGroup.GET("", medicineHandlers.FindAllMedicinesHandler)
+			medicineGroup.GET("/:id", medicineHandlers.FindMedicineByIdHandler)
+			medicineGroup.PUT("/:id", medicineHandlers.UpdateMedicineHandler)
+			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
+		}
+	}
+
 	router.Run()
 }
