@@ -14,8 +14,10 @@ env: ./.env.develop.tmpl
 infra:
 	$(START_LOG)
 	@docker compose \
-		-f ./deployments/compose.infra.yaml up \
-		--build -d
+         -f ./deployments/compose.packages.yaml \
+         --env-file ./.env.develop \
+         up --build
+
 	@echo "Creating kafka topics..."
 	@sleep 30
 	@docker compose \

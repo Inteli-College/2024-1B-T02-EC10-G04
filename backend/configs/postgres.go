@@ -8,7 +8,7 @@ import (
 )
 
 func SetupPostgres() *sqlx.DB {
-	connStr := os.Getenv("DB_URL")
+	connStr := os.Getenv("POSTGRES_URL")
 	if connStr == "" {
 		log.Fatal("DB_URL is not set")
 	}
