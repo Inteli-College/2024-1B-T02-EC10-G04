@@ -24,12 +24,11 @@ type Order struct {
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
 }
 
-func NewOrder(priority int, user_id string, observation string, status int, medicine_id string, quantity int) *Order {
+func NewOrder(priority int, user_id string, observation string, medicine_id string, quantity int) *Order {
 	return &Order{
 		Priority:    priority,
 		User_ID:     user_id,
 		Observation: observation,
-		Status:      status,
 		Medicine_ID: medicine_id,
 		Quantity:    quantity,
 	}

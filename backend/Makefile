@@ -1,4 +1,4 @@
--include .env.develop
+-include .env
 
 START_LOG = @echo "================================================= START OF LOG ==================================================="
 END_LOG = @echo "================================================== END OF LOG ===================================================="
@@ -14,12 +14,12 @@ env: ./.env.develop.tmpl
 infra:
 	$(START_LOG)
 	@docker compose \
-		-f ./deployments/compose.infra.yaml up \
+		-f ../docker-compose.yml up \
 		--build -d
 	@echo "Creating kafka topics..."
 	@sleep 30
 	@docker compose \
-		-f ./deployments/compose.infra.yaml exec \
+		-f ../docker-compose.yml exec \
 		kafka kafka-topics --bootstrap-server kafka:9094 \
 		--create --topic orders \
 		--partitions 10

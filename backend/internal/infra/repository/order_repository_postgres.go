@@ -16,11 +16,10 @@ func NewOrderRepositoryPostgres(db *sqlx.DB) *OrderRepositoryPostgres {
 func (r *OrderRepositoryPostgres) CreateOrder(order *entity.Order) (*entity.Order, error) {
 	var createdOrder entity.Order
 	err := r.db.QueryRow(
-		"INSERT INTO orders (priority, user_id, observation, status, medicine_id, quantity) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, priority, user_id, observation, status, medicine_id, quantity, created_at",
+		"INSERT INTO orders (priority, user_id, observation, medicine_id, quantity) VALUES ($1, $2, $3, $4, $5) RETURNING id, priority, user_id, observation, status, medicine_id, quantity, created_at",
 		order.Priority,
 		order.User_ID,
 		order.Observation,
-		order.Status,
 		order.Medicine_ID,
 		order.Quantity,
 	).Scan(&createdOrder.ID, &createdOrder.Priority, &createdOrder.User_ID, &createdOrder.Observation, &createdOrder.Status, &createdOrder.Medicine_ID, &createdOrder.Quantity, &createdOrder.CreatedAt)

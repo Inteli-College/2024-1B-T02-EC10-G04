@@ -61,7 +61,10 @@ func (p *PyxisUseCase) UpdatePyxis(input *dto.UpdatePyxisInputDTO) (*dto.UpdateP
 	if err != nil {
 		return nil, err
 	}
+	
+	//TODO: Implement update that does not require all fields of input DTO
 	res.Label = input.Label
+
 	res, err = p.PyxisRepository.UpdatePyxis(res)
 	if err != nil {
 		return nil, err

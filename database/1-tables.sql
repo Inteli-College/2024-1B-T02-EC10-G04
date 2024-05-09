@@ -89,21 +89,21 @@ FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER set_updated_at_before_update_orders
-BEFORE UPDATE Orders 
+BEFORE UPDATE ON Orders 
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER set_updated_at_before_update_blocked_users
-BEFORE UPDATE Blocked_users 
+BEFORE UPDATE ON Blocked_users 
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER set_updated_at_before_update_pyxis
-BEFORE UPDATE Pyxis 
+BEFORE UPDATE ON Pyxis 
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
 CREATE TRIGGER set_updated_at_before_update_users
-BEFORE UPDATE Users 
+BEFORE UPDATE ON Users 
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();

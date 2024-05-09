@@ -16,7 +16,7 @@ func NewOrderUseCase(orderRepository entity.OrderRepository) *OrderUseCase {
 }
 
 func (o *OrderUseCase) CreateOrder(input *dto.CreateOrderInputDTO) (*dto.CreateOrderOutputDTO, error) {
-	order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, input.Status, input.Medicine_ID, input.Quantity)
+	order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, input.Medicine_ID, input.Quantity)
 	res, err := o.orderRepository.CreateOrder(order)
 	if err != nil {
 		return nil, err
@@ -73,9 +73,14 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 		return nil, err
 	}
 
-	order := entity.NewOrder(input.Priority, res.User_ID, input.Observation, input.Status, input.Medicine_ID, input.Quantity)
+	//TODO: Implement update that does not require all fields of input DTO  
+	res.Medicine_ID = input.Medicine_ID
+	res.Status = input.Status
+	res.Priority = input.Priority
+	res.Observation = input.Observation
+	res.Quantity = input.Quantity
 
-	res, err = o.orderRepository.UpdateOrder(order)
+	res, err = o.orderRepository.UpdateOrder(res)
 	if err != nil {
 		return nil, err
 	}

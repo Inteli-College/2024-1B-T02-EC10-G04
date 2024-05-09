@@ -1,6 +1,9 @@
 package main
 
 import (
+	"os"
+	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
+	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
@@ -11,18 +14,20 @@ import (
 	// "log"
 )
 
+// Please use .env file for local development. After that, please comment out the lines below,
+// their dependencies as well, and update the go.mod file with command $ go mod tidy.
+
 // func init() {
-// 	err := godotenv.Load("../.env.develop")
+// 	err := godotenv.Load()
 // 	if err != nil {
-// 		log.Fatal("Error loading .env.develop file")
+// 		log.Fatal("Error loading .env file")
 // 	}
 // }
 
 func main() {
 
-	///////////////////////// Configs ///////////////////////////
+	/////////////////////// Configs /////////////////////////
 
-	kafkaProducer := configs.SetupKafkaProducer()
 	db := configs.SetupPostgres()
 	defer db.Close()
 
@@ -35,7 +40,7 @@ func main() {
 	api := router.Group("/api/v1")
 	api.Use(middleware.AuthMiddleware())
 
-	///////////////////////// User ///////////////////////////
+	//////////////////////// User ///////////////////////////
 
 	userRepository := repository.NewUserRepositoryPostgres(db)
 	userUseCase := usecase.NewUserUseCase(userRepository)
@@ -52,7 +57,7 @@ func main() {
 		}
 	}
 
-	///////////////////////// Pyxis ///////////////////////////
+	/////////////////////// Pyxis /////////////////////////
 
 	pyxisRepository := repository.NewPyxisRepositoryPostgres(db)
 	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository)
@@ -69,7 +74,13 @@ func main() {
 		}
 	}
 
-	///////////////////////// Order ///////////////////////////
+	/////////////////////// Order /////////////////////////
+
+	orderProducerConfigMap := &ckafka.ConfigMap{
+		"bootstrap.servers": os.Getenv("KAFKA_BOOTSTRAP_SERVER"),
+		"client.id":         os.Getenv("KAFKA_ORDER_CLIENT_ID"),
+	}
+	kafkaProducer := kafka.NewKafkaProducer(orderProducerConfigMap)
 
 	orderRepository := repository.NewOrderRepositoryPostgres(db)
 	orderUseCase := usecase.NewOrderUseCase(orderRepository)
