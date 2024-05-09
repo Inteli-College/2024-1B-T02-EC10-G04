@@ -15,7 +15,15 @@ CREATE TABLE Users (
     role role_type NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    on_duty BOOLEAN
+    on_duty BOOLEAN DEFAULT true
+);
+
+-- Pyxis Table
+CREATE TABLE Pyxis (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    label VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Tabela de usuários bloqueados
