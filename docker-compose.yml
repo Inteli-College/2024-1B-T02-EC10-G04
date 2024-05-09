@@ -3,11 +3,11 @@ services:
   # backend:
   #   build: ./backend
   #   environment:
-      # - PORT=3001
-    # deploy:
-    #   replicas: 4
-    # networks:
-    #   - loadbalancing
+  # - PORT=3001
+  # deploy:
+  #   replicas: 4
+  # networks:
+  #   - loadbalancing
 
   # nginx:
   #   build: ./nginx
@@ -23,7 +23,7 @@ services:
     image: postgres:latest
     container_name: postgres_db
     environment:
-      POSTGRES_DB: mydatabase
+      POSTGRES_DB: db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
@@ -34,6 +34,5 @@ services:
 
 volumes:
   postgres_data:
-
 # networks:
 #   loadbalancing:

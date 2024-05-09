@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
@@ -66,6 +67,7 @@ func main() {
 		}
 	}
 
+
 	///////////////////////// Orders ///////////////////////////
 	orderRepository := repository.NewOrderRepositoryPostgres(db)
 	orderUseCase := usecase.NewOrderUseCase(orderRepository)
@@ -81,6 +83,24 @@ func main() {
 			orderGroup.GET("/:id", orderHandlers.FindOrderByIdHandler)
 			orderGroup.PUT("/:id", orderHandlers.UpdateOrderHandler)
 			orderGroup.DELETE("/:id", orderHandlers.DeleteOrderHandler)
+    }
+  }
+
+	///////////////////////// Medicine ///////////////////////////
+
+	medicineRepository := repository.NewMediceRepositoryPostgres(db)
+	medicineUseCase := usecase.NewMedicineUseCase(medicineRepository)
+	medicineHandlers := handler.NewMedicineHandlers(medicineUseCase)
+
+	{
+		medicineGroup := api.Group("/medicines")
+		{
+			medicineGroup.POST("", medicineHandlers.CreateMedicineHandler)
+			medicineGroup.GET("", medicineHandlers.FindAllMedicinesHandler)
+			medicineGroup.GET("/:id", medicineHandlers.FindMedicineByIdHandler)
+			medicineGroup.PUT("/:id", medicineHandlers.UpdateMedicineHandler)
+			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
+
 		}
 	}
 
