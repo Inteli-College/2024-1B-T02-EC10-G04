@@ -8,9 +8,9 @@ import (
 
 type OrderRepository interface {
 	FindAllOrders() ([]*Order, error)
-	FindOrderByID(id string) (*Order, error)
+	FindOrderById(id string) (*Order, error)
 	CreateOrder(order *Order) (*Order, error)
-	UpdateOrder(order *Order) error
+	UpdateOrder(order *Order) (*Order, error)
 	DeleteOrder(id string) error
 }
 

@@ -1,8 +1,9 @@
 package kafka
 
 import (
-	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"log"
+
+	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
 type KafkaProducer struct {

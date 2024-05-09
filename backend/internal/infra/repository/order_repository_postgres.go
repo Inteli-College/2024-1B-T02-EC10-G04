@@ -28,7 +28,7 @@ func (r *OrderRepositoryPostgres) CreateOrder(order *entity.Order) (*entity.Orde
 	return &orderCreated, nil
 }
 
-func (r *OrderRepositoryPostgres) FindAllOrder() ([]*entity.Order, error) {
+func (r *OrderRepositoryPostgres) FindAllOrders() ([]*entity.Order, error) {
 	var order []*entity.Order
 	err := r.db.Select(&order, "SELECT * FROM order")
 
@@ -65,4 +65,12 @@ func (r *OrderRepositoryPostgres) UpdateOrder(order *entity.Order) (*entity.Orde
 		return nil, err
 	}
 	return &updatedOrder, nil
+}
+
+func (r *OrderRepositoryPostgres) DeleteOrder(id string) error {
+	_, err := r.db.Exec("DELETE FROM orders WHERE id = $1", id)
+	if err != nil {
+		return err
+	}
+	return nil
 }

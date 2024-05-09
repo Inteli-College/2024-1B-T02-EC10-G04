@@ -1,20 +1,25 @@
 package handler
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
+	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"os"
 )
 
 type OrderHandlers struct {
-	OrderUseCase *usecase.OrderUseCase
+	OrderUseCase  *usecase.OrderUseCase
+	KafkaProducer *kafka.KafkaProducer
 }
 
-func NewOrderHandlers(pyxisUsecase *usecase.OrderUseCase) *OrderHandlers {
+func NewOrderHandlers(pyxisUsecase *usecase.OrderUseCase, KafkaProducer *kafka.KafkaProducer) *OrderHandlers {
 	return &OrderHandlers{
-		OrderUseCase: pyxisUsecase,
+		OrderUseCase:  pyxisUsecase,
+		KafkaProducer: KafkaProducer,
 	}
 }
 
@@ -31,16 +36,24 @@ func NewOrderHandlers(pyxisUsecase *usecase.OrderUseCase) *OrderHandlers {
 // @Router /pyxis [post]
 func (p *OrderHandlers) CreateOrderHandler(c *gin.Context) {
 	var input dto.CreateOrderInputDTO
-	if err := c.BindJSON(&input); err != nil {
+	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	output, err := p.OrderUseCase.CreateOrder(&input)
+
+	inputBytes, err := json.Marshal(input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, output)
+
+	err = p.KafkaProducer.Produce(inputBytes, []byte("new_order"), os.Getenv("KAFKA_ORDERS_TOPIC_NAME"))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusCreated, gin.H{"message": "Order created successfully"})
 }
 
 // FindAllOrderHandler godoc
