@@ -7,11 +7,11 @@ services:
   # backend:
   #   build: ./backend
   #   environment:
-      # - PORT=3001
-    # deploy:
-    #   replicas: 4
-    # networks:
-    #   - loadbalancing
+  # - PORT=3001
+  # deploy:
+  #   replicas: 4
+  # networks:
+  #   - loadbalancing
 
   # nginx:
   #   build: ./nginx
@@ -78,7 +78,6 @@ services:
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - postgres_data:/var/lib/postgresql/data
-
 
 # networks:
 #   loadbalancing:

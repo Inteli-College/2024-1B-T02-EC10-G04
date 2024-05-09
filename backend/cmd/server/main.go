@@ -5,6 +5,7 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
+	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
