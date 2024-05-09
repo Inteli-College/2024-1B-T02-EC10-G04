@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 
-	config "github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
+
+	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
+	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
@@ -20,7 +22,7 @@ func init() {
 }
 
 func main() {
-	db := config.SetupPostgres()
+	db := configs.SetupPostgres()
 
 	defer db.Close()
 
@@ -65,6 +67,25 @@ func main() {
 		}
 	}
 
+
+	///////////////////////// Orders ///////////////////////////
+	orderRepository := repository.NewOrderRepositoryPostgres(db)
+	orderUseCase := usecase.NewOrderUseCase(orderRepository)
+	kafkaConfig := configs.SetupConfig()
+	kafkaProducer := kafka.NewKafkaProducer(kafkaConfig)
+	orderHandlers := handler.NewOrderHandlers(orderUseCase, kafkaProducer)
+
+	{
+		orderGroup := api.Group("/order")
+		{
+			orderGroup.POST("", orderHandlers.CreateOrderHandler)
+			orderGroup.GET("", orderHandlers.FindAllOrderHandler)
+			orderGroup.GET("/:id", orderHandlers.FindOrderByIdHandler)
+			orderGroup.PUT("/:id", orderHandlers.UpdateOrderHandler)
+			orderGroup.DELETE("/:id", orderHandlers.DeleteOrderHandler)
+    }
+  }
+
 	///////////////////////// Medicine ///////////////////////////
 
 	medicineRepository := repository.NewMediceRepositoryPostgres(db)
@@ -79,6 +100,7 @@ func main() {
 			medicineGroup.GET("/:id", medicineHandlers.FindMedicineByIdHandler)
 			medicineGroup.PUT("/:id", medicineHandlers.UpdateMedicineHandler)
 			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
+
 		}
 	}
 
