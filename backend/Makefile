@@ -5,7 +5,7 @@ END_LOG = @echo "================================================== END OF LOG =
 env: ./.env.develop.tmpl
 	$(START_LOG)
 	@cp ./.env.develop.tmpl ./.env
-	@echo "Environment file created at ./.env.develop"
+	@echo "Environment file created at ./.env"
 	$(END_LOG)
 
 .PHONY: infra
@@ -29,10 +29,4 @@ run:
 	@docker compose \
 		-f ./deployments/compose.packages.yaml up \
 		--build -d
-	$(END_LOG)
-
-.PHONY: swagger
-swagger:
-	$(START_LOG)
-	@cd ./cmd/server && swag init --output ./api
 	$(END_LOG)
