@@ -47,8 +47,6 @@ services:
     build:
       context: ..
       dockerfile: build/Dockerfile.conductor
-    deploy:
-      replicas: 3
     networks:
       - backend
   
