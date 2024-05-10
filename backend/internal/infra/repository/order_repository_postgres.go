@@ -58,14 +58,14 @@ func (r *OrderRepositoryPostgres) DeleteOrder(id string) error {
 func (r *OrderRepositoryPostgres) UpdateOrder(order *entity.Order) (*entity.Order, error) {
 	var updatedOrder entity.Order
 	err := r.db.QueryRow(
-		"UPDATE orders SET update_at = CURRENT_TIMESTAMP, priority = $1, observation = $2, status = $3, medicine_id = $4, quantity = $5 WHERE id = $6 RETURNING id, priority, observation, status, medicine_id, quantity, update_at",
+		"UPDATE orders SET updated_at = CURRENT_TIMESTAMP, priority = $1, observation = $2, status = $3, medicine_id = $4, quantity = $5 WHERE id = $6 RETURNING id, priority, user_id, observation, status, medicine_id, quantity, updated_at",
 		order.Priority,
 		order.Observation,
 		order.Status,
 		order.Medicine_ID,
 		order.Quantity,
 		order.ID,
-	).Scan(&updatedOrder.ID, &updatedOrder.Priority, &updatedOrder.Observation, &updatedOrder.Status, &updatedOrder.Medicine_ID, &updatedOrder.Quantity, &updatedOrder.UpdatedAt)
+	).Scan(&updatedOrder.ID, &updatedOrder.Priority, &updatedOrder.User_ID, &updatedOrder.Observation, &updatedOrder.Status, &updatedOrder.Medicine_ID, &updatedOrder.Quantity, &updatedOrder.UpdatedAt)
 	if err != nil {
 		return nil, err
 	}

@@ -30,6 +30,13 @@ func (h *OrderHandlers) CreateOrderHandler(c *gin.Context) {
 		return
 	}
 
+	// output, err := h.OrderUseCase.CreateOrder(&input)
+	// if err != nil {
+	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// 	return
+	// }
+	// c.JSON(http.StatusCreated, output)
+
 	inputBytes, err := json.Marshal(input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -57,10 +64,6 @@ func (h *OrderHandlers) FindAllOrdersHandler(c *gin.Context) {
 func (h *OrderHandlers) FindOrderByIdHandler(c *gin.Context) {
 	var input dto.FindOrderByIDInputDTO
 	input.ID = c.Param("id")
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	output, err := h.OrderUseCase.FindOrderById(input.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -87,10 +90,6 @@ func (h *OrderHandlers) UpdateOrderHandler(c *gin.Context) {
 func (h *OrderHandlers) DeleteOrderHandler(c *gin.Context) {
 	var input dto.DeleteOrderInputDTO
 	input.ID = c.Param("id")
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	err := h.OrderUseCase.DeleteOrder(input.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

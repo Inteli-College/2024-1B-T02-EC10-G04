@@ -14,17 +14,17 @@ type OrderRepository interface {
 
 type Order struct {
 	ID          string    `json:"id" db:"id"`
-	Priority    int       `json:"priority" db:"priority"`
+	Priority    string    `json:"priority" db:"priority"`
 	User_ID     string    `json:"user_id" db:"user_id"`
 	Observation string    `json:"observation" db:"observation"`
-	Status      int       `json:"status" db:"status"`
+	Status      string    `json:"status" db:"status"`
 	Medicine_ID string    `json:"medicine_id" db:"medicine_id"`
 	Quantity    int       `json:"quantity" db:"quantity"`
 	CreatedAt   time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
 }
 
-func NewOrder(priority int, user_id string, observation string, medicine_id string, quantity int) *Order {
+func NewOrder(priority string, user_id string, observation string, medicine_id string, quantity int) *Order {
 	return &Order{
 		Priority:    priority,
 		User_ID:     user_id,

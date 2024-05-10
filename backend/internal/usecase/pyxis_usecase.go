@@ -62,7 +62,7 @@ func (p *PyxisUseCase) UpdatePyxis(input *dto.UpdatePyxisInputDTO) (*dto.UpdateP
 		return nil, err
 	}
 	
-	//TODO: Implement update that does not require all fields of input DTO
+	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
 	res.Label = input.Label
 
 	res, err = p.PyxisRepository.UpdatePyxis(res)

@@ -44,10 +44,6 @@ func (h *UserHandlers) FindAllUsersHandler(c *gin.Context) {
 func (h *UserHandlers) FindUserByIdHandler(c *gin.Context) {
 	var input dto.FindUserByIdInputDTO
 	input.ID = c.Param("id")
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	output, err := h.UserUseCase.FindUserById(input.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -74,10 +70,6 @@ func (h *UserHandlers) UpdateUserHandler(c *gin.Context) {
 func (h *UserHandlers) DeleteUserHandler(c *gin.Context) {
 	var input dto.DeleteUserInputDTO
 	input.ID = c.Param("id")
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	err := h.UserUseCase.DeleteUser(input.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

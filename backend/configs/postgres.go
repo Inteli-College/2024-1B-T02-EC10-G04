@@ -9,19 +9,19 @@ import (
 )
 
 func SetupPostgres() *sqlx.DB {
-	connStr := os.Getenv("DB_URL")
+	connStr := os.Getenv("POSTGRES_URL")
 	if connStr == "" {
-		log.Fatal("POSTGRES_URL is not set")
+		log.Printf("POSTGRES_URL is not set")
 	}
 
 	db, err := sqlx.Open("postgres", connStr)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("%v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalf("Error connecting to the database: %v", err)
+		log.Printf("Error connecting to the database: %v", err)
 	}
 
 	return db

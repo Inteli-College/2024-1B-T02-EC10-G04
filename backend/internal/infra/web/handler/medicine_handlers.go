@@ -131,6 +131,6 @@ func (h *MedicineHandlers) DeleteMedicineHandler(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	message := fmt.Sprintf("Pyxis %s deleted successfully", medicine_id)
+	message := fmt.Sprintf("Medicine %s deleted successfully", medicine_id)
 	c.JSON(http.StatusOK, gin.H{"message": message})
 }

@@ -1,16 +1,17 @@
 package main
 
 import (
-	"os"
-	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
-	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
+	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-gonic/gin"
+	"log"
+	"net/http"
+	"os"
 	// "github.com/joho/godotenv"
 	// "log"
 )
@@ -40,6 +41,15 @@ func main() {
 
 	api := router.Group("/api/v1")
 	api.Use(middleware.AuthMiddleware())
+
+	///////////////////// Healthcheck //////////////////////
+
+	//TODO: "http://localhost:8080/api/healthz" is the best pattern for healthcheck?
+
+	router.GET("/api/healthz", func(c *gin.Context) {
+		log.Printf("Server received a healthcheck request")
+		c.JSON(http.StatusOK, gin.H{"status": "success"})
+	})
 
 	//////////////////////// User ///////////////////////////
 
@@ -79,13 +89,13 @@ func main() {
 
 	orderProducerConfigMap := &ckafka.ConfigMap{
 		"bootstrap.servers": os.Getenv("KAFKA_BOOTSTRAP_SERVER"),
-		"client.id":         os.Getenv("KAFKA_ORDER_CLIENT_ID"),
+		"client.id":         os.Getenv("KAFKA_ORDERS_CLIENT_ID"),
 	}
-	kafkaProducer := kafka.NewKafkaProducer(orderProducerConfigMap)
+	kafkaProducerRepository := kafka.NewKafkaProducer(orderProducerConfigMap)
 
 	orderRepository := repository.NewOrderRepositoryPostgres(db)
 	orderUseCase := usecase.NewOrderUseCase(orderRepository)
-	orderHandlers := handler.NewOrderHandlers(orderUseCase, kafkaProducer)
+	orderHandlers := handler.NewOrderHandlers(orderUseCase, kafkaProducerRepository)
 
 	{
 		orderGroup := api.Group("/orders")
@@ -98,5 +108,21 @@ func main() {
 		}
 	}
 
-	router.Run()
+	///////////////////////// Medicine ///////////////////////////
+
+	medicineRepository := repository.NewMediceRepositoryPostgres(db)
+	medicineUseCase := usecase.NewMedicineUseCase(medicineRepository)
+	medicineHandlers := handler.NewMedicineHandlers(medicineUseCase)
+
+	{
+		medicineGroup := api.Group("/medicines")
+		{
+			medicineGroup.POST("", medicineHandlers.CreateMedicineHandler)
+			medicineGroup.GET("", medicineHandlers.FindAllMedicinesHandler)
+			medicineGroup.GET("/:id", medicineHandlers.FindMedicineByIdHandler)
+			medicineGroup.PUT("/:id", medicineHandlers.UpdateMedicineHandler)
+			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
+		}
+	}
+	router.Run(":8080")
 }

@@ -21,7 +21,7 @@ func (u *UserUseCase) CreateUser(input *dto.CreateUserInputDTO) (*dto.CreateUser
 	if err != nil {
 		return nil, err
 	}
-	//TODO: Implement update that does not require all fields of input DTO
+	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
 	user := entity.NewUser(input.Name, input.Email, string(hashedPassword), input.Role)
 	res, err := u.UserRepository.CreateUser(user)
 	if err != nil {

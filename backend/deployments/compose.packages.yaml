@@ -21,14 +21,14 @@ services:
       dockerfile: build/Dockerfile.server
     ports:
       - 8080:8080
-  consumer:
-    container_name: consumer
-    hostname: consumer
+  conductor:
+    container_name: conductor
+    hostname: conductor
     env_file:
       - ../.env
     restart: always
     build:
       context: ..
-      dockerfile: build/Dockerfile.server
+      dockerfile: build/Dockerfile.conductor
     ports:
       - 8081:8081

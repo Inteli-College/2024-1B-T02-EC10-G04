@@ -44,10 +44,6 @@ func (p *PyxisHandlers) FindAllPyxisHandler(c *gin.Context) {
 func (p *PyxisHandlers) FindPyxisByIdHandler(c *gin.Context) {
 	var input dto.FindPyxisByIDInputDTO
 	input.ID = c.Param("id")
-	if err := c.BindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	output, err := p.PyxisUseCase.FindPyxisById(input.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -74,10 +70,6 @@ func (p *PyxisHandlers) UpdatePyxisHandler(c *gin.Context) {
 func (p *PyxisHandlers) DeletePyxisHandler(c *gin.Context) {
 	var input dto.DeletePyxisInputDTO
 	input.ID = c.Param("id")
-	if err := c.BindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
 	err := p.PyxisUseCase.DeletePyxis(input.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

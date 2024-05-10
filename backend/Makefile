@@ -1,5 +1,3 @@
--include .env
-
 START_LOG = @echo "================================================= START OF LOG ==================================================="
 END_LOG = @echo "================================================== END OF LOG ===================================================="
 
@@ -25,8 +23,8 @@ infra:
 		--partitions 10
 	$(END_LOG)
 
-.PHONY: dev
-dev:
+.PHONY: run
+run:
 	$(START_LOG)
 	@docker compose \
 		-f ./deployments/compose.packages.yaml up \

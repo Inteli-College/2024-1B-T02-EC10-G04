@@ -29,6 +29,7 @@ func (o *OrderUseCase) CreateOrder(input *dto.CreateOrderInputDTO) (*dto.CreateO
 		Status:      res.Status,
 		Medicine_ID: res.Medicine_ID,
 		Quantity:    res.Quantity,
+		CreatedAt:   res.CreatedAt,
 	}, nil
 }
 
@@ -47,23 +48,28 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 			Status:      order.Status,
 			Medicine_ID: order.Medicine_ID,
 			Quantity:    order.Quantity,
+			UpdatedAt:   order.UpdatedAt,
+			CreatedAt:   order.CreatedAt,
 		})
 	}
 	return ordersOutput, nil
 }
 
-func (o *OrderUseCase) FindOrderById(id string) (*dto.UpdateOrderOutputDTO, error) {
+func (o *OrderUseCase) FindOrderById(id string) (*dto.FindOrderOutputDTO, error) {
 	order, err := o.orderRepository.FindOrderById(id)
 	if err != nil {
 		return nil, err
 	}
-	return &dto.UpdateOrderOutputDTO{
+	return &dto.FindOrderOutputDTO{
 		ID:          order.ID,
 		Priority:    order.Priority,
+		User_ID:     order.User_ID,
 		Observation: order.Observation,
 		Status:      order.Status,
 		Medicine_ID: order.Medicine_ID,
 		Quantity:    order.Quantity,
+		UpdatedAt:   order.UpdatedAt,
+		CreatedAt:   order.CreatedAt,
 	}, nil
 }
 
@@ -73,7 +79,7 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 		return nil, err
 	}
 
-	//TODO: Implement update that does not require all fields of input DTO  
+	//TODO: Implement update that does not require all fields of input DTO  (Maybe i can do this only in the repository?)
 	res.Medicine_ID = input.Medicine_ID
 	res.Status = input.Status
 	res.Priority = input.Priority
@@ -88,10 +94,12 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 	return &dto.UpdateOrderOutputDTO{
 		ID:          res.ID,
 		Priority:    res.Priority,
+		User_ID:     res.User_ID,
 		Observation: res.Observation,
 		Status:      res.Status,
 		Medicine_ID: res.Medicine_ID,
 		Quantity:    res.Quantity,
+		UpdatedAt:   res.UpdatedAt,
 	}, nil
 }
 

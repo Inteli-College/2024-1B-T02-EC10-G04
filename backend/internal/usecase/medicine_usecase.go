@@ -64,18 +64,17 @@ func (m *MedicineUseCase) FindMedicineById(id string) (*dto.FindMedicineOutputDT
 }
 
 func (m *MedicineUseCase) UpdateMedicine(input *dto.UpdateMedicineInputDTO) (*dto.FindMedicineOutputDTO, error) {
-	// res, err := m.MedicineRepository.FindMedicineById(input.ID)
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// res.Label = input.Label
-	updates := entity.Medicine{
-		ID:     input.ID,
-		Batch:  input.Batch,
-		Name:   input.Name,
-		Stripe: input.Stripe,
+	res, err := m.MedicineRepository.FindMedicineById(input.ID)
+	if err != nil {
+		return nil, err
 	}
-	updated_medicine, err := m.MedicineRepository.UpdateMedicine(&updates)
+
+	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
+	res.Batch = input.Batch
+	res.Name = input.Name
+	res.Stripe = input.Stripe
+
+	updated_medicine, err := m.MedicineRepository.UpdateMedicine(res)
 	if err != nil {
 		return nil, err
 	}
