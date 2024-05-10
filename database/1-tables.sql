@@ -63,7 +63,7 @@ CREATE TABLE Orders (
     priority priority_type NOT NULL,
     user_id UUID NOT NULL,
     observation TEXT,
-    status status_type NOT NULL,
+    status status_type NOT NULL DEFAULT 'pending',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     medicine_id UUID NOT NULL,
