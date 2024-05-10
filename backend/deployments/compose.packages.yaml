@@ -32,6 +32,8 @@ services:
     build:
       context: ..
       dockerfile: build/Dockerfile.server
+    deploy:
+      replicas: 3
     ports:
       - 8080:8080
   conductor:
@@ -40,6 +42,8 @@ services:
     env_file:
       - ../.env
     restart: always
+    deploy:
+      replicas: 3
     build:
       context: ..
       dockerfile: build/Dockerfile.conductor
