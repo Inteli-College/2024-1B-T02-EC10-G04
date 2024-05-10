@@ -23,8 +23,9 @@ services:
     depends_on:
       - server
       - conductor
+    networks:
+      - backend
   server:
-    container_name: server
     hostname: server
     env_file:
       - ../.env
@@ -34,18 +35,20 @@ services:
       dockerfile: build/Dockerfile.server
     deploy:
       replicas: 3
-    ports:
-      - 8080:8080
+    networks:
+      - backend
   conductor:
-    container_name: conductor
     hostname: conductor
     env_file:
       - ../.env
     restart: always
-    deploy:
-      replicas: 3
     build:
       context: ..
       dockerfile: build/Dockerfile.conductor
-    ports:
-      - 8081:8081
+    deploy:
+      replicas: 3
+    networks:
+      - backend
+  
+networks:
+  backend:

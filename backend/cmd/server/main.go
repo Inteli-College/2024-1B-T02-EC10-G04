@@ -46,7 +46,7 @@ func main() {
 
 	//TODO: "http://localhost:8080/api/healthz" is the best pattern for healthcheck?
 
-	router.GET("/api/healthz", func(c *gin.Context) {
+	router.GET("/api/v1/healthz", func(c *gin.Context) {
 		log.Printf("Server received a healthcheck request")
 		c.JSON(http.StatusOK, gin.H{"status": "success"})
 	})
@@ -124,5 +124,6 @@ func main() {
 			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
 		}
 	}
+
 	router.Run(":8080")
 }
