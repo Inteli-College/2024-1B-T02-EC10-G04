@@ -13,7 +13,7 @@ O mapa de jornada do usuário é uma ferramenta valiosa no design de experiênci
 
 **Desafios enfrentados:** A técnica de enfermagem não tem dificuldades significativas com tecnologia, porém, inicialmente, pode enfrentar problemas ao escanear o QR Code. Espera-se que essa dificuldade diminua com a prática.
 
-![Mapa da Jornada - Persona 1](../../../static/img/jornada-persona-1.png)
+<!-- ![Mapa da Jornada - Persona 1](../../../static/img/jornada-persona-1.png) -->
 
 ## Persona 2 - Técnico da Farmácia Central
 
