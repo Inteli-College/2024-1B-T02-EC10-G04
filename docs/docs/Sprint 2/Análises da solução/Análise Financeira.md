@@ -1,3 +1,9 @@
+---
+sidebar_position: 1
+slug: '/Sprint 2/Análise da solução/Análise Financeira'
+label: "Análise Financeira"
+---
+
 # Análise Financeira
 A análise financeira desempenha um papel fundamental na condução de decisões empresariais estratégicas e fundamentadas. Esse processo envolve a avaliação minuciosa de dados financeiros e econômicos, permitindo uma compreensão profunda da saúde financeira de uma organização, projeção de seu desempenho futuro e embasamento sólido para tomadas de decisões. Abrangendo uma variedade de aspectos, desde a avaliação de investimentos até o gerenciamento de riscos e otimização de recursos, essa análise é essencial para a sustentabilidade e crescimento de qualquer negócio.
 
