@@ -28,7 +28,7 @@ Claro! Aqui está o texto corrigido e melhorado:
 O mockup do projeto foi desenvolvido utilizando o design system Spalla no Figma, com o objetivo de proporcionar a melhor experiência possível para o usuário. Além disso, seguimos as diretrizes do "TAPI" e consideramos todos os pontos levantados e sugeridos pelo cliente. Abaixo está o mockup do projeto:
 
 
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FLbWWD04cUIdTbyaOXUn1tx%2FMobile---APP-Fluter%3Fnode-id%3D0%253A1%26t%3DiF21FqhaUOkMPutg-1" allowfullscreen></iframe>
+<iframe style={{border: '1px solid rgba(0, 0, 0, 0.1)'}} width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FLbWWD04cUIdTbyaOXUn1tx%2FMobile---APP-Fluter%3Fnode-id%3D0%253A1%26t%3DiF21FqhaUOkMPutg-1" allowfullscreen></iframe>
 
 
 ## Conclusão
