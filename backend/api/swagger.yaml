@@ -1,0 +1,119 @@
+basePath: /api/v1
+definitions:
+  dto.CreateMedicineInputDTO:
+    properties:
+      batch:
+        type: string
+      name:
+        type: string
+      stripe:
+        $ref: '#/definitions/entity.StripeType'
+    type: object
+  dto.CreateMedicineOutputDTO:
+    properties:
+      batch:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      stripe:
+        $ref: '#/definitions/entity.StripeType'
+      updated_at:
+        type: string
+    type: object
+  dto.FindMedicineOutputDTO:
+    properties:
+      batch:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      stripe:
+        $ref: '#/definitions/entity.StripeType'
+      updated_at:
+        type: string
+    type: object
+  entity.StripeType:
+    enum:
+    - red
+    - yellow
+    - black
+    type: string
+    x-enum-varnames:
+    - StripeRed
+    - StripeYellow
+    - StripeBlack
+host: localhost:8080
+info:
+  contact:
+    email: henrique@mugen.builders
+    name: DeVolt Team
+    url: https://devolt.xyz
+  description: This is the devolt api server to manage devices.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Devices Api Server
+  version: "1.0"
+paths:
+  /medicines:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all Medicines entities
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.FindMedicineOutputDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Retrieve all Medicines entities
+      tags:
+      - Medicines
+    post:
+      consumes:
+      - application/json
+      description: Create a new Medicine entity
+      parameters:
+      - description: Medicine entity to create
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CreateMedicineInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.CreateMedicineOutputDTO'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create a new Medicine entity
+      tags:
+      - Medicines
+swagger: "2.0"

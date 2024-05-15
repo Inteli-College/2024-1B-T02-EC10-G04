@@ -22,7 +22,7 @@ func NewMedicineHandlers(medicineUsecase *usecase.MedicineUseCase) *MedicineHand
 // CreateMedicineHandler godoc
 // @Summary Create a new Medicine entity
 // @Description Create a new Medicine entity
-// @Tags Medices
+// @Tags Medicines
 // @Accept json
 // @Produce json
 // @Param input body dto.CreateMedicineInputDTO true "Medicine entity to create"

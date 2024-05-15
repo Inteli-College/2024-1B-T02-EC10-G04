@@ -1,6 +1,11 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"os"
+
+	_ "github.com/Inteli-College/2024-1B-T02-EC10-G04/api"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
@@ -9,23 +14,37 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"os"
-	// "github.com/joho/godotenv"
+	"github.com/joho/godotenv"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	// "log"
 )
 
 // Please use .env file for local development. After that, please comment out the lines below,
 // their dependencies as well, and update the go.mod file with command $ go mod tidy.
 
-// func init() {
-// 	err := godotenv.Load()
-// 	if err != nil {
-// 		log.Fatal("Error loading .env file")
-// 	}
-// }
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
 
+//	@title	Devices Api Server
+//	@version	1.0
+//	@description	This is the devolt api server to manage devices.
+//	@termsOfService	http://swagger.io/terms/
+
+//	@contact.name	DeVolt Team
+//	@contact.url	https://devolt.xyz
+//	@contact.email	henrique@mugen.builders
+
+//	@license.name	Apache 2.0
+//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host	localhost:8080
+// @BasePath	/api/v1
+// @query.collection.format multi
 func main() {
 
 	/////////////////////// Configs /////////////////////////
@@ -41,6 +60,8 @@ func main() {
 
 	api := router.Group("/api/v1")
 	api.Use(middleware.AuthMiddleware())
+
+	api.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	///////////////////// Healthcheck //////////////////////
 
