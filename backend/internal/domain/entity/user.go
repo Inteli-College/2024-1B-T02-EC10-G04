@@ -1,30 +1,42 @@
 package entity
 
-import "time"
-
-type Role string
-
-const (
-	AdminRole     Role = "admin"
-	UserRole      Role = "user"
-	collectorRole Role = "collector"
-	managerRole   Role = "manager"
+import (
+	"time"
 )
 
-type User struct {
-	ID        string    `json:"id"`
-	Name      string    `json:"name"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	Role      Role      `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	OnDuty    bool      `json:"on_duty"`
+type UserRepository interface {
+	CreateUser(user *User) (*User, error)
+	FindUserById(id string) (*User, error)
+	FindAllUsers() ([]*User, error)
+	UpdateUser(user *User) (*User, error)
+	DeleteUser(id string) error
 }
 
-type UserRepository interface {
-	FindByID(id string) (*User, error)
-	Create(user *User) error
-	Update(user *User) error
-	FindAll() ([]*User, error)
+// type Role string
+
+// const (
+// 	AdminRole     Role = "admin"
+// 	UserRole      Role = "user"
+// 	CollectorRole Role = "collector"
+// 	ManagerRole   Role = "manager"
+// )
+
+type User struct {
+	ID        string    `json:"id" db:"id"`
+	Name      string    `json:"name" db:"name"`
+	Email     string    `json:"email" db:"email"`
+	Password  string    `json:"password" db:"password"`
+	Role      string    `json:"role" db:"role"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+	OnDuty    bool      `json:"on_duty" db:"on_duty"`
+}
+
+func NewUser(name string, email string, password string, role string) *User {
+	return &User{
+		Name:      name,
+		Email:     email,
+		Password:  password,
+		Role:      role,
+	}
 }
