@@ -43,12 +43,12 @@ make infra
 ```shell
 ================================================= START OF LOG ===================================================
 [+] Running 6/6
- ✔ Network 2024-1b-t02-ec10-g04_default  Created                                                                                          0.0s 
- ✔ Container zookeeper                   Started                                                                                          0.1s 
- ✔ Container redis                       Started                                                                                          0.1s 
- ✔ Container postgres                    Started                                                                                          0.1s 
- ✔ Container kafka                       Started                                                                                          0.1s 
- ✔ Container control-center              Started                                                                                          0.0s 
+ ✔ Network 2024-1b-t02-ec10-g04_default  Created                                                                   0.0s 
+ ✔ Container zookeeper                   Started                                                                   0.1s 
+ ✔ Container redis                       Started                                                                   0.1s 
+ ✔ Container postgres                    Started                                                                   0.1s 
+ ✔ Container kafka                       Started                                                                   0.1s 
+ ✔ Container control-center              Started                                                                   0.0s 
 Creating kafka topics...
 Created topic orders.
 ================================================== END OF LOG ====================================================
@@ -72,14 +72,14 @@ make run
 ```shell
 ================================================= START OF LOG ===================================================
 [+] Running 8/8
- ✔ Network deployments_backend        Created                                                                                             0.1s 
- ✔ Container deployments-server-3     Started                                                                                             0.1s 
- ✔ Container deployments-conductor-1  Started                                                                                             0.1s 
- ✔ Container deployments-server-1     Started                                                                                             0.1s 
- ✔ Container deployments-server-2     Started                                                                                             0.1s 
- ✔ Container deployments-conductor-2  Started                                                                                             0.1s 
- ✔ Container deployments-conductor-3  Started                                                                                             0.1s 
- ✔ Container nginx                    Started                                                                                             0.0s 
+ ✔ Network deployments_backend        Created                                                                    0.1s 
+ ✔ Container deployments-server-3     Started                                                                    0.1s 
+ ✔ Container deployments-conductor-1  Started                                                                    0.1s 
+ ✔ Container deployments-server-1     Started                                                                    0.1s 
+ ✔ Container deployments-server-2     Started                                                                    0.1s 
+ ✔ Container deployments-conductor-2  Started                                                                    0.1s 
+ ✔ Container deployments-conductor-3  Started                                                                    0.1s 
+ ✔ Container nginx                    Started                                                                    0.0s 
 ================================================== END OF LOG ====================================================
 ```
 
