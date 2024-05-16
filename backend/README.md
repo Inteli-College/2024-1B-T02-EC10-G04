@@ -32,7 +32,7 @@ Environment file created at ./.env
 > Antes de preencher o arquivo `.env` é necessário criar os serviços de cloud presentes nas seção [#Dependências e Serviços]()
 
 ### Criar infraestrutura local
-Rode o comando abaixo para criar a infraestrutura necessária para o sistema localmente, os comandos para orquestrar os containers respectivos estão sendo abstraídos por um arquivo Makefile, para saber mais detalhes do comando abaixo acesse o [link](https://github.com/Inteli-College/2024-1B-T02-EC10-G04/blob/feature/swagger/backend/Makefile#L11).
+Rode o comando abaixo para criar a infraestrutura necessária para o sistema localmente, os comandos para orquestrar os containers respectivos estão sendo abstraídos por um arquivo Makefile, para saber mais detalhes do comando abaixo acesse o [link](https://github.com/Inteli-College/2024-1B-T02-EC10-G04/tree/feature/swagger/backend#depend%C3%AAncias-e-servi%C3%A7os).
 
 #### Comando:
 ```shell
