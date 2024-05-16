@@ -1,3 +1,9 @@
+---
+title: Data Modeling
+sidebar_position: 2
+slug: db-m-s2
+---
+
 # Data Modeling
 
 ## Introdução ao Data Modeling
