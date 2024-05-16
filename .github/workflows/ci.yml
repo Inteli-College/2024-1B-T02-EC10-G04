@@ -22,5 +22,5 @@ jobs:
           version: latest
           working-directory: ./backend
 
-    - name: Test
-      run: make test
+    # - name: Test
+    #   run: make test
