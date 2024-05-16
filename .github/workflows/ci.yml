@@ -2,8 +2,6 @@ name: CI Workflow
 
 on: 
   push:
-    paths:
-        - 'backend/**'
   workflow_dispatch:
 
 jobs:
@@ -22,7 +20,7 @@ jobs:
       uses: golangci/golangci-lint-action@v3
       with:
           version: latest
-          path: ./backend
+          working-directory: ./backend
 
     - name: Test
       run: make test
