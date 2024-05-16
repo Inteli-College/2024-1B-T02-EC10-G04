@@ -29,10 +29,10 @@ Environment file created at ./.env
 ```
 
 > [!NOTE]
-> Antes de preencher o arquivo `.env` é necessário criar os serviços de cloud presentes nas seção [#Dependências e Serviços]()
+> Antes de preencher o arquivo `.env` é necessário criar os serviços de cloud presentes nas seção [#Dependências e Serviços](https://github.com/Inteli-College/2024-1B-T02-EC10-G04/tree/main/backend#depend%C3%AAncias-e-servi%C3%A7os)
 
 ### Criar infraestrutura local
-Rode o comando abaixo para criar a infraestrutura necessária para o sistema localmente, os comandos para orquestrar os containers respectivos estão sendo abstraídos por um arquivo Makefile, para saber mais detalhes do comando abaixo acesse o [link]().
+Rode o comando abaixo para criar a infraestrutura necessária para o sistema localmente, os comandos para orquestrar os containers respectivos estão sendo abstraídos por um arquivo Makefile, para saber mais detalhes do comando abaixo acesse o [link](https://github.com/Inteli-College/2024-1B-T02-EC10-G04/blob/main/backend/Makefile#L11).
 
 #### Comando:
 ```shell
@@ -59,7 +59,7 @@ Created topic orders.
 
 ### Rodar o sistema:
 
-Mais uma vez, todos os comandos necessários estão sendo abstraídos por um arquivo Makefile. Se você tiver curiosidade para saber o que o comando abaixo faz, basta conferir [aqui]().
+Mais uma vez, todos os comandos necessários estão sendo abstraídos por um arquivo Makefile. Se você tiver curiosidade para saber o que o comando abaixo faz, basta conferir [aqui](https://github.com/Inteli-College/2024-1B-T02-EC10-G04/blob/main/backend/Makefile#L11).
 
 #### Comando:
 
