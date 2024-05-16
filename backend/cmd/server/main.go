@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	_ "github.com/Inteli-College/2024-1B-T02-EC10-G04/api"
@@ -151,5 +152,8 @@ func main() {
 		}
 	}
 
-	router.Run(":8080")
+	err := router.Run(":8080")
+	if err != nil {
+		log.Fatal("Error running server:", err)
+	}
 }
