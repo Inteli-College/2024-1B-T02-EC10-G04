@@ -70,6 +70,7 @@ make run
 #### Output:
 
 ```shell
+================================================= START OF LOG ===================================================
 [+] Running 8/8
  ✔ Network deployments_backend        Created                                                                                             0.1s 
  ✔ Container deployments-server-3     Started                                                                                             0.1s 
