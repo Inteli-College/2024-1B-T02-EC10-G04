@@ -66,7 +66,12 @@ func main() {
 		log.Printf("Consumer received a healthcheck request")
 		c.JSON(http.StatusOK, gin.H{"status": "success"})
 	})
-	go router.Run(":8081")
+	
+	go func() {
+		if err := router.Run(":8081"); err != nil {
+			log.Fatalf("Falha ao iniciar o servidor: %v", err)
+		}
+	}()
 
 	//////////////////////// Orders Consumer //////////////////////////
 
