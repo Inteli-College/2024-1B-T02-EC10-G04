@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
 	_ "github.com/Inteli-College/2024-1B-T02-EC10-G04/api"
@@ -13,38 +12,40 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
+	// "github.com/joho/godotenv"
 	// "log"
 )
 
 // Please use .env file for local development. After that, please comment out the lines below,
 // their dependencies as well, and update the go.mod file with command $ go mod tidy.
 
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-}
+// func init() {
+// 	err := godotenv.Load()
+// 	if err != nil {
+// 		log.Fatal("Error loading .env file")
+// 	}
+// }
 
-//	@title	Devices Api Server
-//	@version	1.0
-//	@description	This is the devolt api server to manage devices.
+//	@title			Manager API
+//	@version		1.0
+//	@description	This is a.
 //	@termsOfService	http://swagger.io/terms/
 
-//	@contact.name	DeVolt Team
-//	@contact.url	https://devolt.xyz
-//	@contact.email	henrique@mugen.builders
+//	@contact.name	Manager API Support
+//	@contact.url	https://github.com/Inteli-College/2024-1B-T02-EC10-G04
+//	@contact.email	gomedicine@inteli.edu.br
 
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host	localhost:8080
-// @BasePath	/api/v1
-// @query.collection.format multi
+//	@host	localhost
+//	@BasePath	/api/v1
+// 	@query.collection.format multi
+
 func main() {
 
 	/////////////////////// Configs /////////////////////////
@@ -57,20 +58,25 @@ func main() {
 	router := gin.Default()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true, // TODO: change to false and make it for production
+		AllowMethods:     []string{"PUT", "PATCH, POST, GET, OPTIONS, DELETE"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	api := router.Group("/api/v1")
 	api.Use(middleware.AuthMiddleware())
 
+	///////////////////// Swagger //////////////////////
+	
 	api.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	///////////////////// Healthcheck //////////////////////
 
 	//TODO: "http://localhost:8080/api/healthz" is the best pattern for healthcheck?
 
-	router.GET("/api/v1/healthz", func(c *gin.Context) {
-		log.Printf("Server received a healthcheck request")
-		c.JSON(http.StatusOK, gin.H{"status": "success"})
-	})
+	router.GET("/api/v1/healthz", handler.HealthCheckHandler)
 
 	//////////////////////// User ///////////////////////////
 
@@ -146,5 +152,8 @@ func main() {
 		}
 	}
 
-	router.Run(":8080")
+	err := router.Run(":8080")
+	if err != nil {
+		log.Fatal("Error running server:", err)
+	}
 }

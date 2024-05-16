@@ -18,6 +18,15 @@ func NewUserHandlers(userUseCase *usecase.UserUseCase) *UserHandlers {
 	}
 }
 
+// CreateUser
+// @Summary Create a new User entity
+// @Description Create a new User entity
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param input body dto.CreateUserInputDTO true "User entity to create"
+// @Success 201 {object} dto.CreateUserOutputDTO
+// @Router /users [post]
 func (h *UserHandlers) CreateUser(c *gin.Context) {
 	var input dto.CreateUserInputDTO
 	if err := c.ShouldBindJSON(&input); err != nil {
@@ -32,6 +41,14 @@ func (h *UserHandlers) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusCreated, output)
 }
 
+// FindAllUsersHandler
+// @Summary Retrieve all User entities
+// @Description Retrieve all User entities
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Success 200 {array} dto.FindUserOutputDTO
+// @Router /users [get]
 func (h *UserHandlers) FindAllUsersHandler(c *gin.Context) {
 	output, err := h.UserUseCase.FindAllUsers()
 	if err != nil {
@@ -41,6 +58,15 @@ func (h *UserHandlers) FindAllUsersHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, output)
 }
 
+// FindUserByIdHandler
+// @Summary Retrieve a User entity by ID
+// @Description Retrieve a User entity by ID
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} dto.FindUserOutputDTO
+// @Router /users/{id} [get]
 func (h *UserHandlers) FindUserByIdHandler(c *gin.Context) {
 	var input dto.FindUserByIdInputDTO
 	input.ID = c.Param("id")
@@ -52,6 +78,16 @@ func (h *UserHandlers) FindUserByIdHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, output)
 }
 
+// UpdateUserHandler
+// @Summary Update a User entity
+// @Description Update a User entity
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Param input body dto.UpdateUserInputDTO true "User entity to update"
+// @Success 200 {object} dto.UpdateUserOutputDTO
+// @Router /users/{id} [put]
 func (h *UserHandlers) UpdateUserHandler(c *gin.Context) {
 	var input dto.UpdateUserInputDTO
 	input.ID = c.Param("id")
@@ -67,6 +103,15 @@ func (h *UserHandlers) UpdateUserHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, output)
 }
 
+// DeleteUserHandler
+// @Summary Delete a User entity
+// @Description Delete a User entity
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {string} string
+// @Router /users/{id} [delete]
 func (h *UserHandlers) DeleteUserHandler(c *gin.Context) {
 	var input dto.DeleteUserInputDTO
 	input.ID = c.Param("id")
