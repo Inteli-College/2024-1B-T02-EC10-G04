@@ -87,6 +87,8 @@ make run
 > O arquivo Docker Compose que é chamado pelo comando acima configura três serviços: nginx, server e conductor. O serviço nginx utiliza a imagem mais recente do Nginx, mapeia a porta 80 do host para o contêiner, substitui a configuração padrão do Nginx com um arquivo personalizado e depende dos serviços "server" e "conductor". Os serviços "server" e "conductor" carregam variáveis de ambiente de um arquivo .env, reiniciam automaticamente, são construídos a partir de Dockerfiles específicos e são implantados com três réplicas cada. Todos os serviços estão conectados à rede "backend", que facilita a comunicação entre eles.
 
 ## Demonstração do Sistema
+A demonstração foi feita pelo teste das rotas através do [Swagger UI](https://swagger.io/tools/swagger-ui/) servido pelo serviço "server" na rota http://localhost/api/v1/docs/index.html#
+
 link do video aqui
 
 [^1]: A estrutura de pastas escolhida para este projeto está de acordo com as convenções e padrões utilizados pela comunidade de desenvolvedores Golang.
