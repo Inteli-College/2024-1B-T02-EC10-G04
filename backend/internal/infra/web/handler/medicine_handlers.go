@@ -19,16 +19,14 @@ func NewMedicineHandlers(medicineUsecase *usecase.MedicineUseCase) *MedicineHand
 	}
 }
 
-// CreateMedicineHandler godoc
+// CreateMedicineHandler
 // @Summary Create a new Medicine entity
 // @Description Create a new Medicine entity
-// @Tags Medices
+// @Tags Medicines
 // @Accept json
 // @Produce json
 // @Param input body dto.CreateMedicineInputDTO true "Medicine entity to create"
 // @Success 200 {object} dto.CreateMedicineOutputDTO
-// @Failure 400 {object} map[string]interface{}
-// @Failure 500 {object} map[string]interface{}
 // @Router /medicines [post]
 func (h *MedicineHandlers) CreateMedicineHandler(c *gin.Context) {
 	var input dto.CreateMedicineInputDTO
@@ -44,14 +42,13 @@ func (h *MedicineHandlers) CreateMedicineHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, output)
 }
 
-// FindAllMedicineHandler godoc
+// FindAllMedicineHandler
 // @Summary Retrieve all Medicines entities
 // @Description Retrieve all Medicines entities
 // @Tags Medicines
 // @Accept json
 // @Produce json
 // @Success 200 {array} dto.FindMedicineOutputDTO
-// @Failure 500 {object} map[string]interface{}
 // @Router /medicines [get]
 func (h *MedicineHandlers) FindAllMedicinesHandler(c *gin.Context) {
 	output, err := h.MedicineUseCase.FindAllMedicines()
@@ -62,18 +59,15 @@ func (h *MedicineHandlers) FindAllMedicinesHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, output)
 }
 
-// // FindMedicineByIdHandler godoc
-// // @Summary Retrieve a Medicine entity by ID
-// // @Description Retrieve a Medicine entity by ID
-// // @Tags Medicines
-// // @Accept json
-// // @Produce json
-// // @Param id path string true "Medicine ID"
-// // @Success 200 {object} dto.FindMedicineOutputDTO
-// // @Failure 400 {object} map[string]interface{}
-// // @Failure 404 {object} map[string]interface{}
-// // @Failure 500 {object} map[string]interface{}
-// // @Router /medicines/{id} [get]
+// FindMedicineByIdHandler
+// @Summary Retrieve a Medicine entity by ID
+// @Description Retrieve a Medicine entity by ID
+// @Tags Medicines
+// @Accept json
+// @Produce json
+// @Param id path string true "Medicine ID"
+// @Success 200 {object} dto.FindMedicineOutputDTO
+// @Router /medicines/{id} [get]
 func (m *MedicineHandlers) FindMedicineByIdHandler(c *gin.Context) {
 	medicineId := c.Param("id")
 	output, err := m.MedicineUseCase.FindMedicineById(medicineId)
@@ -84,19 +78,16 @@ func (m *MedicineHandlers) FindMedicineByIdHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, output)
 }
 
-// // UpdatePyxisHandler godoc
-// // @Summary Update a Medicine entity
-// // @Description Update a Medicine entity
-// // @Tags Medicines
-// // @Accept json
-// // @Produce json
-// // @Param id path string true "Medicine ID"
-// // @Param input body dto.UpdateMedicineInputDTO true "Medicine entity to update"
-// // @Success 200 {object} dto.FindMedicineOutputDTO
-// // @Failure 400 {object} map[string]interface{}
-// // @Failure 404 {object} map[string]interface{}
-// // @Failure 500 {object} map[string]interface{}
-// // @Router /medicines/{id} [patch]
+// UpdatePyxisHandler
+// @Summary Update a Medicine entity
+// @Description Update a Medicine entity
+// @Tags Medicines
+// @Accept json
+// @Produce json
+// @Param id path string true "Medicine ID"
+// @Param input body dto.UpdateMedicineInputDTO true "Medicine entity to update"
+// @Success 200 {object} dto.FindMedicineOutputDTO
+// @Router /medicines/{id} [put]
 func (h *MedicineHandlers) UpdateMedicineHandler(c *gin.Context) {
 	var input dto.UpdateMedicineInputDTO
 	input.ID = c.Param("id")
@@ -112,18 +103,15 @@ func (h *MedicineHandlers) UpdateMedicineHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, output)
 }
 
-// // DeleteMedicineHandler godoc
-// // @Summary Delete a Medicine entity
-// // @Description Delete a Medicine entity
-// // @Tags Medicines
-// // @Accept json
-// // @Produce json
-// // @Param id path string true "Medicine ID"
-// // @Success 200 {string} string
-// // @Failure 400 {object} map[string]interface{}
-// // @Failure 404 {object} map[string]interface{}
-// // @Failure 500 {object} map[string]interface{}
-// // @Router /medicines/{id} [delete]
+// DeleteMedicineHandler
+// @Summary Delete a Medicine entity
+// @Description Delete a Medicine entity
+// @Tags Medicines
+// @Accept json
+// @Produce json
+// @Param id path string true "Medicine ID"
+// @Success 200 {string} string
+// @Router /medicines/{id} [delete]
 func (h *MedicineHandlers) DeleteMedicineHandler(c *gin.Context) {
 	medicine_id := c.Param("id")
 	err := h.MedicineUseCase.DeleteMedicine(medicine_id)
