@@ -86,10 +86,18 @@ make run
 > [!NOTE]
 > O arquivo Docker Compose que é chamado pelo comando acima configura três serviços: nginx, server e conductor. O serviço nginx utiliza a imagem mais recente do Nginx, mapeia a porta 80 do host para o contêiner, substitui a configuração padrão do Nginx com um arquivo personalizado e depende dos serviços "server" e "conductor". Os serviços "server" e "conductor" carregam variáveis de ambiente de um arquivo .env, reiniciam automaticamente, são construídos a partir de Dockerfiles específicos e são implantados com três réplicas cada. Todos os serviços estão conectados à rede "backend", que facilita a comunicação entre eles.
 
-## Demonstração do Sistema
-A demonstração foi feita pelo teste das rotas através do [Swagger UI](https://swagger.io/tools/swagger-ui/) servido pelo serviço "server" na rota http://localhost/api/v1/docs/index.html#
 
-link do video aqui
+## Swagger com Gin
+Diferentemente do FastAPI, o Gin não gera uma documentação do tipo Swagger automaticamente. Por isso, foi necessário criar essa documentação manualmente para facilitar o teste de rotas e a documentação da API.
+
+Swagger é uma ferramenta popular para criar e manter a documentação de APIs. Ela permite que os desenvolvedores documentem facilmente os endpoints da API, os formatos de requisição e resposta, além de outras informações úteis para quem consumir a API.
+
+Para utilização do swagger para entendimento das rotas, basta rodar o backend go e acessar o swagger servido pelo gin na rota `http://localhost/api/v1/docs/index.html#`.
+
+
+## Demonstração do Sistema
+
+[Demonstração](https://drive.google.com/file/d/1R9fG24_uBr8LlNc11TM6hkP8Jo1NESSZ/view?usp=sharing)
 
 [^1]: A estrutura de pastas escolhida para este projeto está de acordo com as convenções e padrões utilizados pela comunidade de desenvolvedores Golang.
 [^2]: As entidades, repositórios e usecases estão de acordo com os padrões previstos para a arquitetura hexagonal.

@@ -96,9 +96,10 @@ make run
 :::
 
 ## Demonstração do Sistema
-A demonstração foi feita pelo teste das rotas através do [Swagger UI](https://swagger.io/tools/swagger-ui/) servido pelo serviço "server" na rota http://localhost/api/v1/docs/index.html#
 
-link do video aqui
+A demonstração foi feita testando as rotas através do [Swagger UI](https://swagger.io/tools/swagger-ui/) servido pelo serviço "server" na rota `http://localhost/api/v1/docs/index.html#`.
+
+[Demonstração](https://drive.google.com/file/d/1R9fG24_uBr8LlNc11TM6hkP8Jo1NESSZ/view?usp=sharing)
 
 [^1]: A estrutura de pastas escolhida para este projeto está de acordo com as convenções e padrões utilizados pela comunidade de desenvolvedores Golang.
-[^2]: As entidades, repositórios e usecases estão de acordo com os padrões previstos para a arquitetura hexagonal.
+[^2]: As entidades, repositórios e use cases estão de acordo com os padrões previstos para a arquitetura hexagonal.
