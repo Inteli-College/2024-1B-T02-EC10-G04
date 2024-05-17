@@ -95,29 +95,9 @@ make run
 - O arquivo Docker Compose que é chamado pelo comando acima configura três serviços: nginx, server e conductor. O serviço nginx utiliza a imagem mais recente do Nginx, mapeia a porta 80 do host para o contêiner, substitui a configuração padrão do Nginx com um arquivo personalizado e depende dos serviços "server" e "conductor". Os serviços "server" e "conductor" carregam variáveis de ambiente de um arquivo .env, reiniciam automaticamente, são construídos a partir de Dockerfiles específicos e são implantados com três réplicas cada. Todos os serviços estão conectados à rede "backend", que facilita a comunicação entre eles.
 :::
 
-
-## Servidor Gin
-
-Para servir nossa API de forma completa, rápida e eficiente no quesito de paralelismo, utilizamos o Gin, um framework web escrito em Go (Golang). Ele oferece uma API semelhante ao Martini, mas com uma performance até 40 vezes mais rápida graças ao uso do httprouter.
-
-O Gin é conhecido por facilitar a criação de aplicações web e APIs, destacando-se por sua alta performance, facilidade de uso e simplicidade arquitetural. Suas principais características incluem:
-
-- **Roteamento de Alta Performance:** Gin utiliza um mecanismo de roteamento eficiente baseado em tries, permitindo um roteamento rápido das solicitações HTTP.
-- **Middleware:** Suporta a criação e utilização de middlewares, facilitando a adição de funcionalidades como autenticação, logging e manipulação de erros.
-- **Tratamento de Erros:** Fornece uma maneira simples e consistente para lidar com erros.
-- **Rendering:** Facilita a renderização de JSON, XML e HTML.
-- **Bindings e Validação:** Oferece mecanismos para bind (ligação) de dados das solicitações HTTP a estruturas Go e validação desses dados.
-- **Simplicidade e Facilidade de Uso:** A sintaxe e a estrutura do Gin são intuitivas, tornando-o acessível tanto para iniciantes quanto para desenvolvedores experientes.
-
-## Swagger com Gin
-
-Diferentemente do FastAPI, o Gin não gera uma documentação do tipo Swagger automaticamente. Por isso, foi necessário criar essa documentação manualmente para facilitar o teste de rotas e a documentação da API.
-
-Swagger é uma ferramenta popular para criar e manter a documentação de APIs. Ela permite que os desenvolvedores documentem facilmente os endpoints da API, os formatos de requisição e resposta, além de outras informações úteis para quem consumir a API.
+## Demonstração do Sistema
 
 A demonstração foi feita testando as rotas através do [Swagger UI](https://swagger.io/tools/swagger-ui/) servido pelo serviço "server" na rota `http://localhost/api/v1/docs/index.html#`.
-
-## Demonstração do Sistema
 
 [Demonstração](https://drive.google.com/file/d/1R9fG24_uBr8LlNc11TM6hkP8Jo1NESSZ/view?usp=sharing)
 
