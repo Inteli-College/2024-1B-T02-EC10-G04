@@ -2,10 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
-	"os"
-
-	"log"
 	"os"
 
 	_ "github.com/Inteli-College/2024-1B-T02-EC10-G04/api"
