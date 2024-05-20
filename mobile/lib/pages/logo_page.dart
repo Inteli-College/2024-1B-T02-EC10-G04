@@ -56,18 +56,24 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ScaleTransition(
-          scale: _animation,
-          child: SizedBox(
-            width: 200, // Define the width of the logo
-            height: 200, // Define the height of the logo
-            child: Image.asset(
-                'assets/images/logo.png'), // Replace with your logo asset
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Scaffold(
+          body: Center(
+            child: ScaleTransition(
+              scale: _animation,
+              child: SizedBox(
+                width: constraints.maxWidth * 0.5,
+                height: constraints.maxHeight * 0.15,
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
