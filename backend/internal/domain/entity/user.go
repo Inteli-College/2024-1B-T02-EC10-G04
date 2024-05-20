@@ -10,6 +10,7 @@ type UserRepository interface {
 	FindAllUsers() ([]*User, error)
 	UpdateUser(user *User) (*User, error)
 	DeleteUser(id string) error
+	FindUserByEmail(email string) (*User, error)
 }
 
 // type Role string
@@ -34,9 +35,9 @@ type User struct {
 
 func NewUser(name string, email string, password string, role string) *User {
 	return &User{
-		Name:      name,
-		Email:     email,
-		Password:  password,
-		Role:      role,
+		Name:     name,
+		Email:    email,
+		Password: password,
+		Role:     role,
 	}
 }

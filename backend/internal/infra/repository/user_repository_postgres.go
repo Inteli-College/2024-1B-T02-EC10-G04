@@ -56,3 +56,12 @@ func (r *UserRepositoryPostgres) UpdateUser(user *entity.User) (*entity.User, er
 	}
 	return &userUpdated, nil
 }
+
+func (r *UserRepositoryPostgres) FindUserByEmail(email string) (*entity.User, error) {
+	var user entity.User
+	err := r.db.Get(&user, "SELECT * FROM users WHERE email = $1", email)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}

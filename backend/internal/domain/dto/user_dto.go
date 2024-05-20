@@ -11,6 +11,21 @@ type CreateUserInputDTO struct {
 	Role     string `json:"role"`
 }
 
+type LoginUserInputDTO struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type LoginUserOutputDTO struct {
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
+	Email       string    `json:"email"`
+	Role        string    `json:"role"`
+	OnDuty      bool      `json:"on_duty"`
+	CreatedAt   time.Time `json:"created_at"`
+	AccessToken string    `json:"access_token"`
+}
+
 type FindUserByIdInputDTO struct {
 	ID string `json:"id"`
 }

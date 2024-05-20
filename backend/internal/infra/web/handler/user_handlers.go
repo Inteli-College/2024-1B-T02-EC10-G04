@@ -2,10 +2,10 @@ package handler
 
 import (
 	"fmt"
-	"net/http"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type UserHandlers struct {
@@ -77,4 +77,18 @@ func (h *UserHandlers) DeleteUserHandler(c *gin.Context) {
 	}
 	message := fmt.Sprintf("User %s deleted successfully", input.ID)
 	c.JSON(http.StatusOK, gin.H{"message": message})
+}
+
+func (h *UserHandlers) LoginUser(c *gin.Context) {
+	var input dto.LoginUserInputDTO
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	output, err := h.UserUseCase.LoginUser(&input)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, output)
 }

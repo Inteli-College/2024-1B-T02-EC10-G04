@@ -1,6 +1,10 @@
 package main
 
 import (
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
@@ -9,9 +13,7 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"os"
+	// "github.com/joho/godotenv"
 	// "github.com/joho/godotenv"
 	// "log"
 )
@@ -61,6 +63,7 @@ func main() {
 		userGroup := api.Group("/users")
 		{
 			userGroup.POST("", userHandlers.CreateUser)
+			userGroup.POST("/login", userHandlers.LoginUser)
 			userGroup.GET("", userHandlers.FindAllUsersHandler)
 			userGroup.GET("/:id", userHandlers.FindUserByIdHandler)
 			userGroup.PUT("/:id", userHandlers.UpdateUserHandler)

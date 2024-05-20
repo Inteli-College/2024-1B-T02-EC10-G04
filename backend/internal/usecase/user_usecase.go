@@ -1,8 +1,14 @@
 package usecase
 
 import (
+	"fmt"
+	"log"
+	"os"
+	"time"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
+	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -16,11 +22,16 @@ func NewUserUseCase(userRepository entity.UserRepository) *UserUseCase {
 	}
 }
 
-func (u *UserUseCase) CreateUser(input *dto.CreateUserInputDTO) (*dto.CreateUserOutputDTO, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
+func hashPassword(password string) string {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
-		return nil, err
+		log.Panic(err)
 	}
+	return string(bytes)
+}
+
+func (u *UserUseCase) CreateUser(input *dto.CreateUserInputDTO) (*dto.CreateUserOutputDTO, error) {
+	hashedPassword := hashPassword(input.Password)
 	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
 	user := entity.NewUser(input.Name, input.Email, string(hashedPassword), input.Role)
 	res, err := u.UserRepository.CreateUser(user)
@@ -28,11 +39,11 @@ func (u *UserUseCase) CreateUser(input *dto.CreateUserInputDTO) (*dto.CreateUser
 		return nil, err
 	}
 	return &dto.CreateUserOutputDTO{
-		ID:    res.ID,
-		Name:  res.Name,
-		Email: res.Email,
-		Role:  res.Role,
-		OnDuty: res.OnDuty,
+		ID:        res.ID,
+		Name:      res.Name,
+		Email:     res.Email,
+		Role:      res.Role,
+		OnDuty:    res.OnDuty,
 		CreatedAt: res.CreatedAt,
 	}, nil
 }
@@ -107,4 +118,65 @@ func (u *UserUseCase) DeleteUser(id string) error {
 		return err
 	}
 	return u.UserRepository.DeleteUser(user.ID)
+}
+
+func verifyPassword(userPassword string, providedPassword string) (bool, string) {
+	err := bcrypt.CompareHashAndPassword([]byte(userPassword), []byte(providedPassword))
+	check := true
+	msg := ""
+
+	if err != nil {
+		fmt.Println(err)
+		msg = fmt.Sprintf("E-Mail or Password is incorrect")
+		check = false
+	}
+	return check, msg
+}
+
+func generateJWT(user *entity.User) (string, error) {
+	expirationTime := time.Now().Add(72 * time.Hour) // Token expira em 72 horas
+	claims := &jwt.RegisteredClaims{
+		Subject:   user.ID,
+		ExpiresAt: jwt.NewNumericDate(expirationTime),
+		Issuer:    "InteliModulo10",
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET_KEY")))
+
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
+}
+
+func (u *UserUseCase) LoginUser(input *dto.LoginUserInputDTO) (*dto.LoginUserOutputDTO, error) {
+	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
+	user, err := u.UserRepository.FindUserByEmail(input.Email)
+
+	if err != nil {
+		return nil, err
+	}
+
+	check, msg := verifyPassword(user.Password, input.Password)
+
+	if !check {
+		return nil, fmt.Errorf(msg)
+	}
+
+	token, err := generateJWT(user)
+	if err != nil {
+		return nil, err
+	}
+
+	return &dto.LoginUserOutputDTO{
+		ID:          user.ID,
+		Name:        user.Name,
+		Email:       user.Email,
+		Role:        user.Role,
+		OnDuty:      user.OnDuty,
+		CreatedAt:   user.CreatedAt,
+		AccessToken: token,
+	}, nil
 }
