@@ -1,3 +1,9 @@
+---
+title: Data Modeling
+sidebar_position: 2
+slug: db-m-s2
+---
+
 # Data Modeling
 
 ## Introdução ao Data Modeling
@@ -6,8 +12,7 @@ Data modeling (modelagem de dados) é um processo analítico aplicado para defin
 
 ## Data Modeling
 
-![Data modeling](../../../static/img/data-modeling-sprint-2.png)
-![Data enum](../../../static/img/enums-sprint-2.png)
+<iframe style={{border: '1px solid rgba(0, 0, 0, 0.1)'}} width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fboard%2FxggCxik3wb2kWjVX4Pv1yr%2FDiagrama---Modelo-de-Entidade-de-Relacionamento%3Fnode-id%3D0%253A1%26t%3DZP6TKAAmQmy0g2aQ-1" allowfullscreen></iframe>
 
 ## Descrição das Tabelas e Relacionamentos
 

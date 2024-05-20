@@ -1,3 +1,9 @@
+---
+title: Backend
+sidebar_position: 1
+slug: backend-s2
+---
+
 # Backend
 
 O código contido neste recorte do projeto contém o servidor web responsável por cumprir todas as user stories relacionadas às solicitações de remédios, existe também uma interface de mensageria responsável por garantir que os pedidos serão tratados de forma ordenada e assíncrona, além de uma serviço que serve de consumer desa fila kafka e armazena no banco de dados ( postgres ) as informações dos pedidos. Este projeto foi construído conforme as [golang-standards](https://github.com/golang-standards/project-layout) [^1]. Ademais, também foi implementada, dado requisito de alta escalabilidade definido para o projeto, a arquitetura [hexagonal](https://netflixtechblog.com/ready-for-changes-with-hexagonal-architecture-b315ec967749) [^2]
@@ -28,8 +34,9 @@ Environment file created at ./.env
 ================================================== END OF LOG ====================================================
 ```
 
-> [!NOTE]
-> Antes de preencher o arquivo `.env` é necessário criar os serviços de cloud presentes nas seção [#Dependências e Serviços](https://github.com/Inteli-College/2024-1B-T02-EC10-G04/tree/main/backend#depend%C3%AAncias-e-servi%C3%A7os)
+:::info
+- Antes de preencher o arquivo `.env` é necessário criar os serviços de cloud presentes nas seção [#Dependências e Serviços](https://github.com/Inteli-College/2024-1B-T02-EC10-G04/tree/main/backend#depend%C3%AAncias-e-servi%C3%A7os)
+:::
 
 ### Criar infraestrutura local
 Rode o comando abaixo para criar a infraestrutura necessária para o sistema localmente, os comandos para orquestrar os containers respectivos estão sendo abstraídos por um arquivo Makefile, para saber mais detalhes do comando abaixo acesse o [link](https://github.com/Inteli-College/2024-1B-T02-EC10-G04/blob/main/backend/Makefile#L11).
@@ -54,8 +61,9 @@ Created topic orders.
 ================================================== END OF LOG ====================================================
 ```
 
-> [!NOTE]
-> O arquivo Docker Compose que é chamado pelo comando acima define um ambiente composto por diversos serviços. Inclui o Zookeeper para coordenação, Kafka para mensagens, Control Center para gerenciamento, PostgreSQL como banco de dados relacional e Redis como armazenamento em cache. Cada serviço é configurado com suas respectivas imagens, variáveis de ambiente e opções de rede. O Kafka, por exemplo, é configurado com detalhes como ID do broker, conexão com o Zookeeper e listeners para comunicação interna e externa. O PostgreSQL e o Redis são configurados com volumes para persistência de dados. Este arquivo proporciona um ambiente completo para desenvolvimento e execução de aplicativos que exigem sistemas de mensageria, banco de dados e armazenamento em cache.
+:::info
+- O arquivo Docker Compose que é chamado pelo comando acima define um ambiente composto por diversos serviços. Inclui o Zookeeper para coordenação, Kafka para mensagens, Control Center para gerenciamento, PostgreSQL como banco de dados relacional e Redis como armazenamento em cache. Cada serviço é configurado com suas respectivas imagens, variáveis de ambiente e opções de rede. O Kafka, por exemplo, é configurado com detalhes como ID do broker, conexão com o Zookeeper e listeners para comunicação interna e externa. O PostgreSQL e o Redis são configurados com volumes para persistência de dados. Este arquivo proporciona um ambiente completo para desenvolvimento e execução de aplicativos que exigem sistemas de mensageria, banco de dados e armazenamento em cache.
+:::
 
 ### Rodar o sistema:
 
@@ -83,8 +91,9 @@ make run
 ================================================== END OF LOG ====================================================
 ```
 
-> [!NOTE]
-> O arquivo Docker Compose que é chamado pelo comando acima configura três serviços: nginx, server e conductor. O serviço nginx utiliza a imagem mais recente do Nginx, mapeia a porta 80 do host para o contêiner, substitui a configuração padrão do Nginx com um arquivo personalizado e depende dos serviços "server" e "conductor". Os serviços "server" e "conductor" carregam variáveis de ambiente de um arquivo .env, reiniciam automaticamente, são construídos a partir de Dockerfiles específicos e são implantados com três réplicas cada. Todos os serviços estão conectados à rede "backend", que facilita a comunicação entre eles.
+:::info
+- O arquivo Docker Compose que é chamado pelo comando acima configura três serviços: nginx, server e conductor. O serviço nginx utiliza a imagem mais recente do Nginx, mapeia a porta 80 do host para o contêiner, substitui a configuração padrão do Nginx com um arquivo personalizado e depende dos serviços "server" e "conductor". Os serviços "server" e "conductor" carregam variáveis de ambiente de um arquivo .env, reiniciam automaticamente, são construídos a partir de Dockerfiles específicos e são implantados com três réplicas cada. Todos os serviços estão conectados à rede "backend", que facilita a comunicação entre eles.
+:::
 
 ## Demonstração do Sistema
 

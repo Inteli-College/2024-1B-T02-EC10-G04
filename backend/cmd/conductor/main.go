@@ -26,6 +26,21 @@ import (
 // 	}
 // }
 
+//	@title			Conductor API
+//	@version		1.0
+//	@description	This is a.
+//	@termsOfService	http://swagger.io/terms/
+
+//	@contact.name	Conductor API Support
+//	@contact.url	https://github.com/Inteli-College/2024-1B-T02-EC10-G04
+//	@contact.email	gomedicine@inteli.edu.br
+
+//	@license.name	Apache 2.0
+//	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
+
+//	@host		localhost:8084
+//	@BasePath	/conductor
+
 func main() {
 
 	/////////////////////// Configs /////////////////////////
@@ -41,11 +56,22 @@ func main() {
 
 	//TODO: "http://localhost:8081/conductor/healthz" is the best pattern for healthcheck?
 
+	// @Summary Healthcheck
+	// @Description Check the health status of the service
+	// @ID healthcheck
+	// @Produce json
+	// @Success 200 {object} gin.H
+	// @Router /conductor/healthz [get]
 	router.GET("/conductor/healthz", func(c *gin.Context) {
 		log.Printf("Consumer received a healthcheck request")
 		c.JSON(http.StatusOK, gin.H{"status": "success"})
 	})
-	go router.Run(":8081")
+	
+	go func() {
+		if err := router.Run(":8081"); err != nil {
+			log.Fatalf("Falha ao iniciar o servidor: %v", err)
+		}
+	}()
 
 	//////////////////////// Orders Consumer //////////////////////////
 
@@ -69,7 +95,7 @@ func main() {
 	}()
 
 	for msg := range msgChan {
- 		var orderInputDTO dto.CreateOrderInputDTO
+		var orderInputDTO dto.CreateOrderInputDTO
 		err := json.Unmarshal(msg.Value, &orderInputDTO)
 		if err != nil {
 			log.Printf("Error decoding message: %v", err)

@@ -12,8 +12,8 @@ version: "3.9"
 services:
   nginx:
     image: nginx:latest
-    container_name: nginx
     hostname: nginx
+    container_name: nginx
     platform: linux/amd64
     restart: always
     ports:
