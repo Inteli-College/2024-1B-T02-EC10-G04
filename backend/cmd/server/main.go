@@ -9,13 +9,15 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
+	// "github.com/joho/godotenv"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/swaggo/files"
-	"github.com/swaggo/gin-swagger"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	// "github.com/joho/godotenv"
 	// "log"
 )
@@ -66,7 +68,6 @@ func main() {
 	}))
 
 	api := router.Group("/api/v1")
-	api.Use(middleware.AuthMiddleware())
 
 	///////////////////// Swagger //////////////////////
 
@@ -104,6 +105,9 @@ func main() {
 
 	{
 		pyxisGroup := api.Group("/pyxis")
+
+		// Middleware apenas para motivos de demonstração (MUDAR DEPOIS)
+		pyxisGroup.Use(middleware.AuthMiddleware(userRepository, "user"))
 		{
 			pyxisGroup.POST("", pyxisHandlers.CreatePyxisHandler)
 			pyxisGroup.GET("", pyxisHandlers.FindAllPyxisHandler)
