@@ -16,7 +16,7 @@ class OrdersPage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        bottomNavigationBar: const NavBarContainer(),
+        bottomNavigationBar: NavBarContainer(),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

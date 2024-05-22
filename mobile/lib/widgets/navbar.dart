@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/widgets/custom_icon.dart';
+import 'package:mobile/classes/colors.dart';
+import 'package:mobile/widgets/navbar_icon.dart';
 
 class NavBarContainer extends StatelessWidget {
-  const NavBarContainer({super.key});
-
+  NavBarContainer({super.key});
   @override
   Widget build(context) {
     return Container(
@@ -21,44 +21,31 @@ class NavBarContainer extends StatelessWidget {
             top: BorderSide(
                 color: Color.fromARGB(255, 243, 243, 244), width: 0.5),
           ),
-          color: Color.fromARGB(255, 249, 250, 251),
+          color: AppColors.white50,
         ),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment
-                .spaceAround, 
+        child: const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              CustomIconButton(
-                icon: const Icon(Icons.home_rounded,
-                    size: 25, color: Color.fromARGB(255, 130, 130, 130)),
-                label: 'Home',
-                onPressed: () {
-                  // 
-                },
-              ),
-              CustomIconButton(
-                icon: const Icon(Icons.new_label_rounded,
-                    size: 25, color: Color.fromARGB(255, 130, 130, 130)),
-                label: 'Create',
-                onPressed: () {
-                  // 
-                },
-              ),
-              CustomIconButton(
-                icon: const Icon(Icons.person,
-                    size: 25, color: Color.fromARGB(255, 130, 130, 130)),
-                label: 'Profile',
-                onPressed: () {
-                  // 
-                },
-              ),
-              CustomIconButton(
-                icon: const Icon(Icons.settings,
-                    size: 25, color: Color.fromARGB(255, 130, 130, 130)),
-                label: 'Settings',
-                onPressed: () {
-                  // 
-                },
-              ),
+              NavBarIcon(
+                  icon: Icons.home_rounded,
+                  label: 'Home',
+                  index: 0,
+                  route: '/orders'),
+              NavBarIcon(
+                  icon: Icons.new_label_rounded,
+                  label: 'Create',
+                  index: 1,
+                  route: '/orders'),
+              NavBarIcon(
+                  icon: Icons.person,
+                  label: 'Profile',
+                  index: 2,
+                  route: '/orders'),
+              NavBarIcon(
+                  icon: Icons.settings,
+                  label: 'Settings',
+                  index: 3,
+                  route: '/orders'),
             ]));
   }
 }
