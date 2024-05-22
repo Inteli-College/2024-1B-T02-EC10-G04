@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/classes/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';
+import 'package:mobile/widgets/modal.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -95,7 +96,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         icon: const Icon(Icons.arrow_forward),
                         label: 'Next',
                         receivedColor: AppColors.secondary,
-                        onPressed: () {},
+                        onPressed: () {
+                          _showModal(context);
+                        },
                         isEnabled: true,
                       ),
                       Row(
@@ -133,4 +136,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
     );
   }
+}
+
+void _showModal(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierColor: Colors.black.withOpacity(0.5), // Semitransparent background
+    builder: (BuildContext context) {
+      return const Modal(
+        title: 'Account created successfully',
+        description:
+            'A confirmation code has been sent to your registration email.',
+        icon: Icons.check_circle,
+        iconColor: AppColors.success,
+      );
+    },
+  );
 }
