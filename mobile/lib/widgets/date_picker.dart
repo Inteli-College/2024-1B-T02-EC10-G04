@@ -5,12 +5,14 @@ import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:mobile/widgets/custom_button.dart';
 
 class DatePicker extends StatelessWidget {
+  const DatePicker({super.key});
+
   @override
   Widget build(BuildContext context) {
     var calendarLogic = Provider.of<CalendarLogic>(context, listen: true);
 
     return Container(
-      padding: EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(16.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

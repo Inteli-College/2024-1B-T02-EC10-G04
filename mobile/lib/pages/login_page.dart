@@ -99,7 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: const Icon(Icons.arrow_forward),
                         label: 'Submit',
                         receivedColor: CustomColors.secondary,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/orders');
+                        },
                         isEnabled: true,
                       ),
                       Row(

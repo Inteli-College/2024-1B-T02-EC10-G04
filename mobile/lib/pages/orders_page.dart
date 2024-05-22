@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/widgets/calendar.dart';
@@ -7,6 +6,8 @@ import 'package:mobile/classes/colors.dart';
 import 'package:mobile/widgets/card_order.dart';
 
 class OrdersPage extends StatelessWidget {
+  const OrdersPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     var calendarLogic = Provider.of<CalendarLogic>(context);
@@ -85,11 +86,11 @@ class OrdersPage extends StatelessWidget {
                                             color: AppColors.success,
                                             priority: 'Normal',
                                             pyxis: 'MS-01D',
-                                            iconStatus: Icon(
+                                            iconStatus: const Icon(
                                               Icons.change_circle,
                                               color: AppColors.warning,
                                             ),
-                                            medicines: [
+                                            medicines: const [
                                               'Dipirona Monihidratada 500mg',
                                               'Nimesulida 100mg'
                                             ],
@@ -108,7 +109,7 @@ class OrdersPage extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: ListView(
-                                        children: [
+                                        children: const [
                                           // card aqui
                                         ],
                                       ),

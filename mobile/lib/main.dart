@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
           '/onboarding': (context) => const OnboardingScreen(),
           '/login': (context) => const LoginScreen(),
           '/signup': (context) => const SignUpScreen(),
-          '/orders': (BuildContext context) => OrdersPage(),
+          '/orders': (BuildContext context) => const OrdersPage(),
         },
       ),
     );

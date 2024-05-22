@@ -97,7 +97,7 @@ class CardOrder extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Padding(
-                          padding: EdgeInsets.only(left: 30.0),
+                          padding: const EdgeInsets.only(left: 30.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
