@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/colors/custom.dart';
+import 'package:mobile/classes/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';
 
@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           'Welcome Back!',
                           style: TextStyle(
                             fontSize: 24,
-                            color: CustomColors.black50,
+                            color: AppColors.black50,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Poppins',
                           ),
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           'Please enter your details',
                           style: TextStyle(
                             fontSize: 16,
-                            color: CustomColors.black50,
+                            color: AppColors.black50,
                             fontFamily: 'Poppins',
                             fontWeight: FontWeight.normal,
                           ),
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: const Text(
                             'Forgot password?',
                             style: TextStyle(
-                                color: CustomColors.gray3,
+                                color: AppColors.grey3,
                                 fontFamily: 'Poppins',
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal),
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       CustomButton(
                         icon: const Icon(Icons.arrow_forward),
                         label: 'Submit',
-                        receivedColor: CustomColors.secondary,
+                        receivedColor: AppColors.secondary,
                         onPressed: () {
                           Navigator.of(context).pushNamed('/orders');
                         },
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontFamily: "Poppins",
                                   fontSize: 16,
                                   fontWeight: FontWeight.normal,
-                                  color: CustomColors.black50)),
+                                  color: AppColors.black50)),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pushNamed('/signup');
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  color: CustomColors.primary),
+                                  color: AppColors.primary),
                             ),
                           ),
                         ],

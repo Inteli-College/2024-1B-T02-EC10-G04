@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/colors/custom.dart';
+import 'package:mobile/classes/colors.dart';
 import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -41,7 +41,7 @@ class OnboardingPage extends StatelessWidget {
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: CustomColors.secondary, // Background color
+                  color: AppColors.secondary, // Background color
                   borderRadius: BorderRadius.circular(16), // Border radius
                 ),
                 padding: const EdgeInsets.all(16),
@@ -52,7 +52,7 @@ class OnboardingPage extends StatelessWidget {
                       count: 3,
                       effect: const ScrollingDotsEffect(
                         dotColor: Colors.grey,
-                        activeDotColor: CustomColors.white100,
+                        activeDotColor: AppColors.white100,
                         dotHeight: 10,
                         dotWidth: 10,
                       ),
@@ -66,7 +66,7 @@ class OnboardingPage extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: CustomColors.white100),
+                              color: AppColors.white100),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -74,7 +74,7 @@ class OnboardingPage extends StatelessWidget {
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 16,
-                            color: CustomColors.white100,
+                            color: AppColors.white100,
                           ),
                         ),
                       ],
@@ -83,7 +83,7 @@ class OnboardingPage extends StatelessWidget {
                     CustomButton(
                       icon: const Icon(Icons.arrow_forward),
                       label: 'Next',
-                      receivedColor: CustomColors.primary,
+                      receivedColor: AppColors.primary,
                       onPressed: () {
                         if (controller.page == 2) {
                           Navigator.of(context).pushReplacement(

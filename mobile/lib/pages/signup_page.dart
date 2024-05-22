@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/colors/custom.dart';
+import 'package:mobile/classes/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';
 
@@ -34,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           Navigator.of(context).pop();
                         },
                         icon: const Icon(Icons.arrow_back),
-                        color: CustomColors.black50,
+                        color: AppColors.black50,
                         tooltip: 'Back',
                         iconSize: 24.0,
                       ),
@@ -42,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         'Create an account!',
                         style: TextStyle(
                           fontSize: 24,
-                          color: CustomColors.black50,
+                          color: AppColors.black50,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Poppins',
                         ),
@@ -54,7 +54,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     'Please enter your details',
                     style: TextStyle(
                       fontSize: 16,
-                      color: CustomColors.black50,
+                      color: AppColors.black50,
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.normal,
                     ),
@@ -94,7 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       CustomButton(
                         icon: const Icon(Icons.arrow_forward),
                         label: 'Next',
-                        receivedColor: CustomColors.secondary,
+                        receivedColor: AppColors.secondary,
                         onPressed: () {},
                         isEnabled: true,
                       ),
@@ -106,7 +106,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   fontFamily: "Poppins",
                                   fontSize: 16,
                                   fontWeight: FontWeight.normal,
-                                  color: CustomColors.black50)),
+                                  color: AppColors.black50)),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pushNamed('/login');
@@ -117,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins',
                                   fontSize: 16,
-                                  color: CustomColors.primary),
+                                  color: AppColors.primary),
                             ),
                           ),
                         ],
