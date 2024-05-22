@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/classes/colors.dart';
+import 'package:mobile/pages/details_page.dart';
 
 class CardOrder extends StatelessWidget {
   final String orderNumber;
@@ -80,9 +81,8 @@ class CardOrder extends StatelessWidget {
             const SizedBox(height: 10),
             const Divider(),
             Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10),
-                child: Container(
-                  child: Column(
+                padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+                child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
@@ -102,23 +102,28 @@ class CardOrder extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               for (String medicine in medicines)
-                                Text(
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 2.0,),
+                                  child: Text(
                                     style: const TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: 'Poppins'),
                                     medicine)
+                                ) 
                             ],
                           )),
                     ],
                   ),
-                )),
+                ),
             const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                  
+                  },
                   child: const Text('Request Again',
                       style: TextStyle(
                         color: AppColors.secondary,
@@ -126,7 +131,25 @@ class CardOrder extends StatelessWidget {
                       )),
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrderDetailsPage(
+                          orderNumber: orderNumber,
+                          orderDate: orderDate,
+                          orderStatus: orderStatus,
+                          orderValue: orderValue,
+                          medicines: medicines,
+                          onPressed: () {},
+                          color: AppColors.warning,
+                          priority: priority,
+                          pyxis: pyxis,
+                          iconStatus: iconStatus,
+                        ),
+                      ),
+                    );
+                  },
                   child: const Row(
                     children: [
                       Text(

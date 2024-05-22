@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/widgets/date_picker.dart';
+import 'package:mobile/classes/colors.dart';
 
 Widget buildCalendarSelector(BuildContext context) {
     var calendarLogic = Provider.of<CalendarLogic>(context);
@@ -17,7 +18,8 @@ Widget buildCalendarSelector(BuildContext context) {
           style: const TextStyle(
             fontFamily: 'Poppins',
             fontSize: 20, 
-            fontWeight: FontWeight.bold),
+            fontWeight: FontWeight.bold,
+            color: AppColors.black50),
         ),
         IconButton(
           icon: const Icon(Icons.filter_alt),

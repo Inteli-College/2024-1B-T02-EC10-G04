@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:mobile/widgets/calendar.dart';
 import 'package:mobile/classes/colors.dart';
 import 'package:mobile/widgets/card_order.dart';
+import 'package:mobile/widgets/navbar.dart';
 
 class OrdersPage extends StatelessWidget {
   const OrdersPage({super.key});
@@ -15,6 +16,7 @@ class OrdersPage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        bottomNavigationBar: const NavBarContainer(),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -30,6 +32,7 @@ class OrdersPage extends StatelessWidget {
                             fontFamily: 'Poppins',
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
+                            color: AppColors.black50
                           ),
                           'Welcome, Flávio!'),
                     ],
@@ -68,7 +71,7 @@ class OrdersPage extends StatelessWidget {
                       child: TabBarView(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.only(),
                             child: Align(
                                 alignment: Alignment.topCenter,
                                 child: Column(
@@ -94,7 +97,7 @@ class OrdersPage extends StatelessWidget {
                                               'Dipirona Monihidratada 500mg',
                                               'Nimesulida 100mg'
                                             ],
-                                          )
+                                          ),
                                         ],
                                       ),
                                     ),
