@@ -1,18 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:mobile/pages/onboarding_page.dart';
-
-class LogoScreen extends StatelessWidget {
-  const LogoScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
-    );
-  }
-}
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -42,9 +29,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
 
     Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const OnboardingScreen()),
-      );
+      Navigator.of(context).pushReplacementNamed('/onboarding');
     });
   }
 

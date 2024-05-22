@@ -3,15 +3,15 @@ import 'package:mobile/colors/custom.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -21,40 +21,45 @@ class _LoginScreenState extends State<LoginScreen> {
       builder: (context, constraints) {
         return Scaffold(
           body: SingleChildScrollView(
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(24.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 40),
-                        Text(
-                          'Welcome Back!',
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: CustomColors.black50,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins',
-                          ),
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 40),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(Icons.arrow_back),
+                        color: CustomColors.black50,
+                        tooltip: 'Back',
+                        iconSize: 24.0,
+                      ),
+                      const Text(
+                        'Create an account!',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: CustomColors.black50,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
                         ),
-                        Text(
-                          'Please enter your details',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: CustomColors.black50,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Please enter your details',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: CustomColors.black50,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.normal,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: Column(
+                  Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(height: 24),
@@ -69,6 +74,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 24),
                       InputText(
                         controller: _emailController,
+                        label: 'Name',
+                        icon: const Icon(null),
+                      ),
+                      const SizedBox(height: 8),
+                      InputText(
+                        controller: _emailController,
                         label: 'E-mail',
                         icon: const Icon(Icons.email),
                       ),
@@ -79,25 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: const Icon(Icons.lock),
                         //isPassword: true,
                       ),
-                      const SizedBox(height: 16),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Forgot password?',
-                            style: TextStyle(
-                                color: CustomColors.gray3,
-                                fontFamily: 'Poppins',
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal),
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 32),
                       CustomButton(
                         icon: const Icon(Icons.arrow_forward),
-                        label: 'Submit',
+                        label: 'Next',
                         receivedColor: CustomColors.secondary,
                         onPressed: () {},
                         isEnabled: true,
@@ -105,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Don't have an account?",
+                          const Text("Have an account?",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontSize: 16,
@@ -113,10 +109,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: CustomColors.black50)),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pushNamed('/signup');
+                              Navigator.of(context).pushNamed('/login');
                             },
                             child: const Text(
-                              'Sign Up',
+                              'Sign In',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins',
@@ -128,8 +124,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ],
                   ),
-                ),
-              ],
+                  // Additional form fields here
+                ],
+              ),
             ),
           ),
         );
