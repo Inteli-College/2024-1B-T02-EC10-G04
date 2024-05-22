@@ -10,15 +10,16 @@ class CustomButton extends StatelessWidget {
   final double minWidth;
   final double height;
 
-  CustomButton(
-      {super.key,
-      required this.receivedColor,
-      required this.isEnabled,
-      required this.icon,
-      required this.label,
-      required this.onPressed,
-      this.minWidth = double.infinity,
-      this.height = 50});
+  CustomButton({
+    super.key,
+    required this.receivedColor,
+    required this.isEnabled,
+    required this.label,
+    required this.onPressed,
+    this.minWidth = double.infinity, 
+    this.height = 50,
+    this.icon = const Icon(Icons.arrow_forward),
+  });
 
   @override
   Widget build(BuildContext context) {
