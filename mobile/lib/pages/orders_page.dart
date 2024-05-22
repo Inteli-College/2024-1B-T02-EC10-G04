@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/widgets/calendar.dart';
@@ -40,9 +41,26 @@ class OrdersPage extends StatelessWidget {
                 child: Column(
                   children: [
                     const TabBar(
+                      indicatorColor: AppColors.secondary, 
+                      labelColor: AppColors.secondary,
                       tabs: [
-                        Tab(text: 'History'),
-                        Tab(text: 'Pedding orders'),
+                        Tab(
+                          child: Text(
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 14),
+                          'History'
+                          ),
+                          ),
+                        Tab(
+                          child: Text(
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontSize: 14
+                            ),
+                          'Pedding orders'
+                          ),
+                        ),
                       ],
                     ),
                     Expanded(
