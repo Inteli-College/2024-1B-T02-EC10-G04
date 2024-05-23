@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/widgets/input_text.dart';
-import 'package:mobile/widgets/password_rule.dart';
 import 'package:mobile/widgets/custom_button.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -23,9 +22,9 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late TextEditingController _nameController =
+  late final TextEditingController _nameController =
       TextEditingController(text: widget.name);
-  late TextEditingController _emailController =
+  late final TextEditingController _emailController =
       TextEditingController(text: widget.email);
 
   @override
@@ -91,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const Padding(
-              padding: const EdgeInsets.only(left: 25.0, top: 40.0),
+              padding: EdgeInsets.only(left: 25.0, top: 40.0),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

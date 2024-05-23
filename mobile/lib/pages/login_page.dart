@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/controller/user.dart';
 import 'package:mobile/models/colors.dart';
-import 'package:mobile/models/user.dart';
 import 'package:mobile/services/user.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';

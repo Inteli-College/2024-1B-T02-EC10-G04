@@ -1,7 +1,7 @@
 // lib/controllers/login_controller.dart
 import 'package:flutter/material.dart';
-import 'package:mobile/models/user.dart';
 import 'package:mobile/services/user.dart';
+import 'package:mobile/widgets/modal.dart';
 
 class UserController {
   final UserService userService;
@@ -17,19 +17,6 @@ class UserController {
       Navigator.of(context).pushNamed('/orders');
     } catch (e) {
       // Handle login failure
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Login Failed'),
-          content: Text('Please check your credentials and try again.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('OK'),
-            ),
-          ],
-        ),
-      );
     }
   }
 }

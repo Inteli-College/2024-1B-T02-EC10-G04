@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/password_rule.dart';
 import 'package:mobile/widgets/custom_button.dart';
 
 class SettingsPage extends StatefulWidget {
-
   const SettingsPage({
     super.key,
   });
@@ -47,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: NavBarContainer(),
+        bottomNavigationBar: const NavBarContainer(),
         body: SingleChildScrollView(
             child: Column(
           children: [
@@ -71,15 +70,12 @@ class _SettingsPageState extends State<SettingsPage> {
                   )),
             ),
             const Padding(
-              padding: const EdgeInsets.only(left: 25.0, top: 40.0),
+              padding: EdgeInsets.only(left: 25.0, top: 40.0),
               child: Align(
                   alignment: Alignment.centerLeft,
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.edit, 
-                        size: 20,
-                        color: AppColors.primary),
+                      Icon(Icons.edit, size: 20, color: AppColors.primary),
                       Text(
                         'Update Password',
                         style: TextStyle(
