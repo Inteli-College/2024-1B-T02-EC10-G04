@@ -85,7 +85,7 @@ jobs:
         working-directory: backend/
         run: |
           IMAGE_ID=$(docker images -q confluentinc/cp-enterprise-control-center)
-          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
-          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
-          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:latest
