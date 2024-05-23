@@ -47,45 +47,48 @@ jobs:
 
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
+      - name: Show Docker Images
+        run: docker images ls
+
       - name: ZOOKEEPER - Push Docker image
-        run: docker push $DOCKER_USERNAME/zookeeper:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/zookeeper:${{ github.sha }}
 
       - name: KAFKA - Push Docker image
-        run: docker push $DOCKER_USERNAME/kafka:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/kafka:${{ github.sha }}
 
       - name: REDIS - Push Docker image
-        run: docker push $DOCKER_USERNAME/redis:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
 
       - name: CONTROL CENTER - Push Docker image
-        run: docker push $DOCKER_USERNAME/control-center:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/control-center:${{ github.sha }}
 
       - name: POSTGRES - Push Docker image
-        run: docker push $DOCKER_USERNAME/postgres:${{ github.sha }}
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
   tag:
     needs: push
     runs-on: ubuntu-latest
     steps:
       - name: ZOOKEEPER - Tag the Docker image with 'latest'
         run: |
-          docker tag $DOCKER_USERNAME/zookeeper:${{ github.sha }} $DOCKER_USERNAME/zookeeper:latest
-          docker push $DOCKER_USERNAME/zookeeper:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/zookeeper:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/zookeeper:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/zookeeper:latest
 
       - name: KAFKA - Tag the Docker image with 'latest'
         run: |
-          docker tag $DOCKER_USERNAME/kafka:${{ github.sha }} $DOCKER_USERNAME/kafka:latest
-          docker push $DOCKER_USERNAME/kafka:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/kafka:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/kafka:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/kafka:latest
 
       - name: REDIS - Tag the Docker image with 'latest'
         run: |
-          docker tag $DOCKER_USERNAME/redis:${{ github.sha }} $DOCKER_USERNAME/redis:latest
-          docker push $DOCKER_USERNAME/redis:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/redis:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/redis:latest
 
       - name: CONTROL CENTER - Tag the Docker image with 'latest'
         run: |
-          docker tag $DOCKER_USERNAME/control-center:${{ github.sha }} $DOCKER_USERNAME/control-center:latest
-          docker push $DOCKER_USERNAME/control-center:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/control-center:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/control-center:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/control-center:latest
 
       - name: POSTGRES - Tag the Docker image with 'latest'
         run: |
-          docker tag $DOCKER_USERNAME/postgres:${{ github.sha }} $DOCKER_USERNAME/postgres:latest
-          docker push $DOCKER_USERNAME/postgres:latest
+          docker tag ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/postgres:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/postgres:latest
