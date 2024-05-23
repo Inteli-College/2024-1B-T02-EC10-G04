@@ -2,6 +2,8 @@ name: CI/CD Backend
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -18,9 +20,11 @@ jobs:
       - name: Set up Backend .env file
         working-directory: backend/
         run: make env
+
   build:
     needs: setup
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,19 +40,54 @@ jobs:
         run: |
           make infra
 
+      - name: Save Docker images to files
+        run: |
+          docker save confluentinc/cp-zookeeper:latest -o cp-zookeeper.tar
+          docker save confluentinc/cp-kafka:latest -o cp-kafka.tar
+          docker save redis:latest -o redis.tar
+          docker save confluentinc/cp-enterprise-control-center:latest -o cp-enterprise-control-center.tar
+          docker save postgres:latest -o postgres.tar
+
+      - name: Upload Docker images as artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-images
+          path: |
+            cp-zookeeper.tar
+            cp-kafka.tar
+            redis.tar
+            cp-enterprise-control-center.tar
+            postgres.tar
+
   push:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Docker images artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: docker-images
+
+      - name: Load Docker images from files
+        run: |
+          docker load -i cp-zookeeper.tar
+          docker load -i cp-kafka.tar
+          docker load -i redis.tar
+          docker load -i cp-enterprise-control-center.tar
+          docker load -i postgres.tar
+
       - name: Log in to Docker Hub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
       - name: Show Docker Images
-        run: docker images ls
+        run: docker images
 
       - name: ZOOKEEPER - Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }}
@@ -64,10 +103,18 @@ jobs:
 
       - name: POSTGRES - Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
+
   tag:
     needs: push
     runs-on: ubuntu-latest
+
     steps:
+      - name: Log in to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
       - name: ZOOKEEPER - Tag the Docker image with 'latest'
         run: |
           docker tag ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:latest
