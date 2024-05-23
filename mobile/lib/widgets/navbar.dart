@@ -45,7 +45,7 @@ class NavBarContainer extends StatelessWidget {
                   icon: Icons.settings,
                   label: 'Settings',
                   index: 3,
-                  route: '/orders'),
+                  route: '/settings'),
             ]));
   }
 }

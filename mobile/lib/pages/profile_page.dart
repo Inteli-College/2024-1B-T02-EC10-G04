@@ -23,30 +23,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late TextEditingController _emailController = TextEditingController();
-  late TextEditingController _passwordController = TextEditingController();
-  bool _showContainer = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _emailController = TextEditingController(text: widget.email);
-    _passwordController = TextEditingController();
-    _passwordController.addListener(_onTextChanged);
-  }
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  void _onTextChanged() {
-    setState(() {
-      _showContainer = _passwordController.text.isNotEmpty;
-    });
-  }
+  late TextEditingController _nameController =
+      TextEditingController(text: widget.name);
+  late TextEditingController _emailController =
+      TextEditingController(text: widget.email);
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   )),
             ),
             Container(
-              padding: const  EdgeInsets.only(top: 20.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: Column(
                 children: [
                   const CircleAvatar(
@@ -110,68 +90,50 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+            const Padding(
+              padding: const EdgeInsets.only(left: 25.0, top: 40.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Account Information',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
+              ),
+            ),
             Padding(
-              padding: const EdgeInsets.all(25.0),
+              padding:
+                  const EdgeInsets.only(left: 25.0, right: 25.0, top: 10.0),
               child: Column(
                 children: [
                   InputText(
+                    enabled: false,
                     icon: const Icon(Icons.email),
-                    label: 'Email',
-                    controller: _emailController,
+                    label: 'Name',
+                    controller: _nameController,
                   ),
                   const SizedBox(height: 20.0),
                   InputText(
+                    enabled: false,
                     icon: const Icon(Icons.lock),
-                    label: 'Password',
-                    controller: _passwordController,
+                    label: 'Email',
+                    controller: _emailController,
                   ),
-                  const SizedBox(height: 20.0),
-                  _showContainer
-                      ? Align(
-                          alignment: Alignment.centerLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              PasswordRule(
-                                expression: r'[A-Z]',
-                                label: '1 uppercase letter',
-                                text: _passwordController.text,
-                              ),
-                              PasswordRule(
-                                expression: r'[a-z]',
-                                label: '1 lowercase letter',
-                                text: _passwordController.text,
-                              ),
-                              PasswordRule(
-                                expression: r'[0-9]',
-                                label: '1 number',
-                                text: _passwordController.text,
-                              ),
-                              PasswordRule(
-                                expression: r'[!@#$%^&*(),.?":{}|<>]',
-                                label: '1 special character',
-                                text: _passwordController.text,
-                              ),
-                              PasswordRule(
-                                expression: r'^.{8,}$',
-                                label: '8 characters',
-                                text: _passwordController.text,
-                              ),
-                            ],
-                          ))
-                      : const SizedBox(),
-                      const SizedBox(height: 20.0),
-                      CustomButton(
-                        receivedColor: AppColors.secondary,
-                        isEnabled: true,
-                        label: 'Save',
-                        onPressed: () {},
-                      )
+                  const SizedBox(height: 60.0),
+                  CustomButton(
+                    receivedColor: AppColors.secondary,
+                    isEnabled: true,
+                    label: 'LogOut',
+                    onPressed: () {},
+                  )
                 ],
               ),
             )
           ],
         )));
   }
-
 }
