@@ -29,8 +29,7 @@ jobs:
 
       - name: Build Docker images
         working-directory: backend/
-        run: |
-          make infra
+        run: make infra
 
       - name: Show Docker Images after build
         run: docker images
@@ -41,22 +40,47 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
-    #   - name: ZOOKEEPER - Push Docker image
-    #     working-directory: backend/
-    #     run: docker tag confluentinc/cp-zookeeper:latest ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }}
-
-      - name: KAFKA - Push Docker image
+      - name: ZOOKEEPER - Tag and Push Docker image
         working-directory: backend/
-        run: docker tag confluentinc/cp-kafka:latest ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }}
+        run: |
+          IMAGE_ID=$(docker images -q confluentinc/cp-zookeeper)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:latest
 
-      - name: REDIS - Push Docker image
+      - name: KAFKA - Tag and Push Docker image
         working-directory: backend/
-        run: docker tag redis:latest ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
+        run: |
+          IMAGE_ID=$(docker images -q confluentinc/cp-kafka)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:latest
 
-      - name: CONTROL CENTER - Push Docker image
+      - name: REDIS - Tag and Push Docker image
         working-directory: backend/
-        run: docker tag confluentinc/cp-enterprise-control-center:latest ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
+        run: |
+          IMAGE_ID=$(docker images -q redis)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/redis:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/redis:latest
 
-      - name: POSTGRES - Push Docker image
+      - name: CONTROL CENTER - Tag and Push Docker image
         working-directory: backend/
-        run: docker tag postgres:latest ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
+        run: |
+          IMAGE_ID=$(docker images -q confluentinc/cp-enterprise-control-center)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
+
+      - name: POSTGRES - Tag and Push Docker image
+        working-directory: backend/
+        run: |
+          IMAGE_ID=$(docker images -q postgres)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/postgres:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/postgres:latest
