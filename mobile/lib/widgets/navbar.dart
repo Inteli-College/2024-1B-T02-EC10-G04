@@ -40,7 +40,7 @@ class NavBarContainer extends StatelessWidget {
                   icon: Icons.person,
                   label: 'Profile',
                   index: 2,
-                  route: '/orders'),
+                  route: '/profile'),
               NavBarIcon(
                   icon: Icons.settings,
                   label: 'Settings',
