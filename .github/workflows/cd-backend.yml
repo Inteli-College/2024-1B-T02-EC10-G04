@@ -47,13 +47,45 @@ jobs:
 
         run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
-      - name: Build Docker image
-        run: docker build -t $DOCKER_USERNAME/my-app:${{ github.sha }} .
+      - name: ZOOKEEPER - Push Docker image
+        run: docker push $DOCKER_USERNAME/zookeeper:${{ github.sha }}
 
-      - name: Push Docker image
-        run: docker push $DOCKER_USERNAME/my-app:${{ github.sha }}
+      - name: KAFKA - Push Docker image
+        run: docker push $DOCKER_USERNAME/kafka:${{ github.sha }}
 
-      - name: Tag the Docker image with 'latest'
+      - name: REDIS - Push Docker image
+        run: docker push $DOCKER_USERNAME/redis:${{ github.sha }}
+
+      - name: CONTROL CENTER - Push Docker image
+        run: docker push $DOCKER_USERNAME/control-center:${{ github.sha }}
+
+      - name: POSTGRES - Push Docker image
+        run: docker push $DOCKER_USERNAME/postgres:${{ github.sha }}
+  tag:
+    needs: push
+    runs-on: ubuntu-latest
+    steps:
+      - name: ZOOKEEPER - Tag the Docker image with 'latest'
         run: |
-          docker tag $DOCKER_USERNAME/my-app:${{ github.sha }} $DOCKER_USERNAME/my-app:latest
-          docker push $DOCKER_USERNAME/my-app:latest
+          docker tag $DOCKER_USERNAME/zookeeper:${{ github.sha }} $DOCKER_USERNAME/zookeeper:latest
+          docker push $DOCKER_USERNAME/zookeeper:latest
+
+      - name: KAFKA - Tag the Docker image with 'latest'
+        run: |
+          docker tag $DOCKER_USERNAME/kafka:${{ github.sha }} $DOCKER_USERNAME/kafka:latest
+          docker push $DOCKER_USERNAME/kafka:latest
+
+      - name: REDIS - Tag the Docker image with 'latest'
+        run: |
+          docker tag $DOCKER_USERNAME/redis:${{ github.sha }} $DOCKER_USERNAME/redis:latest
+          docker push $DOCKER_USERNAME/redis:latest
+
+      - name: CONTROL CENTER - Tag the Docker image with 'latest'
+        run: |
+          docker tag $DOCKER_USERNAME/control-center:${{ github.sha }} $DOCKER_USERNAME/control-center:latest
+          docker push $DOCKER_USERNAME/control-center:latest
+
+      - name: POSTGRES - Tag the Docker image with 'latest'
+        run: |
+          docker tag $DOCKER_USERNAME/postgres:${{ github.sha }} $DOCKER_USERNAME/postgres:latest
+          docker push $DOCKER_USERNAME/postgres:latest
