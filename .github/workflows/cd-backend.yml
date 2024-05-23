@@ -40,6 +40,9 @@ jobs:
         run: |
           make infra
 
+      - name: Show Docker Images
+        run: docker images ls
+
       - name: Save Docker images to files
         run: |
           docker save confluentinc/cp-zookeeper:latest -o cp-zookeeper.tar
