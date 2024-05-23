@@ -1,7 +1,11 @@
 name: CI Workflow
 
-on: 
+on:
   push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
   workflow_dispatch:
 
 jobs:
