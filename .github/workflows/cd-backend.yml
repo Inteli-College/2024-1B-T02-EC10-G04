@@ -60,8 +60,8 @@ jobs:
           IMAGE_ID=$(docker images -q confluentinc/cp-kafka)
           docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:${{ github.sha }}
           docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:latest
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:${{ github.sha }}
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:latest
 
       - name: REDIS - Tag and Push Docker image
         working-directory: backend/
@@ -69,8 +69,8 @@ jobs:
           IMAGE_ID=$(docker images -q redis)
           docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
           docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/redis:latest
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/redis:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/redis:latest
 
       - name: CONTROL CENTER - Tag and Push Docker image
         working-directory: backend/
@@ -78,8 +78,8 @@ jobs:
           IMAGE_ID=$(docker images -q confluentinc/cp-enterprise-control-center)
           docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
           docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
 
       - name: POSTGRES - Tag and Push Docker image
         working-directory: backend/
@@ -87,5 +87,5 @@ jobs:
           IMAGE_ID=$(docker images -q postgres)
           docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
           docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/postgres:latest
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/postgres:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/postgres:latest
