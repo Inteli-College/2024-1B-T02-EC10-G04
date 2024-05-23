@@ -90,52 +90,16 @@ jobs:
         run: docker images
 
       - name: ZOOKEEPER - Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }}
+        run: docker tag confluentinc/cp-zookeeper:latest ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }}
 
       - name: KAFKA - Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }}
+        run: docker tag confluentinc/cp-kafka:latest ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }}
 
       - name: REDIS - Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
+        run: docker tag redis:latest ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
 
       - name: CONTROL CENTER - Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
+        run: docker tag confluentinc/cp-enterprise-control-center:latest ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
 
       - name: POSTGRES - Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
-
-  tag:
-    needs: push
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Log in to Docker Hub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-
-      - name: ZOOKEEPER - Tag the Docker image with 'latest'
-        run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-zookeeper:latest
-
-      - name: KAFKA - Tag the Docker image with 'latest'
-        run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:latest
-
-      - name: REDIS - Tag the Docker image with 'latest'
-        run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/redis:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/redis:latest
-
-      - name: CONTROL CENTER - Tag the Docker image with 'latest'
-        run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
-
-      - name: POSTGRES - Tag the Docker image with 'latest'
-        run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/postgres:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/postgres:latest
+        run: docker tag postgres:latest ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }} && docker push ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
