@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Backend
 
 on:
   push:
@@ -22,6 +22,7 @@ jobs:
         working-directory: backend/
         run: make env
   build:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -39,6 +40,7 @@ jobs:
           make infra
 
   push:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Log in to Docker Hub
