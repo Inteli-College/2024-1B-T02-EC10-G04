@@ -8,6 +8,7 @@ import 'package:mobile/pages/logo_page.dart';
 import 'package:mobile/pages/onboarding_page.dart';
 import 'package:mobile/pages/signup_page.dart';
 import 'package:mobile/pages/profile_page.dart';
+import 'package:mobile/pages/settings_page.dart';
 
 void main() {
   runApp(const HomeScreen());
@@ -34,7 +35,8 @@ class HomeScreen extends StatelessWidget {
           '/profile': (context) => const ProfilePage(
                 name: 'Flávio José da Silva',
                 role: 'Auxiliar de Enfermagem',
-                email: 'email@email.com',)
+                email: 'email@email.com',),
+          '/settings': (context) => const SettingsPage(),
         },
       ),
     );
