@@ -58,10 +58,10 @@ jobs:
         working-directory: backend/
         run: |
           IMAGE_ID=$(docker images -q confluentinc/cp-kafka)
-          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:${{ github.sha }}
-          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:latest
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:${{ github.sha }}
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:latest
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:latest
+          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:${{ github.sha }}
+          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-kafka:latest
 
       - name: REDIS - Tag and Push Docker image
         working-directory: backend/
@@ -76,10 +76,10 @@ jobs:
         working-directory: backend/
         run: |
           IMAGE_ID=$(docker images -q confluentinc/cp-enterprise-control-center)
-          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:${{ github.sha }}
-          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:latest
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:${{ github.sha }}
-          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:latest
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
+          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:${{ github.sha }}
+          docker push $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc/cp-enterprise-control-center:latest
 
       - name: POSTGRES - Tag and Push Docker image
         working-directory: backend/
