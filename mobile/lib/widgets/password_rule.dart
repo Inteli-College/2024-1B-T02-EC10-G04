@@ -5,13 +5,13 @@ class PasswordRule extends StatelessWidget {
   final String expression;
   final String label;
 
-  PasswordRule({
-    Key? key,
+  const PasswordRule({
+    super.key,
     required this.text,
     required this.expression,
     required this.label,
     
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

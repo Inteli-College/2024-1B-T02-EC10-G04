@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/password_rule.dart';
@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: NavBarContainer(),
+        bottomNavigationBar: const NavBarContainer(),
         body: SingleChildScrollView(
             child: Column(
           children: [
@@ -87,9 +87,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Column(
                 children: [
                   const CircleAvatar(
-                    child: Text('FL'),
                     radius: 35.0,
                     backgroundColor: Colors.purple,
+                    child: Text('FL'),
                   ),
                   Text(
                     widget.name,

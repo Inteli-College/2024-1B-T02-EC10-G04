@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/widgets/input_dropdown.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/modal.dart';
 
@@ -13,8 +14,39 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _roleController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.addListener(_validateInputs);
+    _roleController.addListener(_validateInputs);
+    _emailController.addListener(_validateInputs);
+    _passwordController.addListener(_validateInputs);
+  }
+
+  void _validateInputs() {
+    setState(() {
+      isButtonEnabled = _emailController.text.isNotEmpty &&
+          _nameController.text.isNotEmpty &&
+          _roleController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
+    });
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _roleController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +59,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),
                   Row(
                     children: [
                       IconButton(
@@ -39,27 +70,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         tooltip: 'Back',
                         iconSize: 24.0,
                       ),
-                      const Text(
-                        'Create an account!',
-                        style: TextStyle(
-                          fontSize: 24,
-                          color: AppColors.black50,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                        ),
+                      const Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Column(
+                              children: [
+                                SizedBox(height: 40),
+                                Text(
+                                  'Create an account!',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    color: AppColors.black50,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins',
+                                  ),
+                                ),
+                                Text(
+                                  'Please enter your details',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.black50,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Please enter your details',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.black50,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.normal,
-                    ),
-                  ),
+
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -78,6 +121,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         label: 'Name',
                         icon: const Icon(null),
                       ),
+                      const SizedBox(height: 8),
+                      const InputDropdown(),
                       const SizedBox(height: 8),
                       InputText(
                         controller: _emailController,
@@ -99,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         onPressed: () {
                           _showModal(context);
                         },
-                        isEnabled: true,
+                        isEnabled: isButtonEnabled,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

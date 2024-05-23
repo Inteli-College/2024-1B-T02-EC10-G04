@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar_icon.dart';
 
 class NavBarContainer extends StatelessWidget {
-  NavBarContainer({super.key});
+  const NavBarContainer({super.key});
   @override
   Widget build(context) {
     return Container(

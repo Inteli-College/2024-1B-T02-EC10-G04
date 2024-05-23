@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 import 'package:mobile/pages/details_page.dart';
 
 class CardOrder extends StatelessWidget {
@@ -48,8 +48,8 @@ class CardOrder extends StatelessWidget {
               children: [
                 Row(children: [
                   const CircleAvatar(
-                    child: Text('MS'),
                     backgroundColor: Colors.purple,
+                    child: Text('MS'),
                   ),
                   const SizedBox(width: 10),
                   Text(

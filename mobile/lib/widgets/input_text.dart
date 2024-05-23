@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 
 class InputText extends StatelessWidget {
   final Widget icon;

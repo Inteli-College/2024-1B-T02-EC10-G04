@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 
 class OrderDetailsPage extends StatelessWidget {
   final String orderNumber;
@@ -35,7 +35,7 @@ class OrderDetailsPage extends StatelessWidget {
         backgroundColor: AppColors.secondary,
         elevation: 0,
         leading: Padding(
-            padding: EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 20),
             child: IconButton(
               icon: const Icon(
                 Icons.arrow_back_rounded,
@@ -93,7 +93,7 @@ class OrderDetailsPage extends StatelessWidget {
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -117,9 +117,9 @@ class OrderDetailsPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Container(
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 color: AppColors.grey5,
                                 borderRadius: BorderRadius.circular(10),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/colors.dart';
 
 // ignore: must_be_immutable
 class CustomButton extends StatelessWidget {
@@ -16,30 +17,35 @@ class CustomButton extends StatelessWidget {
     required this.isEnabled,
     required this.label,
     required this.onPressed,
-    this.minWidth = double.infinity, 
+    this.minWidth = double.infinity,
     this.height = 50,
     this.icon = const Icon(Icons.arrow_forward),
   });
 
   @override
   Widget build(BuildContext context) {
-    Color buttonColor = isEnabled ? receivedColor : Colors.grey;
+    Color buttonColor = isEnabled ? receivedColor : AppColors.grey3;
+    Color textColor = isEnabled ? Colors.white : AppColors.grey3;
+    Color borderColor = isEnabled ? receivedColor : AppColors.grey3;
 
     return MaterialButton(
       onPressed: isEnabled ? onPressed : null,
       color: buttonColor,
-      textColor: Colors.white,
+      textColor: textColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(100),
+        side: BorderSide(color: borderColor, width: 2),
       ),
       minWidth: minWidth,
       height: height,
-      child: Text(label,
-          style: const TextStyle(
-            fontSize: 18,
-            fontFamily: 'Poppins',
-            fontWeight: FontWeight.w700,
-          )),
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 18,
+          fontFamily: 'Poppins',
+          fontWeight: FontWeight.w700,
+        ),
+      ),
     );
   }
 }

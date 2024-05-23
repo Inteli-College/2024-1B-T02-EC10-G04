@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class RoleDropdown extends StatefulWidget {
-  const RoleDropdown({super.key});
+class InputDropdown extends StatefulWidget {
+  const InputDropdown({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _RoleDropdownState createState() => _RoleDropdownState();
+  _InputDropdownState createState() => _InputDropdownState();
 }
 
-class _RoleDropdownState extends State<RoleDropdown> {
+class _InputDropdownState extends State<InputDropdown> {
   String? selectedRole;
   final List<String> roles = ['Admin', 'User', 'Guest'];
 
@@ -17,9 +17,10 @@ class _RoleDropdownState extends State<RoleDropdown> {
     return DropdownButtonFormField<String>(
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(4.0),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
         labelText: 'Role',
       ),
       value: selectedRole,

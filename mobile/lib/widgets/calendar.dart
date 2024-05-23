@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/widgets/date_picker.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 
 Widget buildCalendarSelector(BuildContext context) {
     var calendarLogic = Provider.of<CalendarLogic>(context);
@@ -36,7 +36,7 @@ Widget buildCalendarSelector(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return DatePicker();
+        return const DatePicker();
       },
     );
   }

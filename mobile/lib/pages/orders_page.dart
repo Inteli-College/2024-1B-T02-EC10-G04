@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/widgets/calendar.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/card_order.dart';
 import 'package:mobile/widgets/navbar.dart';
 
@@ -16,7 +16,7 @@ class OrdersPage extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        bottomNavigationBar: NavBarContainer(),
+        bottomNavigationBar: const NavBarContainer(),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

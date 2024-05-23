@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/classes/colors.dart';
+import 'package:mobile/controller/user.dart';
+import 'package:mobile/models/colors.dart';
+import 'package:mobile/models/user.dart';
+import 'package:mobile/services/user.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';
 
@@ -14,6 +17,37 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late UserController _loginController;
+  bool isButtonEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loginController = UserController(userService: UserService());
+    _emailController.addListener(_validateInputs);
+    _passwordController.addListener(_validateInputs);
+  }
+
+  void _validateInputs() {
+    setState(() {
+      isButtonEnabled = _emailController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
+    });
+  }
+
+  void _onSubmit() {
+    if (isButtonEnabled) {
+      _loginController.login(
+          context, _emailController.text, _passwordController.text);
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,10 +133,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: const Icon(Icons.arrow_forward),
                         label: 'Submit',
                         receivedColor: AppColors.secondary,
-                        onPressed: () {
-                          Navigator.of(context).pushNamed('/orders');
-                        },
-                        isEnabled: true,
+                        onPressed: _onSubmit,
+                        isEnabled: isButtonEnabled,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
