@@ -208,9 +208,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                 SizedBox(width: 5),
                                 if (selectedAnswer == 'Yes, please!' && isChecked)
                                   Container(
-                                    // width: 300,
-                                    // height: 150,
-                                    padding: const EdgeInsets.all(1),
+                                    width: 105,
+                                    height: 40,
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey, width: 1),
                                       borderRadius: BorderRadius.circular(5),
@@ -222,7 +221,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                           padding: EdgeInsets.zero,
                                           constraints: BoxConstraints(),
                                           icon: const Icon(Icons.remove),
-                                          iconSize: 15,
+                                          iconSize: 12,
                                           onPressed: () {
                                             setState(() {
                                               if (quantity > 0) quantity--;
@@ -232,7 +231,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                         Text(
                                           '$quantity',
                                           style: const TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 10,
                                             fontFamily: 'Poppins',
                                           ),
                                         ),
@@ -240,7 +239,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                           padding: EdgeInsets.zero,
                                           constraints: BoxConstraints(),
                                           icon: const Icon(Icons.add),
-                                          iconSize: 15,
+                                          iconSize: 12,
                                           onPressed: () {
                                             setState(() {
                                               quantity++;
@@ -250,7 +249,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       ],
                                     ),
                                   ),
-                                SizedBox(width: 5),
+                                SizedBox(width: 1),
                                 Checkbox(
                                   value: isChecked,
                                   onChanged: (bool? value) {
