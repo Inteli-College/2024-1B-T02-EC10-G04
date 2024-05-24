@@ -3,10 +3,9 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io';
 
 class QRCodePage extends StatefulWidget {
-  const QRCodePage({super.key});
+  const QRCodePage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _QRCodePageState createState() => _QRCodePageState();
 }
 
@@ -28,7 +27,12 @@ class _QRCodePageState extends State<QRCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Leitor de QR Code'),
+        title: Text(
+          'Leitor de QR Code',
+          style: TextStyle(
+            fontFamily: 'Poppins', // Definindo a fonte como Poppins
+          ),
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -49,7 +53,12 @@ class _QRCodePageState extends State<QRCodePage> {
           const Expanded(
             flex: 1,
             child: Center(
-              child: Text('Scan the QR Code'),
+              child: Text(
+                'Scan the QR Code',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
             ),
           ),
         ],

@@ -216,32 +216,31 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: BoxConstraints(),
                                           icon: const Icon(Icons.remove),
-                                          iconSize: 15, // Ajuste o tamanho do ícone de remoção
+                                          iconSize: 15,
                                           onPressed: () {
                                             setState(() {
                                               if (quantity > 0) quantity--;
                                             });
                                           },
                                         ),
-                                        Container(
-                                          width: 20, // Reduza a largura do contêiner do número
-                                          height: 30,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '$quantity',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontFamily: 'Poppins',
-                                            ),
+                                        Text(
+                                          '$quantity',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Poppins',
                                           ),
                                         ),
                                         IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: BoxConstraints(),
                                           icon: const Icon(Icons.add),
-                                          iconSize: 15, // Ajuste o tamanho do ícone de adição
+                                          iconSize: 15,
                                           onPressed: () {
                                             setState(() {
                                               quantity++;
@@ -251,7 +250,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       ],
                                     ),
                                   ),
-                                SizedBox(width: 5), // Add some spacing
+                                SizedBox(width: 5),
                                 Checkbox(
                                   value: isChecked,
                                   onChanged: (bool? value) {
@@ -276,7 +275,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                   label: 'Back',
                                   receivedColor: AppColors.grey3,
                                   onPressed: () {
-                                    Navigator.of(context).pushNamed('/orders'); 
+                                    Navigator.of(context).pushNamed('/qr-code'); 
                                   },
                                   isEnabled: true,
                                 ),

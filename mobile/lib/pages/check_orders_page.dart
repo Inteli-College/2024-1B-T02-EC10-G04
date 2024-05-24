@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/modal.dart';
 
 class CheckOrderPage extends StatelessWidget {
   final String pyxis;
-  final String medicine; 
-  final int quantity;  // Adiciona a quantidade como parâmetro
+  final String medicine;
+  final int quantity; // Adiciona a quantidade como parâmetro
+  final TextEditingController _textController = TextEditingController(); // Inicializa o controlador de texto
 
-  const CheckOrderPage({
-    super.key, 
+  CheckOrderPage({
+    super.key,
     required this.pyxis,
-    required this.medicine, 
-    required this.quantity,  // Adiciona a quantidade como parâmetro
+    required this.medicine,
+    required this.quantity, // Adiciona a quantidade como parâmetro
   });
 
   void _showSuccessModal(BuildContext context) {
@@ -95,6 +97,7 @@ class CheckOrderPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const CircleAvatar(
                                   backgroundColor: Colors.purple,
@@ -103,7 +106,7 @@ class CheckOrderPage extends StatelessWidget {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                SizedBox(width: 10), // Espaçamento entre o avatar e o texto
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -116,15 +119,6 @@ class CheckOrderPage extends StatelessWidget {
                                         color: AppColors.grey2,
                                       ),
                                     ),
-                                    SizedBox(height: 10),
-                                    const Text(
-                                      'Medicine',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 14.0,
-                                        color: AppColors.grey2,
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ],
@@ -133,20 +127,28 @@ class CheckOrderPage extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
-                                color: Colors.grey[200],
+                                color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Quantity: $quantity',
-                                    style: const TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14.0,
-                                      color: AppColors.grey2,
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.grey3,
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: Text(
+                                      '$quantity',
+                                      style: const TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14.0,
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
+                                  SizedBox(width: 10),
                                   Text(
                                     medicine,
                                     style: const TextStyle(
@@ -160,6 +162,33 @@ class CheckOrderPage extends StatelessWidget {
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                    SizedBox(height: 20), // Espaçamento entre as seções
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const Text(
+                            'Do you have any feedback on your order?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins',
+                              fontSize: 12.0,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          InputText(
+                            icon: const Icon(Icons.description),
+                            label: 'Description',
+                            controller: _textController,
+                          ),
+                        ],
                       ),
                     ),
                   ],
