@@ -205,7 +205,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 5),
+                                const SizedBox(width: 5),
                                 if (selectedAnswer == 'Yes, please!' && isChecked)
                                   Container(
                                     width: 105,
@@ -219,7 +219,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       children: [
                                         IconButton(
                                           padding: EdgeInsets.zero,
-                                          constraints: BoxConstraints(),
+                                          constraints: const BoxConstraints(),
                                           icon: const Icon(Icons.remove),
                                           iconSize: 12,
                                           onPressed: () {
@@ -237,7 +237,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                         ),
                                         IconButton(
                                           padding: EdgeInsets.zero,
-                                          constraints: BoxConstraints(),
+                                          constraints: const BoxConstraints(),
                                           icon: const Icon(Icons.add),
                                           iconSize: 12,
                                           onPressed: () {
@@ -249,7 +249,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       ],
                                     ),
                                   ),
-                                SizedBox(width: 1),
+                                const SizedBox(width: 1),
                                 Checkbox(
                                   value: isChecked,
                                   onChanged: (bool? value) {
@@ -264,7 +264,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                             ),
                           ),
                           const Divider(),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [

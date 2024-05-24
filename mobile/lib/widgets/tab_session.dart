@@ -7,12 +7,13 @@ class TabSession extends StatefulWidget {
   final Future<List<Order>> orders;
 
   @override
+  // ignore: library_private_types_in_public_api
   _TabSessionState createState() => _TabSessionState();
 
   const TabSession({
-    Key? key,
+    super.key,
     required this.orders,
-  }) : super(key: key);
+  });
 }
 
 class _TabSessionState extends State<TabSession> {

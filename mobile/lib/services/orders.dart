@@ -18,16 +18,13 @@ class OrderService {
 
    if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
-        print(jsonResponse); // Log da resposta
+        // Log da resposta
         return jsonResponse.map((order) => Order.fromJson(order)).toList();
       } else {
-        print('Failed to load orders. Status code: ${response.statusCode}');
-        print('Response body: ${response.body}');
         throw Exception('Failed to load medicine orders');
       }
 
     } catch (e) {
-      print('Error: $e');
       throw Exception('Failed to load medicine orders');
     }
   }

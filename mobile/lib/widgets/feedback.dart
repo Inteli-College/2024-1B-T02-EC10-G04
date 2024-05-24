@@ -32,7 +32,7 @@ class Feedback extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 8.0), // Espaço entre a descrição e o campo de texto
+          const SizedBox(height: 8.0), // Espaço entre a descrição e o campo de texto
           Theme(
             data: Theme.of(context).copyWith(
               colorScheme: ThemeData().colorScheme.copyWith(primary: Colors.blue),

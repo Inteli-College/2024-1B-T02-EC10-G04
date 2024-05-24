@@ -106,7 +106,7 @@ class CheckOrderPage extends StatelessWidget {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
-                                SizedBox(width: 10), // Espaçamento entre o avatar e o texto
+                                const SizedBox(width: 10), // Espaçamento entre o avatar e o texto
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -123,7 +123,7 @@ class CheckOrderPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 20), // Espaçamento entre os elementos
+                            const SizedBox(height: 20), // Espaçamento entre os elementos
                             Container(
                               padding: const EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
@@ -148,7 +148,7 @@ class CheckOrderPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 10),
+                                  const SizedBox(width: 10),
                                   Text(
                                     medicine,
                                     style: const TextStyle(
@@ -164,9 +164,9 @@ class CheckOrderPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20), // Espaçamento entre as seções
+                    const SizedBox(height: 20), // Espaçamento entre as seções
                     Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -182,7 +182,7 @@ class CheckOrderPage extends StatelessWidget {
                               fontSize: 12.0,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           InputText(
                             icon: const Icon(Icons.description),
                             label: 'Description',
@@ -212,7 +212,7 @@ class CheckOrderPage extends StatelessWidget {
                     isEnabled: true,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: CustomButton(
                     icon: const Icon(Icons.arrow_forward),
