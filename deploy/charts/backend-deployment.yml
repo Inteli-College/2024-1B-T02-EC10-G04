@@ -5,7 +5,7 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: backend
@@ -15,7 +15,13 @@ spec:
         app: backend
     spec:
       containers:
-      - name: backend
-        image: nginx:1.14.2
-        ports:
-        - containerPort: 80
+        - name: backend
+          image: gustavofdeoliveira/confluentinc-cp-enterprise-control-center:latest
+          ports:
+            - containerPort: 9021
+          env:
+            - name: CONTROL_CENTER_BOOTSTRAP_SERVERS
+              value: "kafka:9092"
+            - name: CONTROL_CENTER_REPLICATION_FACTOR
+              value: "1"
+           
