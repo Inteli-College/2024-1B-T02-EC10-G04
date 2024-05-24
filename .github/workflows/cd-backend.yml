@@ -2,6 +2,8 @@ name: CI/CD Backend
 
 on:
   push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -18,12 +20,6 @@ jobs:
       - name: Set up Backend .env file
         working-directory: backend/
         run: make env
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
@@ -33,27 +29,63 @@ jobs:
 
       - name: Build Docker images
         working-directory: backend/
-        run: |
-          make infra
+        run: make infra
 
-  push:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
+      - name: Show Docker Images after build
+        run: docker images
+
       - name: Log in to Docker Hub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-
-        run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-
-      - name: Build Docker image
-        run: docker build -t $DOCKER_USERNAME/my-app:${{ github.sha }} .
-
-      - name: Push Docker image
-        run: docker push $DOCKER_USERNAME/my-app:${{ github.sha }}
-
-      - name: Tag the Docker image with 'latest'
         run: |
-          docker tag $DOCKER_USERNAME/my-app:${{ github.sha }} $DOCKER_USERNAME/my-app:latest
-          docker push $DOCKER_USERNAME/my-app:latest
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Verify Docker login
+        run: docker info
+
+      - name: ZOOKEEPER - Tag and Push Docker image
+        working-directory: backend/
+        run: |
+          IMAGE_ID=$(docker images -q confluentinc/cp-zookeeper)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-zookeeper:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-zookeeper:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-zookeeper:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-zookeeper:latest
+
+      - name: KAFKA - Tag and Push Docker image
+        working-directory: backend/
+        run: |
+          IMAGE_ID=$(docker images -q confluentinc/cp-kafka)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-kafka:latest
+
+      - name: REDIS - Tag and Push Docker image
+        working-directory: backend/
+        run: |
+          IMAGE_ID=$(docker images -q redis)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/redis:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/redis:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/redis:latest
+
+      - name: POSTGRES - Tag and Push Docker image
+        working-directory: backend/
+        run: |
+          IMAGE_ID=$(docker images -q postgres)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/postgres:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/postgres:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/postgres:latest
+
+      - name: CONTROL CENTER - Tag and Push Docker image
+        working-directory: backend/
+        run: |
+          IMAGE_ID=$(docker images -q confluentinc/cp-enterprise-control-center)
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:${{ github.sha }}
+          docker tag $IMAGE_ID ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:${{ github.sha }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:latest
