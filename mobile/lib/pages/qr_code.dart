@@ -3,17 +3,16 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io';
 
 class QRCodePage extends StatefulWidget {
-  const QRCodePage({super.key});
+  const QRCodePage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _QRCodePageState createState() => _QRCodePageState();
 }
 
 class _QRCodePageState extends State<QRCodePage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
-  String? qrText;
+  bool _isScanning = false;
 
   @override
   void reassemble() {
@@ -28,7 +27,12 @@ class _QRCodePageState extends State<QRCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Leitor de QR Code'),
+        title: Text(
+          'Leitor de QR Code',
+          style: TextStyle(
+            fontFamily: 'Poppins', // Definindo a fonte como Poppins
+          ),
+        ),
       ),
       body: Column(
         children: <Widget>[
@@ -46,12 +50,15 @@ class _QRCodePageState extends State<QRCodePage> {
               ),
             ),
           ),
-          Expanded(
+          const Expanded(
             flex: 1,
             child: Center(
-              child: (qrText != null)
-                  ? Text('QR Code: $qrText')
-                  : const Text('Escaneie um QR Code'),
+              child: Text(
+                'Scan the QR Code',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
             ),
           ),
         ],
@@ -62,9 +69,18 @@ class _QRCodePageState extends State<QRCodePage> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData.code;
-      });
+      if (!_isScanning) {
+        setState(() {
+          _isScanning = true;
+        });
+        controller.pauseCamera();
+        Navigator.of(context).pushNamed('/new-order', arguments: scanData.code).then((_) {
+          controller.resumeCamera();
+          setState(() {
+            _isScanning = false;
+          });
+        });
+      }
     });
   }
 

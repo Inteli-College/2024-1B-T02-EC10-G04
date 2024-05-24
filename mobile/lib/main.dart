@@ -11,6 +11,7 @@ import 'package:mobile/pages/signup_page.dart';
 import 'package:mobile/pages/profile_page.dart';
 import 'package:mobile/pages/new_orders_page.dart';
 import 'package:mobile/pages/check_orders_page.dart';
+import 'package:mobile/pages/qr_code.dart';
 
 void main() {
   runApp(const HomeScreen());
@@ -39,9 +40,10 @@ class HomeScreen extends StatelessWidget {
                 medicine: 'Ibuprofeno',
                 lote: '4679',
               ),
-          '/check-order': (context) => const CheckOrderPage(
+          '/check-order': (context) => CheckOrderPage(
                 pyxis: 'M10 G04',
                 medicine: 'Ibuprofeno',
+                quantity: 1,
               ),
           '/orders': (BuildContext context) => FutureBuilder<List<String?>>(
                 future: Future.wait([
@@ -73,6 +75,7 @@ class HomeScreen extends StatelessWidget {
                   );
                 },
               ),
+          '/qr-code': (context) => const QRCodePage(),
         },
       ),
     );

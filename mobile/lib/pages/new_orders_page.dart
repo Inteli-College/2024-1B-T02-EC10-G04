@@ -205,41 +205,42 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(width: 10), // Add some spacing
+                                SizedBox(width: 5),
                                 if (selectedAnswer == 'Yes, please!' && isChecked)
                                   Container(
-                                    padding: const EdgeInsets.all(4),
+                                    // width: 300,
+                                    // height: 150,
+                                    padding: const EdgeInsets.all(1),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey, width: 1),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: BoxConstraints(),
                                           icon: const Icon(Icons.remove),
-                                          iconSize: 10, 
+                                          iconSize: 15,
                                           onPressed: () {
                                             setState(() {
                                               if (quantity > 0) quantity--;
                                             });
                                           },
                                         ),
-                                        Container(
-                                          width: 30,
-                                          height: 30,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            '$quantity',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontFamily: 'Poppins',
-                                            ),
+                                        Text(
+                                          '$quantity',
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: 'Poppins',
                                           ),
                                         ),
                                         IconButton(
+                                          padding: EdgeInsets.zero,
+                                          constraints: BoxConstraints(),
                                           icon: const Icon(Icons.add),
-                                          iconSize: 10,  
+                                          iconSize: 15,
                                           onPressed: () {
                                             setState(() {
                                               quantity++;
@@ -249,6 +250,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       ],
                                     ),
                                   ),
+                                SizedBox(width: 5),
                                 Checkbox(
                                   value: isChecked,
                                   onChanged: (bool? value) {
@@ -263,7 +265,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                             ),
                           ),
                           const Divider(),
-                          const SizedBox(height: 20),
+                          SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -271,9 +273,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                 child: CustomButton(
                                   icon: const Icon(Icons.arrow_back),
                                   label: 'Back',
-                                  receivedColor: Colors.white,
+                                  receivedColor: AppColors.grey3,
                                   onPressed: () {
-                                    Navigator.of(context).pushNamed('/orders'); 
+                                    Navigator.of(context).pushNamed('/qr-code'); 
                                   },
                                   isEnabled: true,
                                 ),
