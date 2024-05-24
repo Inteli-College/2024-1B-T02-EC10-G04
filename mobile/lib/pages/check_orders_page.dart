@@ -19,7 +19,7 @@ class CheckOrderPage extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 20),
           child: IconButton(
             icon: const Icon(
               Icons.arrow_back_rounded,
@@ -77,7 +77,7 @@ class CheckOrderPage extends StatelessWidget {
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -90,7 +90,7 @@ class CheckOrderPage extends StatelessWidget {
                                       color: AppColors.grey2,
                                     ),
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   const Text(
                                     'medicine', // Exibe o nome do medicamento selecionado
                                     style: TextStyle(

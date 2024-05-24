@@ -33,7 +33,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         backgroundColor: AppColors.secondary,
         elevation: 0,
         leading: Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 20),
           child: IconButton(
             icon: const Icon(
               Icons.arrow_back_rounded,
@@ -87,7 +87,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: EdgeInsets.all(8),
+                            padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -103,7 +103,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                   color: AppColors.primary,
                                   size: 20,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -142,9 +142,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -160,7 +160,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                     fontSize: 14.0,
                                   ),
                                 ),
-                                SizedBox(height: 10),
+                                const SizedBox(height: 10),
                                 Dropdown(
                                   onChanged: (value) {
                                     setState(() {
@@ -171,7 +171,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           const Divider(),
                           Padding(
                             padding: const EdgeInsets.only(
@@ -205,10 +205,10 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 10), // Add some spacing
+                                const SizedBox(width: 10), // Add some spacing
                                 if (selectedAnswer == 'Yes, please!' && isChecked)
                                   Container(
-                                    padding: EdgeInsets.all(4),
+                                    padding: const EdgeInsets.all(4),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey, width: 1),
                                       borderRadius: BorderRadius.circular(5),
@@ -263,7 +263,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                             ),
                           ),
                           const Divider(),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -278,7 +278,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                   isEnabled: true,
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Expanded(
                                 child: CustomButton(
                                   icon: const Icon(Icons.arrow_forward),
@@ -292,7 +292,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                         ],
                       ),
                     ),

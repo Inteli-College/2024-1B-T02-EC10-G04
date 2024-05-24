@@ -9,7 +9,7 @@ class TabSession extends StatefulWidget {
   @override
   _TabSessionState createState() => _TabSessionState();
 
-  TabSession({
+  const TabSession({
     Key? key,
     required this.orders,
   }) : super(key: key);

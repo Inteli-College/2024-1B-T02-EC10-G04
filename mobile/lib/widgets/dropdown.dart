@@ -4,7 +4,7 @@ import 'package:mobile/models/colors.dart';
 class Dropdown extends StatefulWidget {
   final ValueChanged<String?>? onChanged;
 
-  const Dropdown({Key? key, this.onChanged}) : super(key: key);
+  const Dropdown({super.key, this.onChanged});
 
   @override
   // ignore: library_private_types_in_public_api

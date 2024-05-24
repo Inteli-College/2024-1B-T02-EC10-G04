@@ -3,23 +3,24 @@ import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/widgets/calendar.dart';
 import 'package:mobile/models/colors.dart';
-import 'package:mobile/widgets/card_order.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/models/order.dart';
 import 'package:mobile/services/orders.dart';
 import 'package:mobile/widgets/tab_session.dart';
+
 class OrdersPage extends StatefulWidget {
+  final String name;
 
   @override
+  // ignore: library_private_types_in_public_api
   _OrdersPageState createState() => _OrdersPageState();
 
-  const OrdersPage({super.key});
+  const OrdersPage({super.key, required this.name});
 }
 
 class _OrdersPageState extends State<OrdersPage> {
-
   late Future<List<Order>> futureMedicineOrders;
-   final OrderService orderService = OrderService();
+  final OrderService orderService = OrderService();
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     var calendarLogic = Provider.of<CalendarLogic>(context);
+    late String name = widget.name;
 
     return DefaultTabController(
       length: 2,
