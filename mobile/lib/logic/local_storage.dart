@@ -13,7 +13,7 @@ class LocalStorageService {
   Future<String?> getValue(String key) async {
     Future<SharedPreferences> prefs = SharedPreferences.getInstance();
     return prefs.then((pref) {
-      pref.getString(key);
+      return pref.getString(key);
     });
   }
 
