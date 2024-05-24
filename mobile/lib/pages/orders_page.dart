@@ -5,9 +5,27 @@ import 'package:mobile/widgets/calendar.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/card_order.dart';
 import 'package:mobile/widgets/navbar.dart';
+import 'package:mobile/models/order.dart';
+import 'package:mobile/services/orders.dart';
+import 'package:mobile/widgets/tab_session.dart';
+class OrdersPage extends StatefulWidget {
 
-class OrdersPage extends StatelessWidget {
+  @override
+  _OrdersPageState createState() => _OrdersPageState();
+
   const OrdersPage({super.key});
+}
+
+class _OrdersPageState extends State<OrdersPage> {
+
+  late Future<List<Order>> futureMedicineOrders;
+   final OrderService orderService = OrderService();
+
+  @override
+  void initState() {
+    super.initState();
+    futureMedicineOrders = orderService.getOrders();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,39 +88,8 @@ class OrdersPage extends StatelessWidget {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(),
-                            child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView(
-                                        children: [
-                                          CardOrder(
-                                            // exemplo de uso do CardOrder
-                                            orderNumber: '6978',
-                                            orderDate: '2021-09-01',
-                                            orderStatus: 'Order in Progress',
-                                            orderValue: 'R\$ 100,00',
-                                            onPressed: () {},
-                                            color: AppColors.success,
-                                            priority: 'Normal',
-                                            pyxis: 'MS-01D',
-                                            iconStatus: const Icon(
-                                              Icons.change_circle,
-                                              color: AppColors.warning,
-                                            ),
-                                            medicines: const [
-                                              'Dipirona Monihidratada 500mg',
-                                              'Nimesulida 100mg'
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                )),
+                          TabSession(
+                            orders: futureMedicineOrders,
                           ),
                           Padding(
                             padding: const EdgeInsets.all(16.0),
