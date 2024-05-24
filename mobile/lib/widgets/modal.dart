@@ -20,10 +20,11 @@ class Modal extends StatelessWidget {
   Widget build(BuildContext context) {
     // Automatically close the modal after 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
-      if (routeName != "") {
-        Navigator.of(context).pushNamed(routeName);
+      if (routeName.isNotEmpty) {
+        Navigator.of(context).pushReplacementNamed(routeName);
+      } else {
+        Navigator.of(context).pop();
       }
-      Navigator.of(context).pop();
     });
 
     return LayoutBuilder(

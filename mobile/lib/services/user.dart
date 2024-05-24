@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:mobile/logic/local_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   final String baseUrl = "http://10.254.19.182/api/v1";
@@ -21,7 +22,12 @@ class UserService {
 
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
-      saveUserInfos(body);
+      Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+      body.forEach((key, value) {
+        prefs.then((pref) {
+          pref.setString(key, value.toString());
+        });
+      });
       return body;
     }
     return {};
@@ -44,18 +50,14 @@ class UserService {
 
     if (response.statusCode == 201) {
       var body = jsonDecode(response.body);
-      saveUserInfos(body);
+      Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+      body.forEach((key, value) {
+        prefs.then((pref) {
+          pref.setString(key, value.toString());
+        });
+      });
       return body;
     }
     return {};
-  }
-
-  void saveUserInfos(user) {
-    localStorageService.saveValue('email', user['email']);
-    localStorageService.saveValue('name', user['name']);
-    localStorageService.saveValue('access_token', user['access_token']);
-    localStorageService.saveValue('on_duty', user['on_duty']);
-    localStorageService.saveValue('id', user['id']);
-    localStorageService.saveValue('role', user['role']);
   }
 }

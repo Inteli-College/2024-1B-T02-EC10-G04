@@ -7,7 +7,16 @@ import 'package:mobile/widgets/card_order.dart';
 import 'package:mobile/widgets/navbar.dart';
 
 class OrdersPage extends StatelessWidget {
-  const OrdersPage({super.key});
+  final String name;
+  final String role;
+  final String email;
+
+  const OrdersPage({
+    super.key,
+    required this.name,
+    required this.role,
+    required this.email,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,19 +31,19 @@ class OrdersPage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 30),
-              const Padding(
-                  padding: EdgeInsets.only(right: 10.0, left: 10.0),
+              Padding(
+                  padding: const EdgeInsets.only(right: 10.0, left: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                          style: TextStyle(
+                        'Welcome, $name!',
+                        style: const TextStyle(
                             fontFamily: 'Poppins',
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.black50
-                          ),
-                          'Welcome, Flávio!'),
+                            color: AppColors.black50),
+                      ),
                     ],
                   )),
               buildCalendarSelector(context),
@@ -45,25 +54,20 @@ class OrdersPage extends StatelessWidget {
                 child: Column(
                   children: [
                     const TabBar(
-                      indicatorColor: AppColors.secondary, 
+                      indicatorColor: AppColors.secondary,
                       labelColor: AppColors.secondary,
                       tabs: [
                         Tab(
                           child: Text(
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 14),
-                          'History'
-                          ),
-                          ),
+                              style: TextStyle(
+                                  fontFamily: 'Poppins', fontSize: 14),
+                              'History'),
+                        ),
                         Tab(
                           child: Text(
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontSize: 14
-                            ),
-                          'Pedding orders'
-                          ),
+                              style: TextStyle(
+                                  fontFamily: 'Poppins', fontSize: 14),
+                              'Pedding orders'),
                         ),
                       ],
                     ),
@@ -133,4 +137,3 @@ class OrdersPage extends StatelessWidget {
     );
   }
 }
-

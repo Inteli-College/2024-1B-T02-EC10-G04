@@ -48,7 +48,7 @@ class UserController {
         showModal(
             // ignore: use_build_context_synchronously
             context,
-            "Login success!",
+            "Account created!",
             "You’ve successfully logged in. Enjoy your seamless experience with our service. ",
             Icons.check,
             AppColors.success,
