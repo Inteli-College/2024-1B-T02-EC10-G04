@@ -5,6 +5,7 @@ class Modal extends StatelessWidget {
   final Color iconColor;
   final String title;
   final String description;
+  final String routeName;
 
   const Modal({
     super.key,
@@ -12,10 +13,19 @@ class Modal extends StatelessWidget {
     required this.iconColor,
     required this.title,
     required this.description,
+    required this.routeName,
   });
 
   @override
   Widget build(BuildContext context) {
+    // Automatically close the modal after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      if (routeName != "") {
+        Navigator.of(context).pushNamed(routeName);
+      }
+      Navigator.of(context).pop();
+    });
+
     return LayoutBuilder(
       builder: (context, constraints) {
         return AlertDialog(

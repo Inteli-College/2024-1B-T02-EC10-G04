@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/controller/user.dart';
 import 'package:mobile/models/colors.dart';
+import 'package:mobile/services/user.dart';
 import 'package:mobile/widgets/custom_button.dart';
-import 'package:mobile/widgets/input_dropdown.dart';
 import 'package:mobile/widgets/input_text.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -15,15 +16,15 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _roleController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late UserController _signUpController;
   bool isButtonEnabled = false;
 
   @override
   void initState() {
     super.initState();
+    _signUpController = UserController(userService: UserService());
     _nameController.addListener(_validateInputs);
-    _roleController.addListener(_validateInputs);
     _emailController.addListener(_validateInputs);
     _passwordController.addListener(_validateInputs);
   }
@@ -32,15 +33,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       isButtonEnabled = _emailController.text.isNotEmpty &&
           _nameController.text.isNotEmpty &&
-          _roleController.text.isNotEmpty &&
           _passwordController.text.isNotEmpty;
     });
+  }
+
+  void _onSubmit() {
+    if (isButtonEnabled) {
+      _signUpController.signup(context, _nameController.text,
+          _emailController.text, _passwordController.text);
+    }
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _roleController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
 
@@ -116,12 +122,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 24),
                       InputText(
-                        controller: _emailController,
+                        controller: _nameController,
                         label: 'Name',
                         icon: const Icon(null),
                       ),
-                      const SizedBox(height: 8),
-                      const InputDropdown(),
                       const SizedBox(height: 8),
                       InputText(
                         controller: _emailController,
@@ -140,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         icon: const Icon(Icons.arrow_forward),
                         label: 'Next',
                         receivedColor: AppColors.secondary,
-                        onPressed: () {},
+                        onPressed: _onSubmit,
                         isEnabled: isButtonEnabled,
                       ),
                       Row(
