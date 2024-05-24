@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
+import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/widgets/modal.dart';
 
 class CheckOrderPage extends StatelessWidget {
   final String pyxis;
   final String medicine; 
+  final int quantity;  // Adiciona a quantidade como parâmetro
 
   const CheckOrderPage({
     super.key, 
     required this.pyxis,
     required this.medicine, 
+    required this.quantity,  // Adiciona a quantidade como parâmetro
   });
+
+  void _showSuccessModal(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.5), // Semitransparent background
+      builder: (BuildContext context) {
+        return const Modal(
+          title: 'Success',
+          description: 'Order placed successfully!',
+          icon: Icons.check_circle,
+          iconColor: Colors.green,
+          routeName: '/orders',
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,51 +85,117 @@ class CheckOrderPage extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              const CircleAvatar(
-                                backgroundColor: Colors.purple,
-                                child: Text(
-                                  'MS',
-                                  style: TextStyle(color: Colors.white),
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.grey5, width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const CircleAvatar(
+                                  backgroundColor: Colors.purple,
+                                  child: Text(
+                                    'MS',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
+                                SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Pixys - $pyxis',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Poppins',
+                                        fontSize: 18.0,
+                                        color: AppColors.grey2,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    const Text(
+                                      'Medicine',
+                                      style: TextStyle(
+                                        fontFamily: 'Poppins',
+                                        fontSize: 14.0,
+                                        color: AppColors.grey2,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20), // Espaçamento entre os elementos
+                            Container(
+                              padding: const EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                              SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    'Pixys - $pyxis',
+                                    'Quantity: $quantity',
                                     style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18.0,
-                                      color: AppColors.grey2,
-                                    ),
-                                  ),
-                                  SizedBox(height: 10),
-                                  const Text(
-                                    'medicine', // Exibe o nome do medicamento selecionado
-                                    style: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: 14.0,
                                       color: AppColors.grey2,
                                     ),
                                   ),
-                                  // Aqui você pode adicionar mais detalhes do medicamento, se necessário
+                                  Text(
+                                    medicine,
+                                    style: const TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 14.0,
+                                      color: AppColors.grey2,
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ],
-                          ),
-                        ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    icon: const Icon(Icons.arrow_back),
+                    label: 'Back',
+                    receivedColor: AppColors.grey3,
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/new-order');
+                    },
+                    isEnabled: true,
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: CustomButton(
+                    icon: const Icon(Icons.arrow_forward),
+                    label: 'Submit',
+                    receivedColor: AppColors.secondary,
+                    onPressed: () {
+                      _showSuccessModal(context);
+                    },
+                    isEnabled: true,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

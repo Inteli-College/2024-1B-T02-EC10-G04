@@ -13,7 +13,7 @@ class QRCodePage extends StatefulWidget {
 class _QRCodePageState extends State<QRCodePage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
-  String? qrText;
+  bool _isScanning = false;
 
   @override
   void reassemble() {
@@ -46,12 +46,10 @@ class _QRCodePageState extends State<QRCodePage> {
               ),
             ),
           ),
-          Expanded(
+          const Expanded(
             flex: 1,
             child: Center(
-              child: (qrText != null)
-                  ? Text('QR Code: $qrText')
-                  : const Text('Escaneie um QR Code'),
+              child: Text('Scan the QR Code'),
             ),
           ),
         ],
@@ -62,9 +60,18 @@ class _QRCodePageState extends State<QRCodePage> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrText = scanData.code;
-      });
+      if (!_isScanning) {
+        setState(() {
+          _isScanning = true;
+        });
+        controller.pauseCamera();
+        Navigator.of(context).pushNamed('/new-order', arguments: scanData.code).then((_) {
+          controller.resumeCamera();
+          setState(() {
+            _isScanning = false;
+          });
+        });
+      }
     });
   }
 

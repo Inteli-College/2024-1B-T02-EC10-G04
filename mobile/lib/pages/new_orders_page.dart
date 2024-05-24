@@ -205,10 +205,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 10), // Add some spacing
+                                SizedBox(width: 5),
                                 if (selectedAnswer == 'Yes, please!' && isChecked)
                                   Container(
-                                    padding: EdgeInsets.all(4),
+                                    width: 60,
+                                    height: 30,
+                                    padding: EdgeInsets.all(1),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey, width: 1),
                                       borderRadius: BorderRadius.circular(5),
@@ -218,7 +220,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       children: [
                                         IconButton(
                                           icon: const Icon(Icons.remove),
-                                          iconSize: 10, 
+                                          iconSize: 15, // Ajuste o tamanho do ícone de remoção
                                           onPressed: () {
                                             setState(() {
                                               if (quantity > 0) quantity--;
@@ -226,7 +228,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                           },
                                         ),
                                         Container(
-                                          width: 30,
+                                          width: 20, // Reduza a largura do contêiner do número
                                           height: 30,
                                           alignment: Alignment.center,
                                           child: Text(
@@ -239,7 +241,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                         ),
                                         IconButton(
                                           icon: const Icon(Icons.add),
-                                          iconSize: 10,  
+                                          iconSize: 15, // Ajuste o tamanho do ícone de adição
                                           onPressed: () {
                                             setState(() {
                                               quantity++;
@@ -249,6 +251,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       ],
                                     ),
                                   ),
+                                SizedBox(width: 5), // Add some spacing
                                 Checkbox(
                                   value: isChecked,
                                   onChanged: (bool? value) {
@@ -263,7 +266,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                             ),
                           ),
                           const Divider(),
-                          SizedBox(height: 20),
+                          SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -271,7 +274,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                 child: CustomButton(
                                   icon: const Icon(Icons.arrow_back),
                                   label: 'Back',
-                                  receivedColor: Colors.white,
+                                  receivedColor: AppColors.grey3,
                                   onPressed: () {
                                     Navigator.of(context).pushNamed('/orders'); 
                                   },
