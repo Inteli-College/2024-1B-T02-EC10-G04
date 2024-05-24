@@ -48,7 +48,7 @@ class CheckOrderPage extends StatelessWidget {
               color: AppColors.primary,
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed('/orders');
+              Navigator.of(context).pushNamed('/new-order');
             },
           ),
         ),
