@@ -208,9 +208,9 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                 SizedBox(width: 5),
                                 if (selectedAnswer == 'Yes, please!' && isChecked)
                                   Container(
-                                    width: 60,
-                                    height: 30,
-                                    padding: EdgeInsets.all(1),
+                                    // width: 300,
+                                    // height: 150,
+                                    padding: const EdgeInsets.all(1),
                                     decoration: BoxDecoration(
                                       border: Border.all(color: Colors.grey, width: 1),
                                       borderRadius: BorderRadius.circular(5),
