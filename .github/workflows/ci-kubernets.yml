@@ -36,8 +36,6 @@ jobs:
       - name: Delete any existing Minikube cluster
         run: minikube delete || true
 
-      - name: Use Minikube Docker daemon
-        run: eval $(minikube docker-env)
 
       - name: Start Minikube
         run: minikube start --driver=docker
