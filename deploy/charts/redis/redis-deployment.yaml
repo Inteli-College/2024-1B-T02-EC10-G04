@@ -18,4 +18,4 @@ spec:
       - name: redis
         image: gustavofdeoliveira/redis:latest
         ports:
-        - containerPort: 5432
+        - containerPort: 6379

@@ -24,4 +24,6 @@ spec:
               value: "kafka:9092"
             - name: CONTROL_CENTER_REPLICATION_FACTOR
               value: "1"
+            - name: "PORT"
+              value : 9021
            

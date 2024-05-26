@@ -18,8 +18,8 @@ spec:
         - name: zookeeper
           image: gustavofdeoliveira/confluentinc-cp-zookeeper:latest
           ports:
-            - containerPort: 9092
-            - containerPort: 9094
+            - containerPort: 2181
+            - containerPort: 2000
           env:
             - name: ZOOKEEPER_CLIENT_PORT
               value: "2181"
