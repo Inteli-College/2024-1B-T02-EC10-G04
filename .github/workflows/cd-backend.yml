@@ -170,10 +170,7 @@ jobs:
 
       - name: Run Health Check
         run: |
-          # Obter o IP do Minikube
-          MINIKUBE_IP=$(minikube ip)
-          # Verificar a rota de health check
-          curl -f http://$MINIKUBE_IP:9021/conductor/healthz || exit 1
+          curl -X GET http://localhost:9021/conductor/healthz
 
       - name: Delete all resources
         run: |
