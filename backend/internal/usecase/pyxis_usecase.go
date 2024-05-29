@@ -49,8 +49,8 @@ func (p *PyxisUseCase) FindPyxisById(id string) (*dto.FindPyxisOutputDTO, error)
 		return nil, err
 	}
 	return &dto.FindPyxisOutputDTO{
-		ID:    pyxis.ID,
-		Label: pyxis.Label,
+		ID:        pyxis.ID,
+		Label:     pyxis.Label,
 		UpdatedAt: pyxis.UpdatedAt,
 		CreatedAt: pyxis.CreatedAt,
 	}, nil
@@ -61,7 +61,7 @@ func (p *PyxisUseCase) UpdatePyxis(input *dto.UpdatePyxisInputDTO) (*dto.UpdateP
 	if err != nil {
 		return nil, err
 	}
-	
+
 	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
 	res.Label = input.Label
 
@@ -77,6 +77,15 @@ func (p *PyxisUseCase) UpdatePyxis(input *dto.UpdatePyxisInputDTO) (*dto.UpdateP
 }
 
 func (p *PyxisUseCase) DeletePyxis(id string) error {
+	pyxis, err := p.PyxisRepository.FindPyxisById(id)
+	if err != nil {
+		return err
+	}
+	return p.PyxisRepository.DeletePyxis(pyxis.ID)
+}
+
+// TODO: Implement this method
+func (p *PyxisUseCase) RegisterMedicine(id string, medicines []string) error {
 	pyxis, err := p.PyxisRepository.FindPyxisById(id)
 	if err != nil {
 		return err

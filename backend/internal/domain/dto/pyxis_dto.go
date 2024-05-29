@@ -39,3 +39,7 @@ type UpdatePyxisOutputDTO struct {
 type DeletePyxisInputDTO struct {
 	ID string `json:"id"`
 }
+
+type RegisterMedicinePyxisInputDTO struct {
+	Medicines []string `json:"medicines"`
+}

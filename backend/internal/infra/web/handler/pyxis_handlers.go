@@ -124,3 +124,32 @@ func (p *PyxisHandlers) DeletePyxisHandler(c *gin.Context) {
 	message := fmt.Sprintf("Pyxis %s deleted successfully", input.ID)
 	c.JSON(http.StatusOK, gin.H{"message": message})
 }
+
+// RegisterMedicinePyxisHandler
+// @Summary Register a to a Pyxis entity
+// @Description Register a existing medicine to a existing Pyxis entity
+// @Tags Pyxis
+// @Accept json
+// @Produce json
+// @Param id path string true "Pyxis ID"
+// @Success 200 {string} string
+// @Router /pyxis/register-medicine/{id} [post]
+func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
+	pixys_id := c.Param("id")
+
+	var input dto.RegisterMedicinePyxisInputDTO
+	if err := c.BindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// TODO: verify if the medicines exist
+
+	err := p.PyxisUseCase.RegisterMedicine(pixys_id, input.Medicines)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	message := fmt.Sprintf("Medicines registered to pixy: %s with success", pixys_id)
+	c.JSON(http.StatusOK, gin.H{"message": message})
+}
