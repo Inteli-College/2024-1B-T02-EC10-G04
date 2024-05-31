@@ -30,7 +30,7 @@ A entidade Orders é responsável pela criação de pedidos. Foi testada com 100
 
 ### Teste da entidade Users
 
-A segunda entidade mais importante é a Users, responsável pela criação de usuários no sistema. Esta entidade também foi testada com 1000 usuários fazendo requisições simultâneas. Observamos que não houve falhas em nenhuma requisição de criação de usuário, demonstrando que a rota foi construída de maneira robusta e com poucas dependências. Contudo, recomendamos realizar mais testes focados em estresse para verificar quantas requisições o sistema suporta.
+A segunda entidade mais importante é a Users, responsável pela criação de usuários no sistema. Esta entidade também foi testada com 1000 usuários fazendo requisições simultâneas. Observamos que houve uma quantidade não tão alta de falhas nas equisições de criação de usuário, demonstrando que a rota foi construída de maneira robusta e com poucas dependências. Contudo, entendemos a necessidade de  realizar mais testes focados em estresse para verificar quantas requisições o sistema suporta.
 
 
 ```shell
