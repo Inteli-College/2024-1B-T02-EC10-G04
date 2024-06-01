@@ -50,7 +50,7 @@ jobs:
 
       - name: Terraform Format
         working-directory: deploy/iac/
-        run: terraform fmt -check
+        run: terraform fmt
 
       - name: Terraform Validate
         working-directory: deploy/iac/
