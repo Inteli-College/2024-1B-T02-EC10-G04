@@ -10,6 +10,7 @@ on:
 
 jobs:
   build-deploy:
+    name: "Build and Deploy Images"
     runs-on: ubuntu-latest
 
     steps:
@@ -93,6 +94,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:latest
 
   minikube:
+    name: "Minikube - Test Deployment"
     needs: build-deploy
     runs-on: ubuntu-20.04
 

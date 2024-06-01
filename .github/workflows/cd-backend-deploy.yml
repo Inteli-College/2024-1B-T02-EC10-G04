@@ -78,6 +78,7 @@ jobs:
 
   build:
     name: "Build and Deploy to ECR"
+    needs: terraform
     runs-on: ubuntu-latest
 
     defaults:
