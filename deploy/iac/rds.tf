@@ -11,7 +11,7 @@ resource "aws_db_subnet_group" "db_subnet_group" {
 resource "aws_db_instance" "main_postgresql_db" {
   identifier             = "prod-db"
   engine                 = "postgres"
-  engine_version         = "15.3"
+  engine_version         = "16.2"
   username               = "postgres"
   db_name                = "stone"
   instance_class         = "db.t3.micro"
