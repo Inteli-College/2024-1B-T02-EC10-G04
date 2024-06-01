@@ -93,55 +93,31 @@ resource "aws_route_table" "private_route_table" {
 resource "aws_route_table_association" "public_subnet_asso_az1" {
   subnet_id      = aws_subnet.public_subnet_az1.id
   route_table_id = aws_route_table.public_route_table.id
-  tags = {
-    name = "TabRota_Assoc_Publica_Az1"
-    menageBy = "Terraform"
-  }
 }
 
 resource "aws_route_table_association" "public_subnet_asso_az2" {
   subnet_id      = aws_subnet.public_subnet_az2.id
   route_table_id = aws_route_table.public_route_table.id
-  tags = {
-    name = "TabRota_Assoc_Publica_Az2"
-    menageBy = "Terraform"
-  }
 }
 
 resource "aws_route_table_association" "private_subnet_asso_az1" {
   subnet_id      = aws_subnet.private_subnet_az1.id
   route_table_id = aws_route_table.private_route_table.id
-  tags = {
-    name = "TabRota_Assoc_Privada_Az1"
-    menageBy = "Terraform"
-  }
 }
 
 resource "aws_route_table_association" "private_subnet_asso_az2" {
   subnet_id      = aws_subnet.private_subnet_az2.id
   route_table_id = aws_route_table.private_route_table.id
-  tags = {
-    name = "TabRota_Assoc_Privada_Az2"
-    menageBy = "Terraform"
-  }
 }
 
 resource "aws_route" "public_ig" {
   destination_cidr_block = "0.0.0.0/0"
   route_table_id         = aws_route_table.public_route_table.id
   gateway_id             = aws_internet_gateway.gw.id
-  tags = {
-    name = "Rota_InternetGateway"
-    menageBy = "Terraform"
-  }
 }
 
 resource "aws_route" "private_gn" {
   destination_cidr_block = "0.0.0.0/0"
   route_table_id         = aws_route_table.private_route_table.id
   nat_gateway_id         = aws_nat_gateway.ng.id
-  tags = {
-    name = "Rota_NatGateway"
-    menageBy = "Terraform"
-  }
 }

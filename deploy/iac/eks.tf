@@ -1,6 +1,6 @@
 resource "aws_eks_cluster" "eks_prod" {
   name     = "eks-prod"
-  role_arn = "arn:aws:iam::916589015610:role/LabRole"
+  role_arn = "arn:aws:iam::${var.account_id}:role/LabRole"
 
   version = "1.27"
 
@@ -26,7 +26,7 @@ resource "aws_eks_cluster" "eks_prod" {
 resource "aws_eks_node_group" "eks_prod_ng" {
   cluster_name = aws_eks_cluster.eks_prod.name
   node_group_name = "eks-prod-ng"
-  node_role_arn = "arn:aws:iam::916589015610:role/LabRole"
+  node_role_arn = "arn:aws:iam::${var.account_id}:role/LabRole"
   subnet_ids = [ 
     aws_subnet.public_subnet_az1.id,
     aws_subnet.public_subnet_az2.id,

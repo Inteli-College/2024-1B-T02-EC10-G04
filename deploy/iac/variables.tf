@@ -19,5 +19,5 @@ variable "default_availability_zone" {
 variable "account_id" {
   type = string
   description = "AWS Account ID"
-  default = "123456789012"
+  default = "979809908865"
 }
