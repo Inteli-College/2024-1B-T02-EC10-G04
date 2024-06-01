@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  docker-build-deploy:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -91,6 +91,7 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/confluentinc-cp-enterprise-control-center:latest
 
   minikube:
+    needs: build-deploy
     runs-on: ubuntu-20.04
 
     steps:
