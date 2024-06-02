@@ -1,5 +1,5 @@
-resource "aws_ecr_repository" "backend_ecr" {
-  name                 = "backend"
+resource "aws_ecr_repository" "control-center_ecr" {
+  name                 = "confluentinc-cp-enterprise-control-center"
 
   image_tag_mutability = "MUTABLE"
 
