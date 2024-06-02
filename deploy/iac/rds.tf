@@ -13,7 +13,7 @@ resource "aws_db_instance" "main_postgresql_db" {
   engine                 = "postgres"
   engine_version         = "16.2"
   username               = "postgres"
-  db_name                = "stone"
+  db_name                = "prod"
   instance_class         = "db.t3.micro"
   vpc_security_group_ids = [aws_security_group.bastion_sg.id, aws_security_group.private_sg.id, aws_security_group.db_sg.id]
   allocated_storage      = 20

@@ -75,6 +75,47 @@ jobs:
         run: |
           aws s3 cp terraform.tfstate s3://${{env.BUCKET_TERRAFORM_STATE}}/state-files/terraform.tfstate
           aws s3 cp terraform.tfstate.backup s3://${{env.BUCKET_TERRAFORM_STATE}}/state-files/terraform.tfstate.backup
+  
+  migration:
+    name: "Database Migration"
+    needs: terraform
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Get RDS endpoint
+        id: rds_endpoint
+        run: |
+          DB_INSTANCE_IDENTIFIER=prod-db
+          DB_ENDPOINT=$(aws rds describe-db-instances --db-instance-identifier $DB_INSTANCE_IDENTIFIER --query "DBInstances[0].Endpoint.Address" --output text)
+          echo "::set-output name=endpoint::$DB_ENDPOINT"
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Execute SQL script
+        working-directory: ./database/
+        env:
+          DB_ENDPOINT: ${{ steps.rds_endpoint.outputs.endpoint }}
+          DB_NAME: prod
+          MASTER_USERNAME: postgres
+          MASTER_USER_PASSWORD: postgres123
+        run: |
+          psql postgresql://$MASTER_USERNAME:$MASTER_USER_PASSWORD@$DB_ENDPOINT:5432/$DB_NAME -f 1-tables.sql
 
   build:
     name: "Build and Deploy to ECR"
@@ -122,4 +163,5 @@ jobs:
           ECR_REPOSITORY: backend
           IMAGE_TAG: latest
         run: |
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
