@@ -9,6 +9,8 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
+	"github.com/joho/godotenv"
+
 	// "github.com/joho/godotenv"
 
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
@@ -25,12 +27,12 @@ import (
 // Please use .env file for local development. After that, please comment out the lines below,
 // their dependencies as well, and update the go.mod file with command $ go mod tidy.
 
-// func init() {
-// 	err := godotenv.Load()
-// 	if err != nil {
-// 		log.Fatal("Error loading .env file")
-// 	}
-// }
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
 
 //	@title			Manager API
 //	@version		1.0
@@ -49,7 +51,6 @@ import (
 // 	@query.collection.format multi
 
 func main() {
-
 	/////////////////////// Configs /////////////////////////
 
 	db := configs.SetupPostgres()
@@ -75,7 +76,7 @@ func main() {
 
 	///////////////////// Healthcheck //////////////////////
 
-	//TODO: "http://localhost:8080/api/healthz" is the best pattern for healthcheck?
+	// TODO: "http://localhost:8080/api/healthz" is the best pattern for healthcheck?
 
 	router.GET("/api/v1/healthz", handler.HealthCheckHandler)
 

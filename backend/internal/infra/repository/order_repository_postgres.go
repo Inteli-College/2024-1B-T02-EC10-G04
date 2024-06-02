@@ -29,22 +29,45 @@ func (r *OrderRepositoryPostgres) CreateOrder(order *entity.Order) (*entity.Orde
 	return &createdOrder, nil
 }
 
-func (r *OrderRepositoryPostgres) FindAllOrders() ([]*entity.Order, error) {
-	var orders []*entity.Order
-	err := r.db.Select(&orders, "SELECT * FROM orders")
+func (r *OrderRepositoryPostgres) FindAllOrders() ([]*entity.OrderComplete, error) {
+	var ordersComplete []*entity.OrderComplete
+	err := r.db.Select(&ordersComplete, `SELECT 
+    o.id as "id", o.priority, o.observation, o.status, 
+    o.quantity, o.created_at as "created_at", o.updated_at as "updated_at",
+    o.user_id, o.medicine_id,
+    u.id as "user.id", u.name as "user.name", u.email as "user.email", 
+    u.password as "user.password", u.role as "user.role", 
+    u.created_at as "user.created_at", u.updated_at as "user.updated_at", u.on_duty as "user.on_duty",
+    m.id as "medicine.id", m.batch as "medicine.batch", m.name as "medicine.name", 
+    m.stripe as "medicine.stripe", m.created_at as "medicine.created_at", m.updated_at as "medicine.updated_at"
+    FROM orders o
+    JOIN users u ON o.user_id = u.id
+    JOIN medicines m ON o.medicine_id = m.id`)
 	if err != nil {
 		return nil, err
 	}
-	return orders, nil
+	return ordersComplete, nil
 }
 
-func (r *OrderRepositoryPostgres) FindOrderById(id string) (*entity.Order, error) {
-	var order entity.Order
-	err := r.db.Get(&order, "SELECT * FROM orders WHERE id = $1", id)
+func (r *OrderRepositoryPostgres) FindOrderById(id string) (*entity.OrderComplete, error) {
+	var orderComplete entity.OrderComplete
+	err := r.db.Get(&orderComplete, `SELECT 
+    o.id as "id", o.priority, o.observation, o.status, 
+    o.quantity, o.created_at as "created_at", o.updated_at as "updated_at",
+    o.user_id, o.medicine_id,
+    u.id as "user.id", u.name as "user.name", u.email as "user.email", 
+    u.password as "user.password", u.role as "user.role", 
+    u.created_at as "user.created_at", u.updated_at as "user.updated_at", u.on_duty as "user.on_duty",
+    m.id as "medicine.id", m.batch as "medicine.batch", m.name as "medicine.name", 
+    m.stripe as "medicine.stripe", m.created_at as "medicine.created_at", m.updated_at as "medicine.updated_at"
+    FROM orders o
+    JOIN users u ON o.user_id = u.id
+    JOIN medicines m ON o.medicine_id = m.id
+    WHERE o.id = $1`, id)
 	if err != nil {
 		return nil, err
 	}
-	return &order, nil
+	return &orderComplete, nil
 }
 
 func (r *OrderRepositoryPostgres) DeleteOrder(id string) error {
@@ -55,7 +78,7 @@ func (r *OrderRepositoryPostgres) DeleteOrder(id string) error {
 	return nil
 }
 
-func (r *OrderRepositoryPostgres) UpdateOrder(order *entity.Order) (*entity.Order, error) {
+func (r *OrderRepositoryPostgres) UpdateOrder(order *entity.OrderComplete) (*entity.Order, error) {
 	var updatedOrder entity.Order
 	err := r.db.QueryRow(
 		"UPDATE orders SET updated_at = CURRENT_TIMESTAMP, priority = $1, observation = $2, status = $3, medicine_id = $4, quantity = $5 WHERE id = $6 RETURNING id, priority, user_id, observation, status, medicine_id, quantity, updated_at",
