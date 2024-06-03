@@ -103,7 +103,7 @@ resource "aws_security_group" "backend_sg" {
 resource "aws_security_group" "redis_sg" {
   name        = "redis-sg"
   description = "Security group for Redis cluster"
-  vpc_id      = var.vpc_id
+  vpc_id      = aws_vpc.prod_vpc.id
 
   ingress {
     from_port   = 6379
