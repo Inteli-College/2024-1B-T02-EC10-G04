@@ -17,10 +17,6 @@ jobs:
   changes:
     name: "Migration Filter"
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
-      contents: read
-
     outputs:
       database: ${{ steps.filter.outputs.database }}
 
