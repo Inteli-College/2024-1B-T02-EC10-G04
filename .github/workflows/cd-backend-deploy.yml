@@ -164,3 +164,46 @@ jobs:
           IMAGE_TAG: latest
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  kubernetes:
+    name: "Deploy to EKS"
+    needs: [terraform, build]
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ env.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Check if EKS cluster exists
+        id: check-cluster
+        run: |
+          aws eks describe-cluster --name eks-prod --region ${{ env.AWS_REGION }} || echo "Cluster does not exist"
+      
+      - name: Update kubeconfig
+        run: aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name eks-prod
+
+      - name: Deploy to EKS
+        working-directory: deploy/charts/backend/
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: confluentinc-cp-enterprise-control-center
+          IMAGE_TAG: latest
+        run: |
+          kubectl apply -f ./backend/deployments/k8s/deployment.yaml
+          kubectl rollout restart deployment control-center
