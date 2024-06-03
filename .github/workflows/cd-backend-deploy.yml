@@ -14,11 +14,16 @@ env:
   BUCKET_TERRAFORM_STATE: ${{ secrets.BUCKET_TERRAFORM_STATE }}
 
 jobs:
-  paths-filter:
+  changes:
     name: "Migration Filter"
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+      contents: read
+
     outputs:
       database: ${{ steps.filter.outputs.database }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -33,7 +38,7 @@ jobs:
 
   terraform:
     name: "Terraform"
-    needs: paths-filter
+    needs: changes
     runs-on: ubuntu-latest
 
     defaults:
@@ -96,7 +101,7 @@ jobs:
 
   migration:
     name: "Database Migration"
-    needs: [paths-filter, terraform]
+    needs: [changes, terraform]
     if: needs.paths-filter.outputs.database == 'true'
     runs-on: ubuntu-latest
 
