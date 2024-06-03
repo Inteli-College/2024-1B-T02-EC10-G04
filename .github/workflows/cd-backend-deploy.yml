@@ -153,13 +153,13 @@ jobs:
           install: true
 
       - name: Build Conductor Monolith
-        working-directory: ./backend/build/
+        working-directory: ./backend/
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: conductor
           IMAGE_TAG: latest
         run: |
-          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f Dockerfile.conductor .
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.conductor .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Build Backend Monolith
@@ -169,7 +169,7 @@ jobs:
           ECR_REPOSITORY: server
           IMAGE_TAG: latest
         run: |
-          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f Dockerfile.server .
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.server .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   kubernetes:
