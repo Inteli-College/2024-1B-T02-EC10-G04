@@ -75,7 +75,7 @@ jobs:
         run: |
           aws s3 cp terraform.tfstate s3://${{env.BUCKET_TERRAFORM_STATE}}/state-files/terraform.tfstate
           aws s3 cp terraform.tfstate.backup s3://${{env.BUCKET_TERRAFORM_STATE}}/state-files/terraform.tfstate.backup
-  
+
   migration:
     name: "Database Migration"
     needs: terraform
@@ -156,13 +156,24 @@ jobs:
         working-directory: ./backend/
         run: make infra
 
-      - name: Build Backend Monolith
-        working-directory: ./backend/deployments/
+      - name: Build Conductor Monolith
+        working-directory: ./backend/build/
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: confluentinc-cp-enterprise-control-center
+          ECR_REPOSITORY: conductor
           IMAGE_TAG: latest
         run: |
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f Dockerfile.conductor .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      - name: Build Backend Monolith
+        working-directory: ./backend/build/
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: server
+          IMAGE_TAG: latest
+        run: |
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f Dockerfile.server .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
   kubernetes:
@@ -194,7 +205,7 @@ jobs:
         id: check-cluster
         run: |
           aws eks describe-cluster --name eks-prod --region ${{ env.AWS_REGION }} || echo "Cluster does not exist"
-      
+
       - name: Update kubeconfig
         run: aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name eks-prod
 

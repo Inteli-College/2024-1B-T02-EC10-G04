@@ -18,7 +18,7 @@ resource "aws_security_group" "bastion_sg" {
   }
 
   tags = {
-    name = "bastion_sg"
+    name     = "bastion_sg"
     menageBy = "Terraform"
   }
 }
@@ -43,7 +43,7 @@ resource "aws_security_group" "private_sg" {
   }
 
   tags = {
-    name = "Private_SG_ArqCorp"
+    name     = "Private_SG_ArqCorp"
     menageBy = "Terraform"
   }
 }
@@ -69,7 +69,7 @@ resource "aws_security_group" "db_sg" {
   }
 
   tags = {
-    name = "db_sg"
+    name     = "db_sg"
     menageBy = "Terraform"
   }
 }
@@ -94,7 +94,7 @@ resource "aws_security_group" "backend_sg" {
   }
 
   tags = {
-    name = "backend_sg"
+    name     = "backend_sg"
     menageBy = "Terraform"
   }
 
@@ -120,7 +120,7 @@ resource "aws_security_group" "redis_sg" {
   }
 
   tags = {
-    name = "redis-sg"
+    name     = "redis-sg"
     menageBy = "Terraform"
   }
 }

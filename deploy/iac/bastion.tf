@@ -6,10 +6,10 @@ resource "aws_instance" "bastion_host" {
   subnet_id                   = aws_subnet.public_subnet_az1.id
   associate_public_ip_address = true
 
-  vpc_security_group_ids = [ aws_security_group.bastion_sg.id ]
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
 
   tags = {
-    name = "bastion_host"
+    name     = "bastion_host"
     menageBy = "Terraform"
   }
 }

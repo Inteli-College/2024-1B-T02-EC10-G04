@@ -1,7 +1,7 @@
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.prod_vpc.id
   tags = {
-    name = "InternetGateway_Prod"
+    name     = "InternetGateway_Prod"
     menageBy = "Terraform"
   }
 }
@@ -16,7 +16,7 @@ resource "aws_nat_gateway" "ng" {
   allocation_id     = aws_eip.nat_gateway_eip.id
 
   tags = {
-    name = "NatGateway_Prod"
+    name     = "NatGateway_Prod"
     menageBy = "Terraform"
   }
 }
@@ -26,11 +26,11 @@ resource "aws_subnet" "public_subnet_az1" {
   vpc_id            = aws_vpc.prod_vpc.id
   cidr_block        = "192.168.0.0/24"
   availability_zone = "us-east-1a"
-  
+
   map_public_ip_on_launch = true
 
   tags = {
-    name = "Public Subnet A"
+    name     = "Public Subnet A"
     menageBy = "Terraform"
   }
 }
@@ -43,7 +43,7 @@ resource "aws_subnet" "public_subnet_az2" {
   map_public_ip_on_launch = true
 
   tags = {
-    name = "Public Subnet B"
+    name     = "Public Subnet B"
     menageBy = "Terraform"
   }
 }
@@ -55,7 +55,7 @@ resource "aws_subnet" "private_subnet_az1" {
   availability_zone = "us-east-1a"
 
   tags = {
-    name = "Private Subnet A"
+    name     = "Private Subnet A"
     menageBy = "Terraform"
   }
 }
@@ -66,7 +66,7 @@ resource "aws_subnet" "private_subnet_az2" {
   availability_zone = "us-east-1b"
 
   tags = {
-    name = "Private Subnet B"
+    name     = "Private Subnet B"
     menageBy = "Terraform"
   }
 }
@@ -75,7 +75,7 @@ resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.prod_vpc.id
 
   tags = {
-    name = "TabRota_Publica_Prod"
+    name     = "TabRota_Publica_Prod"
     menageBy = "Terraform"
   }
 }
@@ -84,7 +84,7 @@ resource "aws_route_table" "private_route_table" {
   vpc_id = aws_vpc.prod_vpc.id
 
   tags = {
-    name = "TabRota_Privada_Prod"
+    name     = "TabRota_Privada_Prod"
     menageBy = "Terraform"
   }
 }
