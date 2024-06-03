@@ -13,7 +13,7 @@ resource "aws_ecr_repository" "conductor_ecr" {
   }
 }
 
-resource "aws_ecr_lifecycle_policy" "server_ecr_policy" {
+resource "aws_ecr_lifecycle_policy" "conductor_ecr_policy" {
   repository = aws_ecr_repository.conductor_ecr.name
 
   policy = <<POLICY
