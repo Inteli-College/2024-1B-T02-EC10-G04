@@ -1,4 +1,4 @@
-name: "CD Application"
+name: "CD - Application"
 
 on:
   workflow_dispatch:
