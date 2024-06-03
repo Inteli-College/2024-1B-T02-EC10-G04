@@ -152,10 +152,6 @@ jobs:
         with:
           install: true
 
-      - name: Build Docker images
-        working-directory: ./backend/
-        run: make infra
-
       - name: Build Conductor Monolith
         working-directory: ./backend/build/
         env:
