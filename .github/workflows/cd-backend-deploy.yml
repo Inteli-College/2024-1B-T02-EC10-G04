@@ -14,6 +14,22 @@ env:
   BUCKET_TERRAFORM_STATE: ${{ secrets.BUCKET_TERRAFORM_STATE }}
 
 jobs:
+  paths-filter:
+    runs-on: ubuntu-latest
+    outputs:
+      migrations: ${{ steps.filter.outputs.migrations }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Paths filter
+        id: filter
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            migrations:
+              - 'database/**'
+
   terraform:
     name: "Terraform"
     runs-on: ubuntu-latest
@@ -78,7 +94,8 @@ jobs:
 
   migration:
     name: "Database Migration"
-    needs: terraform
+    needs: paths-filter
+    if: needs.paths-filter.outputs.migrations == 'true'
     runs-on: ubuntu-latest
 
     defaults:
