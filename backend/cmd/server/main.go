@@ -9,9 +9,10 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
+	"github.com/joho/godotenv"
+
 	// "github.com/joho/godotenv"
 
-	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-contrib/cors"
@@ -25,12 +26,12 @@ import (
 // Please use .env file for local development. After that, please comment out the lines below,
 // their dependencies as well, and update the go.mod file with command $ go mod tidy.
 
-// func init() {
-// 	err := godotenv.Load()
-// 	if err != nil {
-// 		log.Fatal("Error loading .env file")
-// 	}
-// }
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+}
 
 //	@title			Manager API
 //	@version		1.0
@@ -97,26 +98,6 @@ func main() {
 		}
 	}
 
-	/////////////////////// Pyxis /////////////////////////
-
-	pyxisRepository := repository.NewPyxisRepositoryPostgres(db)
-	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository)
-	pyxisHandlers := handler.NewPyxisHandlers(pyxisUseCase)
-
-	{
-		pyxisGroup := api.Group("/pyxis")
-
-		// Middleware apenas para motivos de demonstração (MUDAR DEPOIS)
-		pyxisGroup.Use(middleware.AuthMiddleware(userRepository, "user"))
-		{
-			pyxisGroup.POST("", pyxisHandlers.CreatePyxisHandler)
-			pyxisGroup.GET("", pyxisHandlers.FindAllPyxisHandler)
-			pyxisGroup.GET("/:id", pyxisHandlers.FindPyxisByIdHandler)
-			pyxisGroup.PUT("/:id", pyxisHandlers.UpdatePyxisHandler)
-			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
-		}
-	}
-
 	/////////////////////// Order /////////////////////////
 
 	orderProducerConfigMap := &ckafka.ConfigMap{
@@ -154,6 +135,28 @@ func main() {
 			medicineGroup.GET("/:id", medicineHandlers.FindMedicineByIdHandler)
 			medicineGroup.PUT("/:id", medicineHandlers.UpdateMedicineHandler)
 			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
+		}
+	}
+
+	/////////////////////// Pyxis /////////////////////////
+
+	pyxisRepository := repository.NewPyxisRepositoryPostgres(db)
+	medicinePyxisRepository := repository.NewMedicinePyxisRepositoryPostgres(db)
+	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository, medicinePyxisRepository)
+	pyxisHandlers := handler.NewPyxisHandlers(pyxisUseCase, medicineUseCase)
+
+	{
+		pyxisGroup := api.Group("/pyxis")
+
+		// Middleware apenas para motivos de demonstração (MUDAR DEPOIS)
+		// pyxisGroup.Use(middleware.AuthMiddleware(userRepository, "user"))
+		{
+			pyxisGroup.POST("", pyxisHandlers.CreatePyxisHandler)
+			pyxisGroup.GET("", pyxisHandlers.FindAllPyxisHandler)
+			pyxisGroup.GET("/:id", pyxisHandlers.FindPyxisByIdHandler)
+			pyxisGroup.PUT("/:id", pyxisHandlers.UpdatePyxisHandler)
+			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
+			pyxisGroup.POST("/:id/register-medicine", pyxisHandlers.RegisterMedicinePyxisHandler)
 		}
 	}
 

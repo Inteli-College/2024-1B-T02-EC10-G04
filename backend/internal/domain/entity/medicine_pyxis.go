@@ -4,8 +4,8 @@ import "time"
 
 type MedicinePyxisRepository interface {
 	CreateMedicinePixys(pyxis_id string, medicines []string) ([]*MedicinePyxis, error)
-	FindMedicinePixys(pyxis_id string, medicine string)
-	DeleteMedicinePixys(pyxis_id string, medicine string)
+	// FindMedicinePixys(pyxis_id string, medicine string)
+	// DeleteMedicinePixys(pyxis_id string, medicine string)
 }
 
 type MedicinePyxis struct {

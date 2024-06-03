@@ -6,11 +6,12 @@ import (
 )
 
 type PyxisUseCase struct {
-	PyxisRepository entity.PyxisRepository
+	PyxisRepository         entity.PyxisRepository
+	MedicinePyxisRepository entity.MedicinePyxisRepository
 }
 
-func NewPyxisUseCase(pyxisRepository entity.PyxisRepository) *PyxisUseCase {
-	return &PyxisUseCase{PyxisRepository: pyxisRepository}
+func NewPyxisUseCase(pyxisRepository entity.PyxisRepository, medicinePixysRepository entity.MedicinePyxisRepository) *PyxisUseCase {
+	return &PyxisUseCase{PyxisRepository: pyxisRepository, MedicinePyxisRepository: medicinePixysRepository}
 }
 
 func (p *PyxisUseCase) CreatePyxis(input *dto.CreatePyxisInputDTO) (*dto.CreatePyxisOutputDTO, error) {
@@ -86,9 +87,11 @@ func (p *PyxisUseCase) DeletePyxis(id string) error {
 
 // TODO: Implement this method
 func (p *PyxisUseCase) RegisterMedicine(id string, medicines []string) error {
-	pyxis, err := p.PyxisRepository.FindPyxisById(id)
-	if err != nil {
+	if _, err := p.PyxisRepository.FindPyxisById(id); err != nil {
 		return err
 	}
-	return p.PyxisRepository.DeletePyxis(pyxis.ID)
+
+	_, err := p.MedicinePyxisRepository.CreateMedicinePixys(id, medicines)
+
+	return err
 }

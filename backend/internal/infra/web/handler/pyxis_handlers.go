@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"sync"
 
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
@@ -10,12 +11,14 @@ import (
 )
 
 type PyxisHandlers struct {
-	PyxisUseCase *usecase.PyxisUseCase
+	PyxisUseCase    *usecase.PyxisUseCase
+	MedicineUseCase *usecase.MedicineUseCase
 }
 
-func NewPyxisHandlers(pyxisUsecase *usecase.PyxisUseCase) *PyxisHandlers {
+func NewPyxisHandlers(pyxisUsecase *usecase.PyxisUseCase, medicineUsecase *usecase.MedicineUseCase) *PyxisHandlers {
 	return &PyxisHandlers{
-		PyxisUseCase: pyxisUsecase,
+		PyxisUseCase:    pyxisUsecase,
+		MedicineUseCase: medicineUsecase,
 	}
 }
 
@@ -137,6 +140,11 @@ func (p *PyxisHandlers) DeletePyxisHandler(c *gin.Context) {
 func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 	pixys_id := c.Param("id")
 
+	if pixy, err := p.PyxisUseCase.FindPyxisById(pixys_id); pixy == nil || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pixy doesn't exists"})
+		return
+	}
+
 	var input dto.RegisterMedicinePyxisInputDTO
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -144,6 +152,33 @@ func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 	}
 
 	// TODO: verify if the medicines exist
+
+	var medicinesCheckWg sync.WaitGroup
+	medicinesCheckChnFinish := make(chan interface{})
+	medicinesCheckChnError := make(chan error)
+
+	for _, medicine_id := range input.Medicines {
+		medicinesCheckWg.Add(1)
+		go func(medicine_id string) {
+			defer medicinesCheckWg.Done()
+			if result, err := p.MedicineUseCase.FindMedicineById(medicine_id); result == nil || err != nil {
+				medicinesCheckChnError <- err
+			}
+			return
+		}(medicine_id)
+	}
+
+	go func() {
+		medicinesCheckWg.Wait()
+		medicinesCheckChnFinish <- "finished"
+	}()
+
+	select {
+	case _ = <-medicinesCheckChnFinish:
+		// finished checking all medicines
+	case errorChecking := <-medicinesCheckChnError:
+		c.JSON(http.StatusNotFound, gin.H{"error": errorChecking.Error()})
+	}
 
 	err := p.PyxisUseCase.RegisterMedicine(pixys_id, input.Medicines)
 	if err != nil {
