@@ -15,9 +15,10 @@ env:
 
 jobs:
   paths-filter:
+    name: "Migration Filter"
     runs-on: ubuntu-latest
     outputs:
-      migrations: ${{ steps.filter.outputs.migrations }}
+      database: ${{ steps.filter.outputs.database }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,11 +28,12 @@ jobs:
         uses: dorny/paths-filter@v2
         with:
           filters: |
-            migrations:
+            database:
               - 'database/**'
 
   terraform:
     name: "Terraform"
+    needs: paths-filter
     runs-on: ubuntu-latest
 
     defaults:
@@ -94,8 +96,8 @@ jobs:
 
   migration:
     name: "Database Migration"
-    needs: paths-filter
-    if: needs.paths-filter.outputs.migrations == 'true'
+    needs: [paths-filter, terraform]
+    if: needs.paths-filter.outputs.database == 'true'
     runs-on: ubuntu-latest
 
     defaults:
