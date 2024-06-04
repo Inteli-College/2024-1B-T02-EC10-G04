@@ -178,6 +178,7 @@ func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 		// finished checking all medicines
 	case errorChecking := <-medicinesCheckChnError:
 		c.JSON(http.StatusNotFound, gin.H{"error": errorChecking.Error()})
+		return
 	}
 
 	err := p.PyxisUseCase.RegisterMedicine(pixys_id, input.Medicines)

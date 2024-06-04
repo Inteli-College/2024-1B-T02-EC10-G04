@@ -2,7 +2,6 @@ package repository
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
@@ -18,15 +17,15 @@ func NewMedicinePyxisRepositoryPostgres(db *sqlx.DB) *MedicinePyxisRepositoryPos
 }
 
 func (r *MedicinePyxisRepositoryPostgres) CreateMedicinePixys(pyxis_id string, medicines []string) ([]*entity.MedicinePyxis, error) {
-	if len(medicines) <= 0 {
+	medicinesAmount := len(medicines)
+
+	if medicinesAmount <= 0 {
 		return nil, fmt.Errorf("No medicines provided")
 	}
-	log.Printf("Medicies: %#v\n", medicines)
-	log.Printf("Len of Medicies: %#v\n", len(medicines))
 
 	var medicinePyxisCreated []*entity.MedicinePyxis
 
-	placeholders := make([]string, len(medicines))
+	var placeholders []string
 	var values []any
 
 	for i, medicine_id := range medicines {
@@ -34,10 +33,13 @@ func (r *MedicinePyxisRepositoryPostgres) CreateMedicinePixys(pyxis_id string, m
 		values = append(values, pyxis_id, medicine_id)
 	}
 
-	query := fmt.Sprintf("INSERT INTO Medicine_PYXIS (pyxis_id, medicine_id) VALUES %s RETURNING id, pyxis_id, medicine_id, created_at", strings.Join(placeholders, ""))
+	var query string
 
-	log.Print(query)
-	log.Printf("Values: %#v\n", values)
+	if medicinesAmount == 1 {
+		query = fmt.Sprintf("INSERT INTO Medicine_PYXIS (pyxis_id, medicine_id) VALUES %s RETURNING id, pyxis_id, medicine_id, created_at", strings.Join(placeholders, ""))
+	} else {
+		query = fmt.Sprintf("INSERT INTO Medicine_PYXIS (pyxis_id, medicine_id) VALUES %s RETURNING id, pyxis_id, medicine_id, created_at", strings.Join(placeholders, ","))
+	}
 
 	rows, err := r.db.Query(query, values...)
 	if err != nil {
