@@ -63,17 +63,30 @@ func (r *MedicinePyxisRepositoryPostgres) CreateMedicinePixys(pyxis_id string, m
 	return medicinePyxisCreated, nil
 }
 
-//////////////// TODO ////////////////
+func (r *MedicinePyxisRepositoryPostgres) FindMedicinesPyxis(pyxis_id string) ([]*entity.Medicine, error) {
+	var medicines []*entity.Medicine
 
-func (r *MedicinePyxisRepositoryPostgres) FindAllPyxis() ([]*entity.Pyxis, error) {
-	var pyxis []*entity.Pyxis
-	err := r.db.Select(&pyxis, "SELECT * FROM pyxis")
+	query := `
+    SELECT 
+      m.* 
+    FROM 
+      medicine_pyxis mp
+    INNER JOIN 
+      medicines m 
+    ON 
+      mp.medicine_id = m.id
+    WHERE 
+      mp.pyxis_id = $1;
+  `
+	err := r.db.Select(&medicines, query, pyxis_id)
 
 	if err != nil {
 		return nil, err
 	}
-	return pyxis, nil
+	return medicines, nil
 }
+
+//////////////// TODO ////////////////
 
 func (r *MedicinePyxisRepositoryPostgres) FindPyxisById(id string) (*entity.Pyxis, error) {
 	var pyxis entity.Pyxis

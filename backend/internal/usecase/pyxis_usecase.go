@@ -85,7 +85,6 @@ func (p *PyxisUseCase) DeletePyxis(id string) error {
 	return p.PyxisRepository.DeletePyxis(pyxis.ID)
 }
 
-// TODO: Implement this method
 func (p *PyxisUseCase) RegisterMedicine(id string, medicines []string) error {
 	if _, err := p.PyxisRepository.FindPyxisById(id); err != nil {
 		return err
@@ -94,4 +93,22 @@ func (p *PyxisUseCase) RegisterMedicine(id string, medicines []string) error {
 	_, err := p.MedicinePyxisRepository.CreateMedicinePixys(id, medicines)
 
 	return err
+}
+
+func (p *PyxisUseCase) GetMedicinesFromPyxis(pyxis_id string) ([]*dto.FindMedicineOutputDTO, error) {
+	medicines, err := p.MedicinePyxisRepository.FindMedicinesPyxis(pyxis_id)
+
+	var output []*dto.FindMedicineOutputDTO
+	for _, medicine := range medicines {
+		output = append(output, &dto.FindMedicineOutputDTO{
+			ID:        medicine.ID,
+			Batch:     medicine.Batch,
+			Name:      medicine.Name,
+			Stripe:    medicine.Stripe,
+			CreatedAt: medicine.CreatedAt,
+			UpdatedAt: medicine.UpdatedAt,
+		})
+	}
+
+	return output, err
 }

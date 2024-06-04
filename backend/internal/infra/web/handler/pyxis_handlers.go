@@ -189,3 +189,22 @@ func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 	message := fmt.Sprintf("Medicines registered to pixy: %s with success", pixys_id)
 	c.JSON(http.StatusOK, gin.H{"message": message})
 }
+
+func (p *PyxisHandlers) GetMedicinesPyxisHandler(c *gin.Context) {
+	pixys_id := c.Param("id")
+
+	if pixy, err := p.PyxisUseCase.FindPyxisById(pixys_id); pixy == nil || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pixy doesn't exists"})
+		return
+	}
+
+	output, err := p.PyxisUseCase.GetMedicinesFromPyxis(pixys_id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, output)
+	return
+}

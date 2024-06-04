@@ -157,6 +157,7 @@ func main() {
 			pyxisGroup.PUT("/:id", pyxisHandlers.UpdatePyxisHandler)
 			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
 			pyxisGroup.POST("/:id/register-medicine", pyxisHandlers.RegisterMedicinePyxisHandler)
+			pyxisGroup.GET("/:id/medicines", pyxisHandlers.GetMedicinesPyxisHandler)
 		}
 	}
 
