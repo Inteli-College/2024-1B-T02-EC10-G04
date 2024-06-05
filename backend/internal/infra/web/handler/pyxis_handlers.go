@@ -27,6 +27,7 @@ func NewPyxisHandlers(pyxisUsecase *usecase.PyxisUseCase) *PyxisHandlers {
 // @Produce json
 // @Param input body dto.CreatePyxisInputDTO true "Pyxis entity to create"
 // @Success 200 {object} dto.CreatePyxisOutputDTO
+// @Security BearerAuth
 // @Router /pyxis [post]
 func (p *PyxisHandlers) CreatePyxisHandler(c *gin.Context) {
 	var input dto.CreatePyxisInputDTO
@@ -124,3 +125,4 @@ func (p *PyxisHandlers) DeletePyxisHandler(c *gin.Context) {
 	message := fmt.Sprintf("Pyxis %s deleted successfully", input.ID)
 	c.JSON(http.StatusOK, gin.H{"message": message})
 }
+

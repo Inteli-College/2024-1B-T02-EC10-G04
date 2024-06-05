@@ -141,6 +141,30 @@ definitions:
       updated_at:
         type: string
     type: object
+  dto.LoginUserInputDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.LoginUserOutputDTO:
+    properties:
+      access_token:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      on_duty:
+        type: boolean
+      role:
+        type: string
+    type: object
   dto.UpdateMedicineInputDTO:
     properties:
       batch:
@@ -539,6 +563,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.CreatePyxisOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Create a new Pyxis entity
       tags:
       - Pyxis
@@ -714,4 +740,44 @@ paths:
       summary: Update a User entity
       tags:
       - Users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user credentials and return user session information
+      parameters:
+      - description: Login credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginUserInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Authentication successful, user details returned
+          schema:
+            $ref: '#/definitions/dto.LoginUserOutputDTO'
+        "400":
+          description: Invalid credentials or bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Log in a user
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    description: '"Type: Bearer token"'
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

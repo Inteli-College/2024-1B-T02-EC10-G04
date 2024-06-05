@@ -48,7 +48,13 @@ func init() {
 
 //	@host	localhost:8080
 //	@BasePath	/api/v1
-// 	@query.collection.format multi
+
+// @SecurityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description "Type: Bearer token"
+// @scheme bearer
+// @bearerFormat JWT
 
 func main() {
 	/////////////////////// Configs /////////////////////////
