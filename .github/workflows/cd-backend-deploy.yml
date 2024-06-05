@@ -225,12 +225,22 @@ jobs:
       - name: Update kubeconfig
         run: aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name eks-prod
 
-      - name: Deploy to EKS
-        working-directory: deploy/charts/backend/
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: confluentinc-cp-enterprise-control-center
-          IMAGE_TAG: latest
+      - name: Deploy to EKS - Server
+        working-directory: deploy/charts-aws/
         run: |
-          kubectl apply -f ./backend/deployments/k8s/deployment.yaml
-          kubectl rollout restart deployment control-center
+          helm upgrade --install server server/ \
+          --namespace server \
+          --set alertmanager.persistentVolume.storageClass="gp2" \
+          --set server.persistentVolume.storageClass="gp2" \
+          --values server/values.yaml
+
+      - name: Deploy to EKS - Conductor
+        working-directory: deploy/charts-aws/
+        run: |
+          helm upgrade --install conductor conductor/ \
+          --namespace conductor \
+          --set alertmanager.persistentVolume.storageClass="gp2" \
+          --set conductor.persistentVolume.storageClass="gp2" \
+          --values conductor/values.yaml
+
+      
