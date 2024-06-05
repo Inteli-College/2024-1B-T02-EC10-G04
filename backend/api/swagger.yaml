@@ -310,7 +310,7 @@ info:
     email: gomedicine@inteli.edu.br
     name: Manager API Support
     url: https://github.com/Inteli-College/2024-1B-T02-EC10-G04
-  description: This is a.
+  description: '"Type: Bearer token"'
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -776,8 +776,5 @@ paths:
       - Users
 securityDefinitions:
   BearerAuth:
-    description: '"Type: Bearer token"'
-    in: header
-    name: Authorization
-    type: apiKey
+    type: basic
 swagger: "2.0"
