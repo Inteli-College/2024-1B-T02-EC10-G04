@@ -175,7 +175,8 @@ jobs:
           ECR_REPOSITORY: conductor
           IMAGE_TAG: latest
         run: |
-          docker build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.conductor
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.conductor ./build
+
 
       - name: Build Backend Monolith
         working-directory: ./backend/
@@ -184,7 +185,7 @@ jobs:
           ECR_REPOSITORY: server
           IMAGE_TAG: latest
         run: |
-          docker build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.server
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.server ./build
 
   kubernetes:
     name: "Deploy to EKS"
