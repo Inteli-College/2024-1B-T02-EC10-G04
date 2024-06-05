@@ -167,7 +167,10 @@ jobs:
       - name: Setup .ENV
         working-directory: ./backend/
         run: make env
-
+      
+      - name: Install Docker
+        run: sudo apt-get install -y docker.io
+        
       - name: Build Conductor Monolith
         working-directory: ./backend/
         env:
