@@ -501,6 +501,121 @@ const docTemplate = `{
                 }
             }
         },
+        "/pyxis/{id}/medicines": {
+            "get": {
+                "description": "Get all medicines related to a Pyxis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Get medicines from a Pyxis",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.FindMedicineOutputDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Disassociate a sequence n of medicines from a Pyxis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Disassociate medicines from a Pyxis",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medicines to disassociate",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DisassociateMedicineInputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pyxis/{id}/register-medicine": {
+            "post": {
+                "description": "Register a existing medicine to a existing Pyxis entity",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Register a to a Pyxis entity",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medicines to register into Pyxis",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterMedicinePyxisInputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "message\": message}",
+                        "schema": {
+                            "type": "objetct"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "Retrieve all User entities",
@@ -781,6 +896,17 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.DisassociateMedicineInputDTO": {
+            "type": "object",
+            "properties": {
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "dto.FindMedicineOutputDTO": {
             "type": "object",
             "properties": {
@@ -876,6 +1002,17 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.RegisterMedicinePyxisInputDTO": {
+            "type": "object",
+            "properties": {
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -1044,7 +1181,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost",
+	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Manager API",

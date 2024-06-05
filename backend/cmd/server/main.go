@@ -45,7 +45,7 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host	localhost
+//	@host	localhost:8080
 //	@BasePath	/api/v1
 // 	@query.collection.format multi
 
@@ -158,6 +158,7 @@ func main() {
 			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
 			pyxisGroup.POST("/:id/register-medicine", pyxisHandlers.RegisterMedicinePyxisHandler)
 			pyxisGroup.GET("/:id/medicines", pyxisHandlers.GetMedicinesPyxisHandler)
+			pyxisGroup.DELETE("/:id/medicines", pyxisHandlers.DisassociateMedicinePyxisHandler)
 		}
 	}
 

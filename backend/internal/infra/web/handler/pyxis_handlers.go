@@ -135,8 +135,9 @@ func (p *PyxisHandlers) DeletePyxisHandler(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path string true "Pyxis ID"
-// @Success 200 {string} string
-// @Router /pyxis/register-medicine/{id} [post]
+// @Param input body dto.RegisterMedicinePyxisInputDTO true "Medicines to register into Pyxis"
+// @Success 200 {objetct} {"message": message}
+// @Router /pyxis/{id}/register-medicine [post]
 func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 	pixys_id := c.Param("id")
 
@@ -150,8 +151,6 @@ func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
-	// TODO: verify if the medicines exist
 
 	var medicinesCheckWg sync.WaitGroup
 	medicinesCheckChnFinish := make(chan interface{})
@@ -190,6 +189,15 @@ func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": message})
 }
 
+// GetMedicinesPyxisHandler
+// @Summary Get medicines from a Pyxis
+// @Description Get all medicines related to a Pyxis
+// @Tags Pyxis
+// @Accept json
+// @Produce json
+// @Param id path string true "Pyxis ID"
+// @Success 200 {object} []dto.FindMedicineOutputDTO
+// @Router /pyxis/{id}/medicines [get]
 func (p *PyxisHandlers) GetMedicinesPyxisHandler(c *gin.Context) {
 	pixys_id := c.Param("id")
 
@@ -199,6 +207,70 @@ func (p *PyxisHandlers) GetMedicinesPyxisHandler(c *gin.Context) {
 	}
 
 	output, err := p.PyxisUseCase.GetMedicinesFromPyxis(pixys_id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, output)
+	return
+}
+
+// DisassociateMedicinePyxisHandler
+// @Summary Disassociate medicines from a Pyxis
+// @Description Disassociate a sequence n of medicines from a Pyxis
+// @Tags Pyxis
+// @Accept json
+// @Produce json
+// @Param id path string true "Pyxis ID"
+// @Param input body dto.DisassociateMedicineInputDTO true "Medicines to disassociate"
+// @Success 200 {string} string
+// @Router /pyxis/{id}/medicines [delete]
+func (p *PyxisHandlers) DisassociateMedicinePyxisHandler(c *gin.Context) {
+	pixys_id := c.Param("id")
+
+	if pixy, err := p.PyxisUseCase.FindPyxisById(pixys_id); pixy == nil || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pixy doesn't exists"})
+		return
+	}
+
+	var input dto.DisassociateMedicineInputDTO
+
+	if err := c.BindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var medicinesCheckWg sync.WaitGroup
+	medicinesCheckChnFinish := make(chan interface{})
+	medicinesCheckChnError := make(chan error)
+
+	for _, medicine_id := range input.Medicines {
+		medicinesCheckWg.Add(1)
+		go func(medicine_id string) {
+			defer medicinesCheckWg.Done()
+			if result, err := p.MedicineUseCase.FindMedicineById(medicine_id); result == nil || err != nil {
+				medicinesCheckChnError <- err
+			}
+			return
+		}(medicine_id)
+	}
+
+	go func() {
+		medicinesCheckWg.Wait()
+		medicinesCheckChnFinish <- "finished"
+	}()
+
+	select {
+	case _ = <-medicinesCheckChnFinish:
+		// finished checking all medicines
+	case errorChecking := <-medicinesCheckChnError:
+		c.JSON(http.StatusNotFound, gin.H{"error": errorChecking.Error()})
+		return
+	}
+
+	output, err := p.PyxisUseCase.DisassociateMedicinesFromPyxis(pixys_id, input.Medicines)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

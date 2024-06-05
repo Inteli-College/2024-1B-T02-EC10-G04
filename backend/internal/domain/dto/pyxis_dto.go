@@ -43,3 +43,16 @@ type DeletePyxisInputDTO struct {
 type RegisterMedicinePyxisInputDTO struct {
 	Medicines []string `json:"medicines"`
 }
+
+type DisassociateMedicineInputDTO struct {
+	Medicines []string `json:"medicines"`
+}
+
+type DisassociateMedicineOutputDTO struct {
+	PyxisID    string `json:"pyxis_id"`
+	MedicineID string `json:"medicine_id"`
+}
+
+type DisassociateMedicinesOutputDTO struct {
+	DisassociatedMedicines []DisassociateMedicineOutputDTO `json:"disassociated_medicines"`
+}

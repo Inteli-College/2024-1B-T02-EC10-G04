@@ -86,6 +86,52 @@ func (r *MedicinePyxisRepositoryPostgres) FindMedicinesPyxis(pyxis_id string) ([
 	return medicines, nil
 }
 
+func (r *MedicinePyxisRepositoryPostgres) DeleteMedicinesPyxis(pyxis_id string, medicines_id []string) ([]*entity.MedicinePyxis, error) {
+	if len(medicines_id) == 0 {
+		return nil, fmt.Errorf("Impossible to disassociate empty medicines\n")
+	}
+
+	var placeholders []string
+	var args []any
+
+	for i, medicine_id := range medicines_id {
+		placeholder := fmt.Sprintf("($%d, $%d)", i*2+1, i*2+2)
+		placeholders = append(placeholders, placeholder)
+
+		args = append(args, pyxis_id, medicine_id)
+	}
+
+	query := fmt.Sprintf(`
+    DELETE FROM medicine_pyxis
+    WHERE
+      (pyxis_id, medicine_id) IN (%s)
+    RETURNING
+      *
+  `, strings.Join(placeholders, ","))
+
+	rows, err := r.db.Queryx(query, args...)
+	if err != nil {
+		return nil, fmt.Errorf("error executing delete query: %v", err)
+	}
+	defer rows.Close()
+
+	var deletedMedicines []*entity.MedicinePyxis
+	for rows.Next() {
+		var deletedMedicine entity.MedicinePyxis
+		err := rows.StructScan(&deletedMedicine)
+		if err != nil {
+			return nil, fmt.Errorf("error scanning row: %v", err)
+		}
+		deletedMedicines = append(deletedMedicines, &deletedMedicine)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("error with rows: %v", err)
+	}
+
+	return deletedMedicines, err
+}
+
 //////////////// TODO ////////////////
 
 func (r *MedicinePyxisRepositoryPostgres) FindPyxisById(id string) (*entity.Pyxis, error) {

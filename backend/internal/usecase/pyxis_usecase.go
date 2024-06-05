@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
 )
@@ -111,4 +113,23 @@ func (p *PyxisUseCase) GetMedicinesFromPyxis(pyxis_id string) ([]*dto.FindMedici
 	}
 
 	return output, err
+}
+
+func (p *PyxisUseCase) DisassociateMedicinesFromPyxis(pyxis_id string, medicines_id []string) (*dto.DisassociateMedicinesOutputDTO, error) {
+	deletedMedicines, err := p.MedicinePyxisRepository.DeleteMedicinesPyxis(pyxis_id, medicines_id)
+
+	if len(deletedMedicines) == 0 {
+		return nil, fmt.Errorf("Unable to disassociate medicines: these medicines doesn't exists in this pyxis")
+	}
+
+	output := dto.DisassociateMedicinesOutputDTO{
+		DisassociatedMedicines: make([]dto.DisassociateMedicineOutputDTO, len(deletedMedicines)),
+	}
+
+	for i, deletedMedicine := range deletedMedicines {
+		output.DisassociatedMedicines[i].MedicineID = deletedMedicine.MedicineId
+		output.DisassociatedMedicines[i].PyxisID = deletedMedicine.PyxisId
+	}
+
+	return &output, err
 }
