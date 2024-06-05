@@ -32,8 +32,14 @@ func hashPassword(password string) string {
 }
 
 func (u *UserUseCase) CreateUser(input *dto.CreateUserInputDTO) (*dto.CreateUserOutputDTO, error) {
+	existingUser, _ := u.UserRepository.FindUserByEmail(input.Email)
+
+	if existingUser != nil {
+		return nil, fmt.Errorf("user with email %s already exists", input.Email)
+	}
+
 	hashedPassword := hashPassword(input.Password)
-	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
+
 	user := entity.NewUser(input.Name, input.Email, string(hashedPassword), input.Role)
 	res, err := u.UserRepository.CreateUser(user)
 	if err != nil {
@@ -167,7 +173,6 @@ func generateJWT(user *entity.User) (string, error) {
 }
 
 func (u *UserUseCase) LoginUser(input *dto.LoginUserInputDTO) (*dto.LoginUserOutputDTO, error) {
-	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
 	user, err := u.UserRepository.FindUserByEmail(input.Email)
 
 	if err != nil {

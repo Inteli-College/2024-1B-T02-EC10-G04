@@ -1187,7 +1187,10 @@ const docTemplate = `{
     },
     "securityDefinitions": {
         "BearerAuth": {
-            "type": "basic"
+            "description": "\"Type: Bearer token\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -1199,7 +1202,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Manager API",
-	Description:      "\"Type: Bearer token\"",
+	Description:      "This is a.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
