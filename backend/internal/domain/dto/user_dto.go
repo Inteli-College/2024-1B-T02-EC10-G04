@@ -31,12 +31,12 @@ type FindUserByIdInputDTO struct {
 }
 
 type UpdateUserInputDTO struct {
-	ID       string `json:"id"`
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
-	OnDuty   bool   `json:"on_duty"`
+	ID       string  `json:"id"`
+	Name     *string `json:"name"`
+	Email    *string `json:"email"`
+	Password *string `json:"password"`
+	Role     *string `json:"role"`
+	OnDuty   *bool   `json:"on_duty"`
 }
 
 type DeleteUserInputDTO struct {

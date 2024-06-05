@@ -813,8 +813,8 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "medicine_id": {
-                    "type": "string"
+                "medicine": {
+                    "$ref": "#/definitions/entity.Medicine"
                 },
                 "observation": {
                     "type": "string"
@@ -831,8 +831,8 @@ const docTemplate = `{
                 "updated_at": {
                     "type": "string"
                 },
-                "user_id": {
-                    "type": "string"
+                "user": {
+                    "$ref": "#/definitions/entity.User"
                 }
             }
         },
@@ -1025,6 +1025,29 @@ const docTemplate = `{
                 }
             }
         },
+        "entity.Medicine": {
+            "type": "object",
+            "properties": {
+                "batch": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "stripe": {
+                    "$ref": "#/definitions/entity.StripeType"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.StripeType": {
             "type": "string",
             "enum": [
@@ -1037,6 +1060,35 @@ const docTemplate = `{
                 "StripeYellow",
                 "StripeBlack"
             ]
+        },
+        "entity.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "on_duty": {
+                    "type": "boolean"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         }
     }
 }`
@@ -1044,7 +1096,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost",
+	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Manager API",

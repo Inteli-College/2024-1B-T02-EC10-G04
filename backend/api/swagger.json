@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost",
+    "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
         "/medicines": {
@@ -807,8 +807,8 @@
                 "id": {
                     "type": "string"
                 },
-                "medicine_id": {
-                    "type": "string"
+                "medicine": {
+                    "$ref": "#/definitions/entity.Medicine"
                 },
                 "observation": {
                     "type": "string"
@@ -825,8 +825,8 @@
                 "updated_at": {
                     "type": "string"
                 },
-                "user_id": {
-                    "type": "string"
+                "user": {
+                    "$ref": "#/definitions/entity.User"
                 }
             }
         },
@@ -1019,6 +1019,29 @@
                 }
             }
         },
+        "entity.Medicine": {
+            "type": "object",
+            "properties": {
+                "batch": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "stripe": {
+                    "$ref": "#/definitions/entity.StripeType"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.StripeType": {
             "type": "string",
             "enum": [
@@ -1031,6 +1054,35 @@
                 "StripeYellow",
                 "StripeBlack"
             ]
+        },
+        "entity.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "on_duty": {
+                    "type": "boolean"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
         }
     }
 }

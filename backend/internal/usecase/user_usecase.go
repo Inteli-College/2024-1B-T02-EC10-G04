@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"reflect"
 	"time"
 
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
@@ -83,21 +84,35 @@ func (u *UserUseCase) FindAllUsers() ([]*dto.FindUserOutputDTO, error) {
 }
 
 func (u *UserUseCase) UpdateUser(input *dto.UpdateUserInputDTO) (*dto.UpdateUserOutputDTO, error) {
-	res, err := u.UserRepository.FindUserById(input.ID)
+	_, err := u.UserRepository.FindUserById(input.ID)
 	if err != nil {
 		return nil, err
 	}
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return nil, err
+	// Mapa para armazenar os campos a serem atualizados
+	updates := make(map[string]interface{})
+	v := reflect.ValueOf(input).Elem()
+
+	for i := 0; i < v.NumField(); i++ {
+		field := v.Field(i)
+		fieldName := v.Type().Field(i).Tag.Get("json")
+		if fieldName == "" || fieldName == "id" {
+			continue
+		}
+		if !field.IsNil() {
+			if fieldName == "password" {
+				hashedPassword, err := bcrypt.GenerateFromPassword([]byte(*field.Interface().(*string)), bcrypt.DefaultCost)
+				if err != nil {
+					return nil, err
+				}
+				updates[fieldName] = string(hashedPassword)
+			} else {
+				updates[fieldName] = field.Interface()
+			}
+		}
 	}
 
-	user := entity.NewUser(input.Name, input.Email, string(hashedPassword), input.Role)
-	user.ID = res.ID
-	user.OnDuty = input.OnDuty
-
-	res, err = u.UserRepository.UpdateUser(user)
+	res, err := u.UserRepository.UpdateUser(input.ID, updates)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +142,7 @@ func verifyPassword(userPassword string, providedPassword string) (bool, string)
 
 	if err != nil {
 		fmt.Println(err)
-		msg = fmt.Sprintf("E-Mail or Password is incorrect")
+		msg = "E-Mail or Password is incorrect"
 		check = false
 	}
 	return check, msg

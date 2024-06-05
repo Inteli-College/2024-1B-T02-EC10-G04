@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"fmt"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
 	"github.com/jmoiron/sqlx"
 )
@@ -48,9 +50,21 @@ func (r *UserRepositoryPostgres) DeleteUser(id string) error {
 	return nil
 }
 
-func (r *UserRepositoryPostgres) UpdateUser(user *entity.User) (*entity.User, error) {
+func (r *UserRepositoryPostgres) UpdateUser(userID string, updates map[string]interface{}) (*entity.User, error) {
+	query := "UPDATE users SET updated_at = CURRENT_TIMESTAMP"
+	params := []interface{}{}
+	i := 1
+
+	for k, v := range updates {
+		query += fmt.Sprintf(", %s = $%d", k, i)
+		params = append(params, v)
+		i++
+	}
+	query += fmt.Sprintf(" WHERE id = $%d RETURNING id, name, email, role, on_duty, updated_at", i)
+	params = append(params, userID)
+
 	var userUpdated entity.User
-	err := r.db.QueryRow("UPDATE users SET updated_at = CURRENT_TIMESTAMP, name = $1, email = $2, password = $3, role = $4, on_duty = $5 WHERE id = $6 RETURNING id, name, email, role, on_duty, updated_at", user.Name, user.Email, user.Password, user.Role, user.OnDuty, user.ID).Scan(&userUpdated.ID, &userUpdated.Name, &userUpdated.Email, &userUpdated.Role, &userUpdated.OnDuty, &userUpdated.UpdatedAt)
+	err := r.db.QueryRow(query, params...).Scan(&userUpdated.ID, &userUpdated.Name, &userUpdated.Email, &userUpdated.Role, &userUpdated.OnDuty, &userUpdated.UpdatedAt)
 	if err != nil {
 		return nil, err
 	}
