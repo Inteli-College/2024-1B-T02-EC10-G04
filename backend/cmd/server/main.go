@@ -10,6 +10,7 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
+	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
 	"github.com/joho/godotenv"
 
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
@@ -57,7 +58,7 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host	localhost
+//	@host	localhost:8080
 //	@BasePath	/api/v1
 
 // @SecurityDefinitions.apikey BearerAuth
@@ -115,10 +116,12 @@ func main() {
 		{
 			userGroup.POST("", userHandlers.CreateUser)
 			userGroup.POST("/login", userHandlers.LoginUser)
-			userGroup.GET("", userHandlers.FindAllUsersHandler)
-			userGroup.GET("/:id", userHandlers.FindUserByIdHandler)
-			userGroup.PUT("/:id", userHandlers.UpdateUserHandler)
-			userGroup.DELETE("/:id", userHandlers.DeleteUserHandler)
+			userGroup.GET("", middleware.AuthMiddleware(userRepository, "admin"), userHandlers.FindAllUsersHandler)
+			// TODO: update find user by id to only show the user that is logged in
+			userGroup.GET("/:id", middleware.AuthMiddleware(userRepository, "admin"), userHandlers.FindUserByIdHandler)
+			// TODO: update update user by id to only update the user that is logged in
+			userGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, "admin"), userHandlers.UpdateUserHandler)
+			userGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, "admin"), userHandlers.DeleteUserHandler)
 		}
 	}
 
@@ -137,11 +140,12 @@ func main() {
 	{
 		orderGroup := api.Group("/orders")
 		{
-			orderGroup.POST("", orderHandlers.CreateOrderHandler)
-			orderGroup.GET("", orderHandlers.FindAllOrdersHandler)
-			orderGroup.GET("/:id", orderHandlers.FindOrderByIdHandler)
-			orderGroup.PUT("/:id", orderHandlers.UpdateOrderHandler)
-			orderGroup.DELETE("/:id", orderHandlers.DeleteOrderHandler)
+			orderGroup.POST("", middleware.AuthMiddleware(userRepository, "user"), orderHandlers.CreateOrderHandler)
+			orderGroup.GET("", middleware.AuthMiddleware(userRepository, "admin"), orderHandlers.FindAllOrdersHandler)
+			// TODO: update order by id to only show the order if the user has created it
+			orderGroup.GET("/:id", middleware.AuthMiddleware(userRepository, "admin"), orderHandlers.FindOrderByIdHandler)
+			orderGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, "admin"), orderHandlers.UpdateOrderHandler)
+			orderGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, "admin"), orderHandlers.DeleteOrderHandler)
 		}
 	}
 
@@ -154,11 +158,11 @@ func main() {
 	{
 		medicineGroup := api.Group("/medicines")
 		{
-			medicineGroup.POST("", medicineHandlers.CreateMedicineHandler)
-			medicineGroup.GET("", medicineHandlers.FindAllMedicinesHandler)
-			medicineGroup.GET("/:id", medicineHandlers.FindMedicineByIdHandler)
-			medicineGroup.PUT("/:id", medicineHandlers.UpdateMedicineHandler)
-			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
+			medicineGroup.POST("", middleware.AuthMiddleware(userRepository, "admin"), medicineHandlers.CreateMedicineHandler)
+			medicineGroup.GET("", middleware.AuthMiddleware(userRepository, "user"), medicineHandlers.FindAllMedicinesHandler)
+			medicineGroup.GET("/:id", middleware.AuthMiddleware(userRepository, "user"), medicineHandlers.FindMedicineByIdHandler)
+			medicineGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, "admin"), medicineHandlers.UpdateMedicineHandler)
+			medicineGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, "admin"), medicineHandlers.DeleteMedicineHandler)
 		}
 	}
 
@@ -173,18 +177,16 @@ func main() {
 	{
 		pyxisGroup := api.Group("/pyxis")
 
-		// Middleware apenas para motivos de demonstração (MUDAR DEPOIS)
-		// pyxisGroup.Use(middleware.AuthMiddleware(userRepository, "user"))
 		{
-			pyxisGroup.POST("", pyxisHandlers.CreatePyxisHandler)
-			pyxisGroup.GET("", pyxisHandlers.FindAllPyxisHandler)
-			pyxisGroup.GET("/:id", pyxisHandlers.FindPyxisByIdHandler)
-			pyxisGroup.PUT("/:id", pyxisHandlers.UpdatePyxisHandler)
-			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
-			pyxisGroup.POST("/:id/register-medicine", pyxisHandlers.RegisterMedicinePyxisHandler)
-			pyxisGroup.GET("/:id/medicines", pyxisHandlers.GetMedicinesPyxisHandler)
-			pyxisGroup.DELETE("/:id/medicines", pyxisHandlers.DisassociateMedicinePyxisHandler)
-			pyxisGroup.POST("/qrcode", pyxisHandlers.GeneratePyxisQRCodeHandler)
+			pyxisGroup.POST("", middleware.AuthMiddleware(userRepository, "admin"), pyxisHandlers.CreatePyxisHandler)
+			pyxisGroup.GET("", middleware.AuthMiddleware(userRepository, "user"), pyxisHandlers.FindAllPyxisHandler)
+			pyxisGroup.GET("/:id", middleware.AuthMiddleware(userRepository, "user"), pyxisHandlers.FindPyxisByIdHandler)
+			pyxisGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, "admin"), pyxisHandlers.UpdatePyxisHandler)
+			pyxisGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, "admin"), pyxisHandlers.DeletePyxisHandler)
+			pyxisGroup.POST("/:id/register-medicine", middleware.AuthMiddleware(userRepository, "admin"), pyxisHandlers.RegisterMedicinePyxisHandler)
+			pyxisGroup.GET("/:id/medicines", middleware.AuthMiddleware(userRepository, "user"), pyxisHandlers.GetMedicinesPyxisHandler)
+			pyxisGroup.DELETE("/:id/medicines", middleware.AuthMiddleware(userRepository, "admin"), pyxisHandlers.DisassociateMedicinePyxisHandler)
+			pyxisGroup.POST("/qrcode", middleware.AuthMiddleware(userRepository, "user"), pyxisHandlers.GeneratePyxisQRCodeHandler)
 		}
 	}
 
