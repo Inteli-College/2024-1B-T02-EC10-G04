@@ -53,3 +53,12 @@ api:
 	@go mod tidy
 	go run ./cmd/server/main.go
 	$(END_LOG)
+
+.PHONY: redis
+redis:
+	$(START_LOG)
+	@if [ "$(reset)" = "true" ]; then \
+		docker compose -f ../docker-compose.yml down redis -v; \
+	fi
+	@docker compose -f ../docker-compose.yml up redis -d
+	$(END_LOG)
