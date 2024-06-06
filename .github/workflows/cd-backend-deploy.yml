@@ -129,7 +129,7 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get install -y postgresql-client
 
-      - name: Execute SQL script
+      - name: Execute SQL script - Migration
         working-directory: ./database/
         env:
           DB_ENDPOINT: ${{ steps.rds_endpoint.outputs.endpoint }}
@@ -138,6 +138,16 @@ jobs:
           MASTER_USER_PASSWORD: postgres123
         run: |
           psql postgresql://$MASTER_USERNAME:$MASTER_USER_PASSWORD@$DB_ENDPOINT:5432/$DB_NAME -f 1-tables.sql
+
+      - name: Execute SQL script - Data
+        working-directory: ./database/
+        env:
+          DB_ENDPOINT: ${{ steps.rds_endpoint.outputs.endpoint }}
+          DB_NAME: prod
+          MASTER_USERNAME: postgres
+          MASTER_USER_PASSWORD: postgres123
+        run: |
+          psql postgresql://$MASTER_USERNAME:$MASTER_USER_PASSWORD@$DB_ENDPOINT:5432/$DB_NAME -f 1-data.sql
 
   build:
     name: "Build and Deploy to ECR"
@@ -167,7 +177,7 @@ jobs:
       - name: Setup .ENV
         working-directory: ./backend/
         run: make env
-      
+
       - name: Build Conductor Monolith
         working-directory: ./backend/
         env:
@@ -175,8 +185,7 @@ jobs:
           ECR_REPOSITORY: conductor
           IMAGE_TAG: latest
         run: |
-          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.conductor ./build
-
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.conductor .
 
       - name: Build Backend Monolith
         working-directory: ./backend/
@@ -185,7 +194,7 @@ jobs:
           ECR_REPOSITORY: server
           IMAGE_TAG: latest
         run: |
-          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.server ./build
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.server .
 
   kubernetes:
     name: "Deploy to EKS"
@@ -237,5 +246,3 @@ jobs:
           --set alertmanager.persistentVolume.storageClass="gp2" \
           --set conductor.persistentVolume.storageClass="gp2" \
           --values conductor/values.yaml
-
-      
