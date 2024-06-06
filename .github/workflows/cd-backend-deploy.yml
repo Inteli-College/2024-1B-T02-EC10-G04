@@ -147,7 +147,7 @@ jobs:
           MASTER_USERNAME: postgres
           MASTER_USER_PASSWORD: postgres123
         run: |
-          psql postgresql://$MASTER_USERNAME:$MASTER_USER_PASSWORD@$DB_ENDPOINT:5432/$DB_NAME -f 1-data.sql
+          psql postgresql://$MASTER_USERNAME:$MASTER_USER_PASSWORD@$DB_ENDPOINT:5432/$DB_NAME -f 2-data.sql
 
   build:
     name: "Build and Deploy to ECR"
