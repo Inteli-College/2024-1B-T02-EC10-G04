@@ -27,6 +27,7 @@ func NewMedicineHandlers(medicineUsecase *usecase.MedicineUseCase) *MedicineHand
 // @Produce json
 // @Param input body dto.CreateMedicineInputDTO true "Medicine entity to create"
 // @Success 200 {object} dto.CreateMedicineOutputDTO
+// @Security BearerAuth
 // @Router /medicines [post]
 func (h *MedicineHandlers) CreateMedicineHandler(c *gin.Context) {
 	var input dto.CreateMedicineInputDTO
@@ -49,6 +50,7 @@ func (h *MedicineHandlers) CreateMedicineHandler(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} dto.FindMedicineOutputDTO
+// @Security BearerAuth
 // @Router /medicines [get]
 func (h *MedicineHandlers) FindAllMedicinesHandler(c *gin.Context) {
 	output, err := h.MedicineUseCase.FindAllMedicines()
@@ -67,6 +69,7 @@ func (h *MedicineHandlers) FindAllMedicinesHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "Medicine ID"
 // @Success 200 {object} dto.FindMedicineOutputDTO
+// @Security BearerAuth
 // @Router /medicines/{id} [get]
 func (m *MedicineHandlers) FindMedicineByIdHandler(c *gin.Context) {
 	medicineId := c.Param("id")
@@ -87,6 +90,7 @@ func (m *MedicineHandlers) FindMedicineByIdHandler(c *gin.Context) {
 // @Param id path string true "Medicine ID"
 // @Param input body dto.UpdateMedicineInputDTO true "Medicine entity to update"
 // @Success 200 {object} dto.FindMedicineOutputDTO
+// @Security BearerAuth
 // @Router /medicines/{id} [put]
 func (h *MedicineHandlers) UpdateMedicineHandler(c *gin.Context) {
 	var input dto.UpdateMedicineInputDTO
@@ -111,6 +115,7 @@ func (h *MedicineHandlers) UpdateMedicineHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "Medicine ID"
 // @Success 200 {string} string
+// @Security BearerAuth
 // @Router /medicines/{id} [delete]
 func (h *MedicineHandlers) DeleteMedicineHandler(c *gin.Context) {
 	medicine_id := c.Param("id")
@@ -122,3 +127,4 @@ func (h *MedicineHandlers) DeleteMedicineHandler(c *gin.Context) {
 	message := fmt.Sprintf("Medicine %s deleted successfully", medicine_id)
 	c.JSON(http.StatusOK, gin.H{"message": message})
 }
+

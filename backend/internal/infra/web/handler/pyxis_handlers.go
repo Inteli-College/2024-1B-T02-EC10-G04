@@ -55,6 +55,7 @@ func (p *PyxisHandlers) CreatePyxisHandler(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} dto.FindPyxisOutputDTO
+// @Security BearerAuth
 // @Router /pyxis [get]
 func (p *PyxisHandlers) FindAllPyxisHandler(c *gin.Context) {
 	output, err := p.PyxisUseCase.FindAllPyxis()
@@ -73,6 +74,7 @@ func (p *PyxisHandlers) FindAllPyxisHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "Pyxis ID"
 // @Success 200 {object} dto.FindPyxisOutputDTO
+// @Security BearerAuth
 // @Router /pyxis/{id} [get]
 func (p *PyxisHandlers) FindPyxisByIdHandler(c *gin.Context) {
 	var input dto.FindPyxisByIDInputDTO
@@ -94,6 +96,7 @@ func (p *PyxisHandlers) FindPyxisByIdHandler(c *gin.Context) {
 // @Param id path string true "Pyxis ID"
 // @Param input body dto.UpdatePyxisInputDTO true "Pyxis entity to update"
 // @Success 200 {object} dto.UpdatePyxisOutputDTO
+// @Security BearerAuth
 // @Router /pyxis/{id} [put]
 func (p *PyxisHandlers) UpdatePyxisHandler(c *gin.Context) {
 	var input dto.UpdatePyxisInputDTO
@@ -118,6 +121,7 @@ func (p *PyxisHandlers) UpdatePyxisHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "Pyxis ID"
 // @Success 200 {string} string
+// @Security BearerAuth
 // @Router /pyxis/{id} [delete]
 func (p *PyxisHandlers) DeletePyxisHandler(c *gin.Context) {
 	var input dto.DeletePyxisInputDTO

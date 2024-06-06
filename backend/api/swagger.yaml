@@ -351,6 +351,8 @@ paths:
             items:
               $ref: '#/definitions/dto.FindMedicineOutputDTO'
             type: array
+      security:
+      - BearerAuth: []
       summary: Retrieve all Medicines entities
       tags:
       - Medicines
@@ -372,6 +374,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.CreateMedicineOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Create a new Medicine entity
       tags:
       - Medicines
@@ -393,6 +397,8 @@ paths:
           description: OK
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Delete a Medicine entity
       tags:
       - Medicines
@@ -413,6 +419,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.FindMedicineOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Retrieve a Medicine entity by ID
       tags:
       - Medicines
@@ -439,6 +447,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.FindMedicineOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Update a Medicine entity
       tags:
       - Medicines
@@ -456,6 +466,8 @@ paths:
             items:
               $ref: '#/definitions/dto.FindOrderOutputDTO'
             type: array
+      security:
+      - BearerAuth: []
       summary: Retrieve all Order entities
       tags:
       - Orders
@@ -477,6 +489,8 @@ paths:
           description: Created
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Create a new Order entity
       tags:
       - Orders
@@ -498,6 +512,8 @@ paths:
           description: OK
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Delete an Order entity
       tags:
       - Orders
@@ -518,6 +534,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.FindOrderOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Retrieve an Order entity by ID
       tags:
       - Orders
@@ -544,6 +562,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.UpdateOrderOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Update an Order entity
       tags:
       - Orders
@@ -561,6 +581,8 @@ paths:
             items:
               $ref: '#/definitions/dto.FindPyxisOutputDTO'
             type: array
+      security:
+      - BearerAuth: []
       summary: Retrieve all Pyxis entities
       tags:
       - Pyxis
@@ -605,6 +627,8 @@ paths:
           description: OK
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Delete a Pyxis entity
       tags:
       - Pyxis
@@ -625,6 +649,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.FindPyxisOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Retrieve a Pyxis entity by ID
       tags:
       - Pyxis
@@ -651,6 +677,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.UpdatePyxisOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Update a Pyxis entity
       tags:
       - Pyxis
@@ -766,6 +794,8 @@ paths:
             items:
               $ref: '#/definitions/dto.FindUserOutputDTO'
             type: array
+      security:
+      - BearerAuth: []
       summary: Retrieve all User entities
       tags:
       - Users
@@ -808,6 +838,8 @@ paths:
           description: OK
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Delete a User entity
       tags:
       - Users
@@ -828,6 +860,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.FindUserOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Retrieve a User entity by ID
       tags:
       - Users
@@ -854,6 +888,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.UpdateUserOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Update a User entity
       tags:
       - Users
