@@ -3,6 +3,7 @@ import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/main.dart';
 
 class ProfilePage extends StatefulWidget {
   final String name;
@@ -29,6 +30,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future<void> _logout() async {
+    await HomeScreen.localStorageService.cleanValues();
+    if (mounted) {
+      Navigator.of(context).pushReplacementNamed('/login');
+    }
+  }
+
     return Scaffold(
         bottomNavigationBar: const NavBarContainer(),
         body: SingleChildScrollView(
@@ -127,7 +136,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     receivedColor: AppColors.secondary,
                     isEnabled: true,
                     label: 'LogOut',
-                    onPressed: () {},
+                    onPressed: () async {
+                      _logout();
+                    },
                   )
                 ],
               ),

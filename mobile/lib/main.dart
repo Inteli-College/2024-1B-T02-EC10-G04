@@ -14,6 +14,7 @@ import 'package:mobile/pages/profile_page.dart';
 import 'package:mobile/pages/new_orders_page.dart';
 import 'package:mobile/pages/check_orders_page.dart';
 import 'package:mobile/pages/qr_code.dart';
+import 'package:mobile/pages/settings_page.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env.front");
@@ -102,6 +103,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
           '/qr-code': (context) => const QRCodePage(),
+          'settings': (context) => const SettingsPage(),
         },
       ),
     );

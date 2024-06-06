@@ -5,7 +5,7 @@ import 'package:mobile/logic/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  final String baseUrl = "http://10.254.19.182/api/v1";
+  final String baseUrl = "http://10.150.4.116/api/v1";
   final LocalStorageService localStorageService = LocalStorageService();
 
   Future<Map<String, dynamic>> login(String email, String password) async {
