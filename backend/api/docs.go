@@ -405,6 +405,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/pyxis/qrcode": {
+            "post": {
+                "description": "Create a QR code for a given pyxis ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Generate a QR code for a Pyxis",
+                "parameters": [
+                    {
+                        "description": "Pyxis ID to generate QR code for",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GenerateQRCodeOutputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "QR code image",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/pyxis/{id}": {
             "get": {
                 "description": "Retrieve a Pyxis entity by ID",
@@ -501,6 +535,121 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pyxis/{id}/medicines": {
+            "get": {
+                "description": "Get all medicines related to a Pyxis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Get medicines from a Pyxis",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.FindMedicineOutputDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Disassociate a sequence n of medicines from a Pyxis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Disassociate medicines from a Pyxis",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medicines to disassociate",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DisassociateMedicineInputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pyxis/{id}/register-medicine": {
+            "post": {
+                "description": "Register a existing medicine to a existing Pyxis entity",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Register a to a Pyxis entity",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medicines to register into Pyxis",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterMedicinePyxisInputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "message\": message}",
+                        "schema": {
+                            "type": "objetct"
                         }
                     }
                 }
@@ -838,6 +987,17 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.DisassociateMedicineInputDTO": {
+            "type": "object",
+            "properties": {
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "dto.FindMedicineOutputDTO": {
             "type": "object",
             "properties": {
@@ -936,6 +1096,14 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.GenerateQRCodeOutputDTO": {
+            "type": "object",
+            "properties": {
+                "pyxis_id": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.LoginUserInputDTO": {
             "type": "object",
             "properties": {
@@ -970,6 +1138,17 @@ const docTemplate = `{
                 },
                 "role": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.RegisterMedicinePyxisInputDTO": {
+            "type": "object",
+            "properties": {
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

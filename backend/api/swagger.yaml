@@ -77,6 +77,13 @@ definitions:
       role:
         type: string
     type: object
+  dto.DisassociateMedicineInputDTO:
+    properties:
+      medicines:
+        items:
+          type: string
+        type: array
+    type: object
   dto.FindMedicineOutputDTO:
     properties:
       batch:
@@ -141,6 +148,11 @@ definitions:
       updated_at:
         type: string
     type: object
+  dto.GenerateQRCodeOutputDTO:
+    properties:
+      pyxis_id:
+        type: string
+    type: object
   dto.LoginUserInputDTO:
     properties:
       email:
@@ -164,6 +176,13 @@ definitions:
         type: boolean
       role:
         type: string
+    type: object
+  dto.RegisterMedicinePyxisInputDTO:
+    properties:
+      medicines:
+        items:
+          type: string
+        type: array
     type: object
   dto.UpdateMedicineInputDTO:
     properties:
@@ -633,6 +652,104 @@ paths:
           schema:
             $ref: '#/definitions/dto.UpdatePyxisOutputDTO'
       summary: Update a Pyxis entity
+      tags:
+      - Pyxis
+  /pyxis/{id}/medicines:
+    delete:
+      consumes:
+      - application/json
+      description: Disassociate a sequence n of medicines from a Pyxis
+      parameters:
+      - description: Pyxis ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Medicines to disassociate
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DisassociateMedicineInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Disassociate medicines from a Pyxis
+      tags:
+      - Pyxis
+    get:
+      consumes:
+      - application/json
+      description: Get all medicines related to a Pyxis
+      parameters:
+      - description: Pyxis ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.FindMedicineOutputDTO'
+            type: array
+      summary: Get medicines from a Pyxis
+      tags:
+      - Pyxis
+  /pyxis/{id}/register-medicine:
+    post:
+      consumes:
+      - application/json
+      description: Register a existing medicine to a existing Pyxis entity
+      parameters:
+      - description: Pyxis ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Medicines to register into Pyxis
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterMedicinePyxisInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message": message}'
+          schema:
+            type: objetct
+      summary: Register a to a Pyxis entity
+      tags:
+      - Pyxis
+  /pyxis/qrcode:
+    post:
+      consumes:
+      - application/json
+      description: Create a QR code for a given pyxis ID
+      parameters:
+      - description: Pyxis ID to generate QR code for
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenerateQRCodeOutputDTO'
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: QR code image
+          schema:
+            type: string
+      summary: Generate a QR code for a Pyxis
       tags:
       - Pyxis
   /users:

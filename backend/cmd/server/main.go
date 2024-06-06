@@ -13,7 +13,6 @@ import (
 
 	// "github.com/joho/godotenv"
 
-	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-contrib/cors"
@@ -46,7 +45,7 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host	localhost
+//	@host	localhost:8080
 //	@BasePath	/api/v1
 
 // @SecurityDefinitions.apikey BearerAuth
@@ -104,26 +103,6 @@ func main() {
 		}
 	}
 
-	/////////////////////// Pyxis /////////////////////////
-
-	pyxisRepository := repository.NewPyxisRepositoryPostgres(db)
-	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository)
-	pyxisHandlers := handler.NewPyxisHandlers(pyxisUseCase)
-
-	{
-		pyxisGroup := api.Group("/pyxis")
-
-		// Middleware apenas para motivos de demonstração (MUDAR DEPOIS)
-		pyxisGroup.Use(middleware.AuthMiddleware(userRepository, "user"))
-		{
-			pyxisGroup.POST("", pyxisHandlers.CreatePyxisHandler)
-			pyxisGroup.GET("", pyxisHandlers.FindAllPyxisHandler)
-			pyxisGroup.GET("/:id", pyxisHandlers.FindPyxisByIdHandler)
-			pyxisGroup.PUT("/:id", pyxisHandlers.UpdatePyxisHandler)
-			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
-		}
-	}
-
 	/////////////////////// Order /////////////////////////
 
 	orderProducerConfigMap := &ckafka.ConfigMap{
@@ -161,6 +140,31 @@ func main() {
 			medicineGroup.GET("/:id", medicineHandlers.FindMedicineByIdHandler)
 			medicineGroup.PUT("/:id", medicineHandlers.UpdateMedicineHandler)
 			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
+		}
+	}
+
+	/////////////////////// Pyxis /////////////////////////
+
+	pyxisRepository := repository.NewPyxisRepositoryPostgres(db)
+	medicinePyxisRepository := repository.NewMedicinePyxisRepositoryPostgres(db)
+	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository, medicinePyxisRepository)
+	pyxisHandlers := handler.NewPyxisHandlers(pyxisUseCase, medicineUseCase)
+
+	{
+		pyxisGroup := api.Group("/pyxis")
+
+		// Middleware apenas para motivos de demonstração (MUDAR DEPOIS)
+		// pyxisGroup.Use(middleware.AuthMiddleware(userRepository, "user"))
+		{
+			pyxisGroup.POST("", pyxisHandlers.CreatePyxisHandler)
+			pyxisGroup.GET("", pyxisHandlers.FindAllPyxisHandler)
+			pyxisGroup.GET("/:id", pyxisHandlers.FindPyxisByIdHandler)
+			pyxisGroup.PUT("/:id", pyxisHandlers.UpdatePyxisHandler)
+			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
+			pyxisGroup.POST("/:id/register-medicine", pyxisHandlers.RegisterMedicinePyxisHandler)
+			pyxisGroup.GET("/:id/medicines", pyxisHandlers.GetMedicinesPyxisHandler)
+			pyxisGroup.DELETE("/:id/medicines", pyxisHandlers.DisassociateMedicinePyxisHandler)
+			pyxisGroup.POST("/qrcode", pyxisHandlers.GeneratePyxisQRCodeHandler)
 		}
 	}
 

@@ -1,16 +1,19 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
 )
 
 type PyxisUseCase struct {
-	PyxisRepository entity.PyxisRepository
+	PyxisRepository         entity.PyxisRepository
+	MedicinePyxisRepository entity.MedicinePyxisRepository
 }
 
-func NewPyxisUseCase(pyxisRepository entity.PyxisRepository) *PyxisUseCase {
-	return &PyxisUseCase{PyxisRepository: pyxisRepository}
+func NewPyxisUseCase(pyxisRepository entity.PyxisRepository, medicinePixysRepository entity.MedicinePyxisRepository) *PyxisUseCase {
+	return &PyxisUseCase{PyxisRepository: pyxisRepository, MedicinePyxisRepository: medicinePixysRepository}
 }
 
 func (p *PyxisUseCase) CreatePyxis(input *dto.CreatePyxisInputDTO) (*dto.CreatePyxisOutputDTO, error) {
@@ -49,8 +52,8 @@ func (p *PyxisUseCase) FindPyxisById(id string) (*dto.FindPyxisOutputDTO, error)
 		return nil, err
 	}
 	return &dto.FindPyxisOutputDTO{
-		ID:    pyxis.ID,
-		Label: pyxis.Label,
+		ID:        pyxis.ID,
+		Label:     pyxis.Label,
 		UpdatedAt: pyxis.UpdatedAt,
 		CreatedAt: pyxis.CreatedAt,
 	}, nil
@@ -61,7 +64,7 @@ func (p *PyxisUseCase) UpdatePyxis(input *dto.UpdatePyxisInputDTO) (*dto.UpdateP
 	if err != nil {
 		return nil, err
 	}
-	
+
 	//TODO: Implement update that does not require all fields of input DTO (Maybe i can do this only in the repository?)
 	res.Label = input.Label
 
@@ -82,4 +85,51 @@ func (p *PyxisUseCase) DeletePyxis(id string) error {
 		return err
 	}
 	return p.PyxisRepository.DeletePyxis(pyxis.ID)
+}
+
+func (p *PyxisUseCase) RegisterMedicine(id string, medicines []string) error {
+	if _, err := p.PyxisRepository.FindPyxisById(id); err != nil {
+		return err
+	}
+
+	_, err := p.MedicinePyxisRepository.CreateMedicinePixys(id, medicines)
+
+	return err
+}
+
+func (p *PyxisUseCase) GetMedicinesFromPyxis(pyxis_id string) ([]*dto.FindMedicineOutputDTO, error) {
+	medicines, err := p.MedicinePyxisRepository.FindMedicinesPyxis(pyxis_id)
+
+	var output []*dto.FindMedicineOutputDTO
+	for _, medicine := range medicines {
+		output = append(output, &dto.FindMedicineOutputDTO{
+			ID:        medicine.ID,
+			Batch:     medicine.Batch,
+			Name:      medicine.Name,
+			Stripe:    medicine.Stripe,
+			CreatedAt: medicine.CreatedAt,
+			UpdatedAt: medicine.UpdatedAt,
+		})
+	}
+
+	return output, err
+}
+
+func (p *PyxisUseCase) DisassociateMedicinesFromPyxis(pyxis_id string, medicines_id []string) (*dto.DisassociateMedicinesOutputDTO, error) {
+	deletedMedicines, err := p.MedicinePyxisRepository.DeleteMedicinesPyxis(pyxis_id, medicines_id)
+
+	if len(deletedMedicines) == 0 {
+		return nil, fmt.Errorf("Unable to disassociate medicines: these medicines doesn't exists in this pyxis")
+	}
+
+	output := dto.DisassociateMedicinesOutputDTO{
+		DisassociatedMedicines: make([]dto.DisassociateMedicineOutputDTO, len(deletedMedicines)),
+	}
+
+	for i, deletedMedicine := range deletedMedicines {
+		output.DisassociatedMedicines[i].MedicineID = deletedMedicine.MedicineId
+		output.DisassociatedMedicines[i].PyxisID = deletedMedicine.PyxisId
+	}
+
+	return &output, err
 }
