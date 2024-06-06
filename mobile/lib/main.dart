@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
           '/new-order': (context) => const NewOrderPage(
                 pyxis: 'M10 G04',
                 medicine: 'Ibuprofeno',
-                lote: '4679',
+                medicineid: '4679',
               ),
           '/check-order': (context) => CheckOrderPage(
                 pyxis: 'M10 G04',
