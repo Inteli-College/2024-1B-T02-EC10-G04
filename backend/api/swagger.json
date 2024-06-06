@@ -16,7 +16,6 @@
         "version": "1.0"
     },
     "host": "localhost:8080",
-    "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
         "/medicines": {
@@ -1099,17 +1098,6 @@
                 }
             }
         },
-        "dto.RegisterMedicinePyxisInputDTO": {
-            "type": "object",
-            "properties": {
-                "medicines": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
         "dto.LoginUserInputDTO": {
             "type": "object",
             "properties": {
@@ -1118,17 +1106,6 @@
                 },
                 "password": {
                     "type": "string"
-                }
-            }
-        },
-        "dto.RegisterMedicinePyxisInputDTO": {
-            "type": "object",
-            "properties": {
-                "medicines": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
                 }
             }
         },
@@ -1155,6 +1132,17 @@
                 },
                 "role": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.RegisterMedicinePyxisInputDTO": {
+            "type": "object",
+            "properties": {
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

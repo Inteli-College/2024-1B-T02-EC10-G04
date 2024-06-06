@@ -148,6 +148,11 @@ definitions:
       updated_at:
         type: string
     type: object
+  dto.GenerateQRCodeOutputDTO:
+    properties:
+      pyxis_id:
+        type: string
+    type: object
   dto.LoginUserInputDTO:
     properties:
       email:
@@ -171,6 +176,13 @@ definitions:
         type: boolean
       role:
         type: string
+    type: object
+  dto.RegisterMedicinePyxisInputDTO:
+    properties:
+      medicines:
+        items:
+          type: string
+        type: array
     type: object
   dto.UpdateMedicineInputDTO:
     properties:

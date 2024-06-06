@@ -1096,6 +1096,14 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.GenerateQRCodeOutputDTO": {
+            "type": "object",
+            "properties": {
+                "pyxis_id": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.LoginUserInputDTO": {
             "type": "object",
             "properties": {
@@ -1129,14 +1137,6 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "role": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.GenerateQRCodeOutputDTO": {
-            "type": "object",
-            "properties": {
-                "pyxis_id": {
                     "type": "string"
                 }
             }
