@@ -106,15 +106,6 @@ CREATE TABLE Medicine_Pyxis (
     FOREIGN KEY (medicine_id) REFERENCES Medicines(id)
 );
 
-CREATE TABLE Medicine_Pyxis (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    pyxis_id UUID NOT NULL,
-    medicine_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (pyxis_id) REFERENCES Pyxis(id),
-    FOREIGN KEY (medicine_id) REFERENCES Medicines(id)
-);
-
 -- Função para criar triggers se não existirem
 DO $$
 BEGIN
