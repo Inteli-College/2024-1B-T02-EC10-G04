@@ -368,6 +368,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new Pyxis entity",
                 "consumes": [
                     "application/json"
@@ -395,6 +400,40 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/dto.CreatePyxisOutputDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/pyxis/qrcode": {
+            "post": {
+                "description": "Create a QR code for a given pyxis ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Generate a QR code for a Pyxis",
+                "parameters": [
+                    {
+                        "description": "Pyxis ID to generate QR code for",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GenerateQRCodeOutputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "QR code image",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -501,6 +540,121 @@ const docTemplate = `{
                 }
             }
         },
+        "/pyxis/{id}/medicines": {
+            "get": {
+                "description": "Get all medicines related to a Pyxis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Get medicines from a Pyxis",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.FindMedicineOutputDTO"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Disassociate a sequence n of medicines from a Pyxis",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Disassociate medicines from a Pyxis",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medicines to disassociate",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.DisassociateMedicineInputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/pyxis/{id}/register-medicine": {
+            "post": {
+                "description": "Register a existing medicine to a existing Pyxis entity",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Register a to a Pyxis entity",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Pyxis ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Medicines to register into Pyxis",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.RegisterMedicinePyxisInputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "message\": message}",
+                        "schema": {
+                            "type": "objetct"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "Retrieve all User entities",
@@ -554,6 +708,58 @@ const docTemplate = `{
                         "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/dto.CreateUserOutputDTO"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/login": {
+            "post": {
+                "description": "Authenticate user credentials and return user session information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Log in a user",
+                "parameters": [
+                    {
+                        "description": "Login credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginUserInputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Authentication successful, user details returned",
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginUserOutputDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid credentials or bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
                         }
                     }
                 }
@@ -781,6 +987,17 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.DisassociateMedicineInputDTO": {
+            "type": "object",
+            "properties": {
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
         "dto.FindMedicineOutputDTO": {
             "type": "object",
             "properties": {
@@ -813,8 +1030,8 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "medicine_id": {
-                    "type": "string"
+                "medicine": {
+                    "$ref": "#/definitions/entity.Medicine"
                 },
                 "observation": {
                     "type": "string"
@@ -831,8 +1048,8 @@ const docTemplate = `{
                 "updated_at": {
                     "type": "string"
                 },
-                "user_id": {
-                    "type": "string"
+                "user": {
+                    "$ref": "#/definitions/entity.User"
                 }
             }
         },
@@ -876,6 +1093,62 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.GenerateQRCodeOutputDTO": {
+            "type": "object",
+            "properties": {
+                "pyxis_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LoginUserInputDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LoginUserOutputDTO": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "on_duty": {
+                    "type": "boolean"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RegisterMedicinePyxisInputDTO": {
+            "type": "object",
+            "properties": {
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },
@@ -1025,6 +1298,29 @@ const docTemplate = `{
                 }
             }
         },
+        "entity.Medicine": {
+            "type": "object",
+            "properties": {
+                "batch": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "stripe": {
+                    "$ref": "#/definitions/entity.StripeType"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.StripeType": {
             "type": "string",
             "enum": [
@@ -1037,6 +1333,43 @@ const docTemplate = `{
                 "StripeYellow",
                 "StripeBlack"
             ]
+        },
+        "entity.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "on_duty": {
+                    "type": "boolean"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "\"Type: Bearer token\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
@@ -1044,7 +1377,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost",
+	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Manager API",

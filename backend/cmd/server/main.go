@@ -6,31 +6,40 @@ import (
 
 	_ "github.com/Inteli-College/2024-1B-T02-EC10-G04/api"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
+	initialization "github.com/Inteli-College/2024-1B-T02-EC10-G04/init"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
 	"github.com/joho/godotenv"
 
-	// "github.com/joho/godotenv"
-
-	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	// "github.com/joho/godotenv"
-	// "log"
 )
 
 // Please use .env file for local development. After that, please comment out the lines below,
 // their dependencies as well, and update the go.mod file with command $ go mod tidy.
 
 func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	if _, stat_err := os.Stat("./.env"); stat_err == nil {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
+
+	if missing_var := initialization.VerifyEnvs(
+		"POSTGRES_URL",
+		"KAFKA_BOOTSTRAP_SERVER",
+		"KAFKA_ORDERS_TOPIC_NAME",
+		"KAFKA_ORDERS_GROUP_ID",
+		"KAFKA_ORDERS_CLIENT_ID",
+		"JWT_SECRET_KEY",
+	); missing_var != nil {
+		panic(missing_var)
 	}
 }
 
@@ -46,9 +55,15 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host	localhost
+//	@host	localhost:8080
 //	@BasePath	/api/v1
-// 	@query.collection.format multi
+
+// @SecurityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description "Type: Bearer token"
+// @scheme bearer
+// @bearerFormat JWT
 
 func main() {
 	/////////////////////// Configs /////////////////////////
@@ -98,26 +113,6 @@ func main() {
 		}
 	}
 
-	/////////////////////// Pyxis /////////////////////////
-
-	pyxisRepository := repository.NewPyxisRepositoryPostgres(db)
-	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository)
-	pyxisHandlers := handler.NewPyxisHandlers(pyxisUseCase)
-
-	{
-		pyxisGroup := api.Group("/pyxis")
-
-		// Middleware apenas para motivos de demonstração (MUDAR DEPOIS)
-		pyxisGroup.Use(middleware.AuthMiddleware(userRepository, "user"))
-		{
-			pyxisGroup.POST("", pyxisHandlers.CreatePyxisHandler)
-			pyxisGroup.GET("", pyxisHandlers.FindAllPyxisHandler)
-			pyxisGroup.GET("/:id", pyxisHandlers.FindPyxisByIdHandler)
-			pyxisGroup.PUT("/:id", pyxisHandlers.UpdatePyxisHandler)
-			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
-		}
-	}
-
 	/////////////////////// Order /////////////////////////
 
 	orderProducerConfigMap := &ckafka.ConfigMap{
@@ -155,6 +150,31 @@ func main() {
 			medicineGroup.GET("/:id", medicineHandlers.FindMedicineByIdHandler)
 			medicineGroup.PUT("/:id", medicineHandlers.UpdateMedicineHandler)
 			medicineGroup.DELETE("/:id", medicineHandlers.DeleteMedicineHandler)
+		}
+	}
+
+	/////////////////////// Pyxis /////////////////////////
+
+	pyxisRepository := repository.NewPyxisRepositoryPostgres(db)
+	medicinePyxisRepository := repository.NewMedicinePyxisRepositoryPostgres(db)
+	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository, medicinePyxisRepository)
+	pyxisHandlers := handler.NewPyxisHandlers(pyxisUseCase, medicineUseCase)
+
+	{
+		pyxisGroup := api.Group("/pyxis")
+
+		// Middleware apenas para motivos de demonstração (MUDAR DEPOIS)
+		// pyxisGroup.Use(middleware.AuthMiddleware(userRepository, "user"))
+		{
+			pyxisGroup.POST("", pyxisHandlers.CreatePyxisHandler)
+			pyxisGroup.GET("", pyxisHandlers.FindAllPyxisHandler)
+			pyxisGroup.GET("/:id", pyxisHandlers.FindPyxisByIdHandler)
+			pyxisGroup.PUT("/:id", pyxisHandlers.UpdatePyxisHandler)
+			pyxisGroup.DELETE("/:id", pyxisHandlers.DeletePyxisHandler)
+			pyxisGroup.POST("/:id/register-medicine", pyxisHandlers.RegisterMedicinePyxisHandler)
+			pyxisGroup.GET("/:id/medicines", pyxisHandlers.GetMedicinesPyxisHandler)
+			pyxisGroup.DELETE("/:id/medicines", pyxisHandlers.DisassociateMedicinePyxisHandler)
+			pyxisGroup.POST("/qrcode", pyxisHandlers.GeneratePyxisQRCodeHandler)
 		}
 	}
 

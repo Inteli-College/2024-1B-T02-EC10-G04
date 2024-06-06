@@ -125,6 +125,17 @@ func (h *UserHandlers) DeleteUserHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": message})
 }
 
+// LoginUser
+// @Summary Log in a user
+// @Description Authenticate user credentials and return user session information
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param input body dto.LoginUserInputDTO true "Login credentials"
+// @Success 200 {object} dto.LoginUserOutputDTO "Authentication successful, user details returned"
+// @Failure 400 {object} map[string]string "Invalid credentials or bad request"
+// @Failure 500 {object} map[string]string "Internal server error"
+// @Router /users/login [post]
 func (h *UserHandlers) LoginUser(c *gin.Context) {
 	var input dto.LoginUserInputDTO
 	if err := c.ShouldBindJSON(&input); err != nil {

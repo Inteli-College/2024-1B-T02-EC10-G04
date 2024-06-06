@@ -3,6 +3,9 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"sync"
+
+	"github.com/skip2/go-qrcode"
 
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
@@ -10,12 +13,14 @@ import (
 )
 
 type PyxisHandlers struct {
-	PyxisUseCase *usecase.PyxisUseCase
+	PyxisUseCase    *usecase.PyxisUseCase
+	MedicineUseCase *usecase.MedicineUseCase
 }
 
-func NewPyxisHandlers(pyxisUsecase *usecase.PyxisUseCase) *PyxisHandlers {
+func NewPyxisHandlers(pyxisUsecase *usecase.PyxisUseCase, medicineUsecase *usecase.MedicineUseCase) *PyxisHandlers {
 	return &PyxisHandlers{
-		PyxisUseCase: pyxisUsecase,
+		PyxisUseCase:    pyxisUsecase,
+		MedicineUseCase: medicineUsecase,
 	}
 }
 
@@ -27,6 +32,7 @@ func NewPyxisHandlers(pyxisUsecase *usecase.PyxisUseCase) *PyxisHandlers {
 // @Produce json
 // @Param input body dto.CreatePyxisInputDTO true "Pyxis entity to create"
 // @Success 200 {object} dto.CreatePyxisOutputDTO
+// @Security BearerAuth
 // @Router /pyxis [post]
 func (p *PyxisHandlers) CreatePyxisHandler(c *gin.Context) {
 	var input dto.CreatePyxisInputDTO
@@ -123,4 +129,189 @@ func (p *PyxisHandlers) DeletePyxisHandler(c *gin.Context) {
 	}
 	message := fmt.Sprintf("Pyxis %s deleted successfully", input.ID)
 	c.JSON(http.StatusOK, gin.H{"message": message})
+}
+
+// RegisterMedicinePyxisHandler
+// @Summary Register a to a Pyxis entity
+// @Description Register a existing medicine to a existing Pyxis entity
+// @Tags Pyxis
+// @Accept json
+// @Produce json
+// @Param id path string true "Pyxis ID"
+// @Param input body dto.RegisterMedicinePyxisInputDTO true "Medicines to register into Pyxis"
+// @Success 200 {objetct} {"message": message}
+// @Router /pyxis/{id}/register-medicine [post]
+func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
+	pixys_id := c.Param("id")
+
+	if pixy, err := p.PyxisUseCase.FindPyxisById(pixys_id); pixy == nil || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pixy doesn't exists"})
+		return
+	}
+
+	var input dto.RegisterMedicinePyxisInputDTO
+	if err := c.BindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var medicinesCheckWg sync.WaitGroup
+	medicinesCheckChnFinish := make(chan interface{})
+	medicinesCheckChnError := make(chan error)
+
+	for _, medicine_id := range input.Medicines {
+		medicinesCheckWg.Add(1)
+		go func(medicine_id string) {
+			defer medicinesCheckWg.Done()
+			if result, err := p.MedicineUseCase.FindMedicineById(medicine_id); result == nil || err != nil {
+				medicinesCheckChnError <- err
+			}
+			return
+		}(medicine_id)
+	}
+
+	go func() {
+		medicinesCheckWg.Wait()
+		medicinesCheckChnFinish <- "finished"
+	}()
+
+	select {
+	case _ = <-medicinesCheckChnFinish:
+		// finished checking all medicines
+	case errorChecking := <-medicinesCheckChnError:
+		c.JSON(http.StatusNotFound, gin.H{"error": errorChecking.Error()})
+		return
+	}
+
+	err := p.PyxisUseCase.RegisterMedicine(pixys_id, input.Medicines)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	message := fmt.Sprintf("Medicines registered to pixy: %s with success", pixys_id)
+	c.JSON(http.StatusOK, gin.H{"message": message})
+}
+
+// GetMedicinesPyxisHandler
+// @Summary Get medicines from a Pyxis
+// @Description Get all medicines related to a Pyxis
+// @Tags Pyxis
+// @Accept json
+// @Produce json
+// @Param id path string true "Pyxis ID"
+// @Success 200 {object} []dto.FindMedicineOutputDTO
+// @Router /pyxis/{id}/medicines [get]
+func (p *PyxisHandlers) GetMedicinesPyxisHandler(c *gin.Context) {
+	pixys_id := c.Param("id")
+
+	if pixy, err := p.PyxisUseCase.FindPyxisById(pixys_id); pixy == nil || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pixy doesn't exists"})
+		return
+	}
+
+	output, err := p.PyxisUseCase.GetMedicinesFromPyxis(pixys_id)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, output)
+	return
+}
+
+// DisassociateMedicinePyxisHandler
+// @Summary Disassociate medicines from a Pyxis
+// @Description Disassociate a sequence n of medicines from a Pyxis
+// @Tags Pyxis
+// @Accept json
+// @Produce json
+// @Param id path string true "Pyxis ID"
+// @Param input body dto.DisassociateMedicineInputDTO true "Medicines to disassociate"
+// @Success 200 {string} string
+// @Router /pyxis/{id}/medicines [delete]
+func (p *PyxisHandlers) DisassociateMedicinePyxisHandler(c *gin.Context) {
+	pixys_id := c.Param("id")
+
+	if pixy, err := p.PyxisUseCase.FindPyxisById(pixys_id); pixy == nil || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pixy doesn't exists"})
+		return
+	}
+
+	var input dto.DisassociateMedicineInputDTO
+
+	if err := c.BindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var medicinesCheckWg sync.WaitGroup
+	medicinesCheckChnFinish := make(chan interface{})
+	medicinesCheckChnError := make(chan error)
+
+	for _, medicine_id := range input.Medicines {
+		medicinesCheckWg.Add(1)
+		go func(medicine_id string) {
+			defer medicinesCheckWg.Done()
+			if result, err := p.MedicineUseCase.FindMedicineById(medicine_id); result == nil || err != nil {
+				medicinesCheckChnError <- err
+			}
+			return
+		}(medicine_id)
+	}
+
+	go func() {
+		medicinesCheckWg.Wait()
+		medicinesCheckChnFinish <- "finished"
+	}()
+
+	select {
+	case _ = <-medicinesCheckChnFinish:
+		// finished checking all medicines
+	case errorChecking := <-medicinesCheckChnError:
+		c.JSON(http.StatusNotFound, gin.H{"error": errorChecking.Error()})
+		return
+	}
+
+	output, err := p.PyxisUseCase.DisassociateMedicinesFromPyxis(pixys_id, input.Medicines)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, output)
+	return
+}
+
+// GeneratePyxisQRCodeHandler
+// @Summary Generate a QR code for a Pyxis
+// @Description Create a QR code for a given pyxis ID
+// @Tags Pyxis
+// @Accept json
+// @Produce image/png
+// @Param input body dto.GenerateQRCodeOutputDTO true "Pyxis ID to generate QR code for"
+// @Success 200 {string} string "QR code image"
+// @Router /pyxis/qrcode [post]
+func (p *PyxisHandlers) GeneratePyxisQRCodeHandler(c *gin.Context) {
+	var input dto.GenerateQRCodeOutputDTO
+
+	if err := c.BindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if pixy, err := p.PyxisUseCase.FindPyxisById(input.PyxisID); pixy == nil || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pixy doesn't exists"})
+		return
+	}
+
+	qr, err := qrcode.Encode(input.PyxisID, qrcode.Medium, 256)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate QR code"})
+		return
+	}
+
+	c.Header("Content-Type", "image/png")
+	c.Writer.Write(qr)
 }

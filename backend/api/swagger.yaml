@@ -77,6 +77,13 @@ definitions:
       role:
         type: string
     type: object
+  dto.DisassociateMedicineInputDTO:
+    properties:
+      medicines:
+        items:
+          type: string
+        type: array
+    type: object
   dto.FindMedicineOutputDTO:
     properties:
       batch:
@@ -98,8 +105,8 @@ definitions:
         type: string
       id:
         type: string
-      medicine_id:
-        type: string
+      medicine:
+        $ref: '#/definitions/entity.Medicine'
       observation:
         type: string
       priority:
@@ -110,8 +117,8 @@ definitions:
         type: string
       updated_at:
         type: string
-      user_id:
-        type: string
+      user:
+        $ref: '#/definitions/entity.User'
     type: object
   dto.FindPyxisOutputDTO:
     properties:
@@ -140,6 +147,42 @@ definitions:
         type: string
       updated_at:
         type: string
+    type: object
+  dto.GenerateQRCodeOutputDTO:
+    properties:
+      pyxis_id:
+        type: string
+    type: object
+  dto.LoginUserInputDTO:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.LoginUserOutputDTO:
+    properties:
+      access_token:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      on_duty:
+        type: boolean
+      role:
+        type: string
+    type: object
+  dto.RegisterMedicinePyxisInputDTO:
+    properties:
+      medicines:
+        items:
+          type: string
+        type: array
     type: object
   dto.UpdateMedicineInputDTO:
     properties:
@@ -236,6 +279,21 @@ definitions:
       updated_at:
         type: string
     type: object
+  entity.Medicine:
+    properties:
+      batch:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      stripe:
+        $ref: '#/definitions/entity.StripeType'
+      updated_at:
+        type: string
+    type: object
   entity.StripeType:
     enum:
     - red
@@ -246,7 +304,26 @@ definitions:
     - StripeRed
     - StripeYellow
     - StripeBlack
-host: localhost
+  entity.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      on_duty:
+        type: boolean
+      password:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
 info:
   contact:
     email: gomedicine@inteli.edu.br
@@ -505,6 +582,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.CreatePyxisOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Create a new Pyxis entity
       tags:
       - Pyxis
@@ -573,6 +652,104 @@ paths:
           schema:
             $ref: '#/definitions/dto.UpdatePyxisOutputDTO'
       summary: Update a Pyxis entity
+      tags:
+      - Pyxis
+  /pyxis/{id}/medicines:
+    delete:
+      consumes:
+      - application/json
+      description: Disassociate a sequence n of medicines from a Pyxis
+      parameters:
+      - description: Pyxis ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Medicines to disassociate
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.DisassociateMedicineInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Disassociate medicines from a Pyxis
+      tags:
+      - Pyxis
+    get:
+      consumes:
+      - application/json
+      description: Get all medicines related to a Pyxis
+      parameters:
+      - description: Pyxis ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.FindMedicineOutputDTO'
+            type: array
+      summary: Get medicines from a Pyxis
+      tags:
+      - Pyxis
+  /pyxis/{id}/register-medicine:
+    post:
+      consumes:
+      - application/json
+      description: Register a existing medicine to a existing Pyxis entity
+      parameters:
+      - description: Pyxis ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Medicines to register into Pyxis
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.RegisterMedicinePyxisInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'message": message}'
+          schema:
+            type: objetct
+      summary: Register a to a Pyxis entity
+      tags:
+      - Pyxis
+  /pyxis/qrcode:
+    post:
+      consumes:
+      - application/json
+      description: Create a QR code for a given pyxis ID
+      parameters:
+      - description: Pyxis ID to generate QR code for
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenerateQRCodeOutputDTO'
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: QR code image
+          schema:
+            type: string
+      summary: Generate a QR code for a Pyxis
       tags:
       - Pyxis
   /users:
@@ -680,4 +857,44 @@ paths:
       summary: Update a User entity
       tags:
       - Users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user credentials and return user session information
+      parameters:
+      - description: Login credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginUserInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Authentication successful, user details returned
+          schema:
+            $ref: '#/definitions/dto.LoginUserOutputDTO'
+        "400":
+          description: Invalid credentials or bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Log in a user
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    description: '"Type: Bearer token"'
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

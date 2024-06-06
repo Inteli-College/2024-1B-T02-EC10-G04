@@ -8,7 +8,7 @@ type UserRepository interface {
 	CreateUser(user *User) (*User, error)
 	FindUserById(id string) (*User, error)
 	FindAllUsers() ([]*User, error)
-	UpdateUser(user *User) (*User, error)
+	UpdateUser(userID string, updates map[string]interface{}) (*User, error)
 	DeleteUser(id string) error
 	FindUserByEmail(email string) (*User, error)
 }
