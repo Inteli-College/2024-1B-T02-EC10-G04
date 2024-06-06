@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"sync"
 
+	"github.com/skip2/go-qrcode"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	"github.com/gin-gonic/gin"
@@ -279,4 +281,36 @@ func (p *PyxisHandlers) DisassociateMedicinePyxisHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, output)
 	return
+}
+
+// GeneratePyxisQRCodeHandler
+// @Summary Generate a QR code for a Pyxis
+// @Description Create a QR code for a given pyxis ID
+// @Tags Pyxis
+// @Accept json
+// @Produce image/png
+// @Param input body dto.GenerateQRCodeOutputDTO true "Pyxis ID to generate QR code for"
+// @Success 200 {string} string "QR code image"
+// @Router /pyxis/qrcode [post]
+func (p *PyxisHandlers) GeneratePyxisQRCodeHandler(c *gin.Context) {
+	var input dto.GenerateQRCodeOutputDTO
+
+	if err := c.BindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if pixy, err := p.PyxisUseCase.FindPyxisById(input.PyxisID); pixy == nil || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "pixy doesn't exists"})
+		return
+	}
+
+	qr, err := qrcode.Encode(input.PyxisID, qrcode.Medium, 256)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to generate QR code"})
+		return
+	}
+
+	c.Header("Content-Type", "image/png")
+	c.Writer.Write(qr)
 }

@@ -148,6 +148,11 @@ definitions:
       updated_at:
         type: string
     type: object
+  dto.GenerateQRCodeOutputDTO:
+    properties:
+      pyxis_id:
+        type: string
+    type: object
   dto.RegisterMedicinePyxisInputDTO:
     properties:
       medicines:
@@ -663,6 +668,28 @@ paths:
           schema:
             type: objetct
       summary: Register a to a Pyxis entity
+      tags:
+      - Pyxis
+  /pyxis/qrcode:
+    post:
+      consumes:
+      - application/json
+      description: Create a QR code for a given pyxis ID
+      parameters:
+      - description: Pyxis ID to generate QR code for
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.GenerateQRCodeOutputDTO'
+      produces:
+      - image/png
+      responses:
+        "200":
+          description: QR code image
+          schema:
+            type: string
+      summary: Generate a QR code for a Pyxis
       tags:
       - Pyxis
   /users:

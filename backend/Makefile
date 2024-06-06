@@ -37,3 +37,19 @@ swagger:
 	@docker run --rm -v $(shell pwd):/code ghcr.io/swaggo/swag:latest i -g ./cmd/server/main.go -o ./api
 	@go mod tidy
 	$(END_LOG)
+
+.PHONY: api
+api:
+	$(START_LOG)
+	@if command -v swag >/dev/null 2>&1; then \
+		swag init -g ./cmd/server/main.go -o ./api; \
+	else \
+		docker run --rm -v $$(pwd):/code ghcr.io/swaggo/swag:latest init -g ./cmd/server/main.go -o ./api; \
+	fi
+	@if [ $$? -ne 0 ]; then \
+		echo "Error generating Swagger documentation"; \
+		exit 1; \
+	fi
+	@go mod tidy
+	go run ./cmd/server/main.go
+	$(END_LOG)

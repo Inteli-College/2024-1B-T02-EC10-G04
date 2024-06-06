@@ -56,3 +56,7 @@ type DisassociateMedicineOutputDTO struct {
 type DisassociateMedicinesOutputDTO struct {
 	DisassociatedMedicines []DisassociateMedicineOutputDTO `json:"disassociated_medicines"`
 }
+
+type GenerateQRCodeOutputDTO struct {
+	PyxisID string `json:"pyxis_id"`
+}

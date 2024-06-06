@@ -400,6 +400,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/pyxis/qrcode": {
+            "post": {
+                "description": "Create a QR code for a given pyxis ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "image/png"
+                ],
+                "tags": [
+                    "Pyxis"
+                ],
+                "summary": "Generate a QR code for a Pyxis",
+                "parameters": [
+                    {
+                        "description": "Pyxis ID to generate QR code for",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.GenerateQRCodeOutputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "QR code image",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/pyxis/{id}": {
             "get": {
                 "description": "Retrieve a Pyxis entity by ID",
@@ -1001,6 +1035,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.GenerateQRCodeOutputDTO": {
+            "type": "object",
+            "properties": {
+                "pyxis_id": {
                     "type": "string"
                 }
             }
