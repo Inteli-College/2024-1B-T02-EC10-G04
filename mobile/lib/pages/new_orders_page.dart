@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:mobile/widgets/dropdown.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/services/new_orders.dart';
+import 'package:mobile/models/new_order.dart';
 
 class NewOrderPage extends StatefulWidget {
   final String pyxis;
   final String medicine;
-  final String lote;
+  final String medicineid;
 
   const NewOrderPage({
     super.key,
     required this.pyxis,
     required this.medicine,
-    required this.lote,
+    required this.medicineid,
   });
 
   @override
@@ -24,6 +26,8 @@ class _NewOrderPageState extends State<NewOrderPage> {
   bool isChecked = false;
   String? selectedAnswer;
   int quantity = 0;
+
+  final NewOrderService newOrderService = NewOrderService();
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +199,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                       ),
                                       const SizedBox(height: 5),
                                       Text(
-                                        ('Lot number: ${widget.lote}'),
+                                        ('Lot number: ${widget.medicineid}'),
                                         style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
@@ -285,8 +289,32 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                   icon: const Icon(Icons.arrow_forward),
                                   label: 'Submit',
                                   receivedColor: AppColors.secondary,
-                                  onPressed: () {
-                                    Navigator.of(context).pushNamed('/check-order');
+                                  onPressed: () async {
+                                    try {
+                                      final newOrder = NewOrder(
+                                        medicines: [
+                                          {
+                                            'medicineid': widget.medicineid,
+                                            'name': widget.medicine,
+                                            'dose': '',
+                                          },
+                                        ],
+                                        userId: 'user123',
+                                        observation: '',
+                                        priority: 'High',
+                                        quantity: quantity,
+                                      );
+
+                                      final createdOrder = await newOrderService.createOrder(newOrder);
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.of(context).pushNamed('/check-order', arguments: createdOrder);
+                                    } catch (e) {
+                                      // Handle error (e.g., show a snackbar)
+                                      // ignore: use_build_context_synchronously
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text('Error creating order: $e')),
+                                      );
+                                    }
                                   },
                                   isEnabled: true,
                                 ),
