@@ -94,3 +94,31 @@ A demonstração foi feita testando as rotas através do [Swagger UI](https://sw
 
 [^1]: A estrutura de pastas escolhida para este projeto está de acordo com as convenções e padrões utilizados pela comunidade de desenvolvedores Golang.
 [^2]: As entidades, repositórios e use cases estão de acordo com os padrões previstos para a arquitetura hexagonal.
+
+
+## Atualizando a Documentação Swagger
+
+Para atualizar a documentação Swagger do aplicativo, siga estes passos:
+
+1. **Navegue até o Diretório Backend**:
+   Abra o terminal e navegue até a pasta `/backend` do seu projeto usando o comando:
+   ```bash
+   cd backend
+   ```
+
+2. **Gere a Documentação Swagger**:
+   Execute o seguinte comando para gerar a documentação Swagger. Este comando especifica o ponto de entrada do seu aplicativo e o diretório de saída para a documentação gerada:
+   ```bash
+   swag init -g cmd/server/main.go --output ./api
+   ```
+
+Este processo irá escanear o código-fonte em Goessário para corresponder à configuração da sua aplicação. em busca de anotações e gerar um arquivo Swagger no diretório de saída especificado (`./api`). Certifique-se de que quaisquer novas rotas ou modificações em rotas existentes estejam devidamente anotadas nos arquivos de origem para serem refletidas na documentação Swagger atualizada.
+
+3. **Acessando o Swagger UI**:
+   Uma vez que a API esteja em execução, você pode acessar o Swagger UI para interagir com a documentação da API visitando o seguinte URL:
+   ```
+   http://localhost:8080/api/v1/docs/index.htm
+   ```
+
+Isso permitirá que você visualize e teste os endpoints da API diretamente do seu navegador.
+

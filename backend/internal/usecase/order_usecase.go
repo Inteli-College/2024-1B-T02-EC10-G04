@@ -43,10 +43,10 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 		ordersOutput = append(ordersOutput, &dto.FindOrderOutputDTO{
 			ID:          order.ID,
 			Priority:    order.Priority,
-			User_ID:     order.User_ID,
+			User:        order.User,
 			Observation: order.Observation,
 			Status:      order.Status,
-			Medicine_ID: order.Medicine_ID,
+			Medicine:    order.Medicine,
 			Quantity:    order.Quantity,
 			UpdatedAt:   order.UpdatedAt,
 			CreatedAt:   order.CreatedAt,
@@ -63,10 +63,10 @@ func (o *OrderUseCase) FindOrderById(id string) (*dto.FindOrderOutputDTO, error)
 	return &dto.FindOrderOutputDTO{
 		ID:          order.ID,
 		Priority:    order.Priority,
-		User_ID:     order.User_ID,
+		User:        order.User,
 		Observation: order.Observation,
 		Status:      order.Status,
-		Medicine_ID: order.Medicine_ID,
+		Medicine:    order.Medicine,
 		Quantity:    order.Quantity,
 		UpdatedAt:   order.UpdatedAt,
 		CreatedAt:   order.CreatedAt,
@@ -79,27 +79,27 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 		return nil, err
 	}
 
-	//TODO: Implement update that does not require all fields of input DTO  (Maybe i can do this only in the repository?)
+	// TODO: Implement update that does not require all fields of input DTO  (Maybe i can do this only in the repository?)
 	res.Medicine_ID = input.Medicine_ID
 	res.Status = input.Status
 	res.Priority = input.Priority
 	res.Observation = input.Observation
 	res.Quantity = input.Quantity
 
-	res, err = o.orderRepository.UpdateOrder(res)
+	updatedOrder, err := o.orderRepository.UpdateOrder(res)
 	if err != nil {
 		return nil, err
 	}
 
 	return &dto.UpdateOrderOutputDTO{
-		ID:          res.ID,
-		Priority:    res.Priority,
-		User_ID:     res.User_ID,
-		Observation: res.Observation,
-		Status:      res.Status,
-		Medicine_ID: res.Medicine_ID,
-		Quantity:    res.Quantity,
-		UpdatedAt:   res.UpdatedAt,
+		ID:          updatedOrder.ID,
+		Priority:    updatedOrder.Priority,
+		User_ID:     updatedOrder.User_ID,
+		Observation: updatedOrder.Observation,
+		Status:      updatedOrder.Status,
+		Medicine_ID: updatedOrder.Medicine_ID,
+		Quantity:    updatedOrder.Quantity,
+		UpdatedAt:   updatedOrder.UpdatedAt,
 	}, nil
 }
 
@@ -110,3 +110,4 @@ func (o *OrderUseCase) DeleteOrder(id string) error {
 	}
 	return o.orderRepository.DeleteOrder(order.ID)
 }
+

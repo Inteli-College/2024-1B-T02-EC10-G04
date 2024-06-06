@@ -47,10 +47,15 @@ func init() {
 
 //	@host	localhost:8080
 //	@BasePath	/api/v1
-// 	@query.collection.format multi
+
+// @SecurityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+// @description "Type: Bearer token"
+// @scheme bearer
+// @bearerFormat JWT
 
 func main() {
-
 	/////////////////////// Configs /////////////////////////
 
 	db := configs.SetupPostgres()
@@ -76,7 +81,7 @@ func main() {
 
 	///////////////////// Healthcheck //////////////////////
 
-	//TODO: "http://localhost:8080/api/healthz" is the best pattern for healthcheck?
+	// TODO: "http://localhost:8080/api/healthz" is the best pattern for healthcheck?
 
 	router.GET("/api/v1/healthz", handler.HealthCheckHandler)
 

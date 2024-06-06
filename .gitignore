@@ -1,1 +1,5 @@
 .Ds_store
+.terraform
+.terraform.lock.hcl
+.terraform.lock.info
+.terraformrc

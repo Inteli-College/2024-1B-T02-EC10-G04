@@ -32,6 +32,7 @@ func NewPyxisHandlers(pyxisUsecase *usecase.PyxisUseCase, medicineUsecase *useca
 // @Produce json
 // @Param input body dto.CreatePyxisInputDTO true "Pyxis entity to create"
 // @Success 200 {object} dto.CreatePyxisOutputDTO
+// @Security BearerAuth
 // @Router /pyxis [post]
 func (p *PyxisHandlers) CreatePyxisHandler(c *gin.Context) {
 	var input dto.CreatePyxisInputDTO

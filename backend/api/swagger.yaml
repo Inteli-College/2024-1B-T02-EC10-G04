@@ -105,8 +105,8 @@ definitions:
         type: string
       id:
         type: string
-      medicine_id:
-        type: string
+      medicine:
+        $ref: '#/definitions/entity.Medicine'
       observation:
         type: string
       priority:
@@ -117,8 +117,8 @@ definitions:
         type: string
       updated_at:
         type: string
-      user_id:
-        type: string
+      user:
+        $ref: '#/definitions/entity.User'
     type: object
   dto.FindPyxisOutputDTO:
     properties:
@@ -148,17 +148,29 @@ definitions:
       updated_at:
         type: string
     type: object
-  dto.GenerateQRCodeOutputDTO:
+  dto.LoginUserInputDTO:
     properties:
-      pyxis_id:
+      email:
+        type: string
+      password:
         type: string
     type: object
-  dto.RegisterMedicinePyxisInputDTO:
+  dto.LoginUserOutputDTO:
     properties:
-      medicines:
-        items:
-          type: string
-        type: array
+      access_token:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      on_duty:
+        type: boolean
+      role:
+        type: string
     type: object
   dto.UpdateMedicineInputDTO:
     properties:
@@ -255,6 +267,21 @@ definitions:
       updated_at:
         type: string
     type: object
+  entity.Medicine:
+    properties:
+      batch:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      stripe:
+        $ref: '#/definitions/entity.StripeType'
+      updated_at:
+        type: string
+    type: object
   entity.StripeType:
     enum:
     - red
@@ -265,6 +292,25 @@ definitions:
     - StripeRed
     - StripeYellow
     - StripeBlack
+  entity.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      on_duty:
+        type: boolean
+      password:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact:
@@ -524,6 +570,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.CreatePyxisOutputDTO'
+      security:
+      - BearerAuth: []
       summary: Create a new Pyxis entity
       tags:
       - Pyxis
@@ -797,4 +845,44 @@ paths:
       summary: Update a User entity
       tags:
       - Users
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user credentials and return user session information
+      parameters:
+      - description: Login credentials
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginUserInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Authentication successful, user details returned
+          schema:
+            $ref: '#/definitions/dto.LoginUserOutputDTO'
+        "400":
+          description: Invalid credentials or bad request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Log in a user
+      tags:
+      - Users
+securityDefinitions:
+  BearerAuth:
+    description: '"Type: Bearer token"'
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

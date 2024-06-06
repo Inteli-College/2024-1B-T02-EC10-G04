@@ -368,6 +368,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new Pyxis entity",
                 "consumes": [
                     "application/json"
@@ -708,6 +713,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/users/login": {
+            "post": {
+                "description": "Authenticate user credentials and return user session information",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Log in a user",
+                "parameters": [
+                    {
+                        "description": "Login credentials",
+                        "name": "input",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginUserInputDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Authentication successful, user details returned",
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginUserOutputDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid credentials or bad request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/users/{id}": {
             "get": {
                 "description": "Retrieve a User entity by ID",
@@ -973,8 +1030,8 @@ const docTemplate = `{
                 "id": {
                     "type": "string"
                 },
-                "medicine_id": {
-                    "type": "string"
+                "medicine": {
+                    "$ref": "#/definitions/entity.Medicine"
                 },
                 "observation": {
                     "type": "string"
@@ -991,8 +1048,8 @@ const docTemplate = `{
                 "updated_at": {
                     "type": "string"
                 },
-                "user_id": {
-                    "type": "string"
+                "user": {
+                    "$ref": "#/definitions/entity.User"
                 }
             }
         },
@@ -1035,6 +1092,43 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LoginUserInputDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.LoginUserOutputDTO": {
+            "type": "object",
+            "properties": {
+                "access_token": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "on_duty": {
+                    "type": "boolean"
+                },
+                "role": {
                     "type": "string"
                 }
             }
@@ -1204,6 +1298,29 @@ const docTemplate = `{
                 }
             }
         },
+        "entity.Medicine": {
+            "type": "object",
+            "properties": {
+                "batch": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "stripe": {
+                    "$ref": "#/definitions/entity.StripeType"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "entity.StripeType": {
             "type": "string",
             "enum": [
@@ -1216,6 +1333,43 @@ const docTemplate = `{
                 "StripeYellow",
                 "StripeBlack"
             ]
+        },
+        "entity.User": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "on_duty": {
+                    "type": "boolean"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "BearerAuth": {
+            "description": "\"Type: Bearer token\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }`
