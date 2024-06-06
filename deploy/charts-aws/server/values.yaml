@@ -42,13 +42,25 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 80
-  targetPort: 5000
+  targetPort: 8080
   protocol: TCP
   name: node-app
 
 env:
   - name: PORT
-    value: "5000"
+    value: "8081"
+  - name: POSTGRES_URL
+    value: "postgresql://postgres:$postgres123@prod-db.cs9aqstoxqms.us-east-1.rds.amazonaws.com:5432/prod"
+  - name: JWT_SECRET_KEY
+    value: secret
+  - name: KAFKA_BOOTSTRAP_SERVER=host.docker.internal
+    value: "9094"
+  - name: KAFKA_ORDERS_TOPIC_NAME
+    value: "orders"
+  - name: KAFKA_ORDERS_GROUP_ID
+    value: "group"
+  - name: KAFKA_ORDERS_CLIENT_ID
+    value: "client"
 
 ingress:
   enabled: false
