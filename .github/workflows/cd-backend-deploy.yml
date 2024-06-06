@@ -129,7 +129,7 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get install -y postgresql-client
 
-      - name: Execute SQL script
+      - name: Execute SQL script - Migration
         working-directory: ./database/
         env:
           DB_ENDPOINT: ${{ steps.rds_endpoint.outputs.endpoint }}
@@ -138,6 +138,16 @@ jobs:
           MASTER_USER_PASSWORD: postgres123
         run: |
           psql postgresql://$MASTER_USERNAME:$MASTER_USER_PASSWORD@$DB_ENDPOINT:5432/$DB_NAME -f 1-tables.sql
+
+      - name: Execute SQL script - Data
+        working-directory: ./database/
+        env:
+          DB_ENDPOINT: ${{ steps.rds_endpoint.outputs.endpoint }}
+          DB_NAME: prod
+          MASTER_USERNAME: postgres
+          MASTER_USER_PASSWORD: postgres123
+        run: |
+          psql postgresql://$MASTER_USERNAME:$MASTER_USER_PASSWORD@$DB_ENDPOINT:5432/$DB_NAME -f 2-data.sql
 
   build:
     name: "Build and Deploy to ECR"
@@ -168,12 +178,6 @@ jobs:
         working-directory: ./backend/
         run: make env
 
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v1
-        id: buildx
-        with:
-          install: true
-
       - name: Build Conductor Monolith
         working-directory: ./backend/
         env:
@@ -181,7 +185,7 @@ jobs:
           ECR_REPOSITORY: conductor
           IMAGE_TAG: latest
         run: |
-          docker build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.conductor
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.conductor .
 
       - name: Build Backend Monolith
         working-directory: ./backend/
@@ -190,7 +194,7 @@ jobs:
           ECR_REPOSITORY: server
           IMAGE_TAG: latest
         run: |
-          docker build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.server
+          docker buildx build --platform linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.server .
 
   kubernetes:
     name: "Deploy to EKS"
@@ -225,12 +229,16 @@ jobs:
       - name: Update kubeconfig
         run: aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name eks-prod
 
-      - name: Deploy to EKS
-        working-directory: deploy/charts/backend/
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: confluentinc-cp-enterprise-control-center
-          IMAGE_TAG: latest
+      - name: Deploy to EKS - Server
+        working-directory: deploy/charts-aws/
         run: |
-          kubectl apply -f ./backend/deployments/k8s/deployment.yaml
-          kubectl rollout restart deployment control-center
+          helm upgrade --install server server/ \
+          --namespace server \
+          --values server/values.yaml
+
+      - name: Deploy to EKS - Conductor
+        working-directory: deploy/charts-aws/
+        run: |
+          helm upgrade --install conductor conductor/ \
+          --namespace conductor \
+          --values conductor/values.yaml

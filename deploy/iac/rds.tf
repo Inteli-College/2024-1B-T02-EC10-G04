@@ -15,7 +15,7 @@ resource "aws_db_instance" "main_postgresql_db" {
   username               = "postgres"
   db_name                = "prod"
   instance_class         = "db.t3.micro"
-  vpc_security_group_ids = [aws_security_group.bastion_sg.id, aws_security_group.private_sg.id, aws_security_group.db_sg.id]
+  vpc_security_group_ids = [aws_security_group.db_sg.id]
   allocated_storage      = 20
   multi_az               = false
   password               = "postgres123"
