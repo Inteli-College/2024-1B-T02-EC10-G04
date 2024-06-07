@@ -23,6 +23,19 @@ infra:
 		--partitions 10
 	$(END_LOG)
 
+.PHONY: down-infra
+down-infra:
+	$(START_LOG)
+	@if [ "$(clean)" = "true" ]; then \
+		docker compose \
+		-f ../docker-compose.yml down \
+		-v; \
+	else \
+		docker compose \
+		-f ../docker-compose.yml down; \
+	fi
+	$(END_LOG)
+
 .PHONY: run
 run:
 	$(START_LOG)
@@ -56,4 +69,22 @@ api:
 	fi
 	@go mod tidy
 	go run ./cmd/server/main.go
+	$(END_LOG)
+
+.PHONY: redis
+redis:
+	$(START_LOG)
+	@if [ "$(reset)" = "true" ]; then \
+		docker compose -f ../docker-compose.yml down redis -v; \
+	fi
+	@docker compose -f ../docker-compose.yml up redis -d
+	$(END_LOG)
+
+.PHONY: db
+db:
+	$(START_LOG)
+	@if [ "$(reset)" = "true" ]; then \
+		docker compose -f ../docker-compose.yml down postgres -v; \
+	fi
+	@docker compose -f ../docker-compose.yml up postgres -d
 	$(END_LOG)
