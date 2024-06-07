@@ -58,7 +58,7 @@ services:
     image: postgres:latest
     restart: always
     hostname: postgres
-    # container_name: postgres
+    container_name: postgres
     environment:
       POSTGRES_DB: db
       POSTGRES_USER: user

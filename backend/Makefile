@@ -23,6 +23,19 @@ infra:
 		--partitions 10
 	$(END_LOG)
 
+.PHONY: down-infra
+down-infra:
+	$(START_LOG)
+	@if [ "$(clean)" = "true" ]; then \
+		docker compose \
+		-f ../docker-compose.yml down \
+		-v; \
+	else \
+		docker compose \
+		-f ../docker-compose.yml down; \
+	fi
+	$(END_LOG)
+
 .PHONY: run
 run:
 	$(START_LOG)
