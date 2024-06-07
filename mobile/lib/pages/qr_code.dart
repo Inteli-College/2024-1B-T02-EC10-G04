@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'dart:io';
+import 'package:mobile/pages/new_orders_page.dart';
+import 'package:mobile/models/qrcode.dart';
+import 'package:mobile/services/pyxis.dart';
+import 'package:mobile/models/pyxis.dart';
 
 class QRCodePage extends StatefulWidget {
   const QRCodePage({super.key});
@@ -67,20 +71,45 @@ class _QRCodePageState extends State<QRCodePage> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
+  void _onQRViewCreated(QRViewController controller) async {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
+    controller.scannedDataStream.listen((scanData) async{
       if (!_isScanning) {
         setState(() {
           _isScanning = true;
         });
         controller.pauseCamera();
-        Navigator.of(context).pushNamed('/new-order', arguments: scanData.code).then((_) {
+
+        try{
+          PyxisService pyxisService = PyxisService();
+          Pyxis pyxis = await pyxisService.getPyxisById(scanData.code!);
+          print(pyxis);
+
+          if (pyxis == null) {
+            throw Exception('Pyxis not found');
+          }
+
+          Navigator.pushNamed(
+          context, 
+          NewOrderPage.routeName,
+          arguments: QRCodeArguments(
+            pyxis.label!,
+            'Medicine',
+            'Lote',
+          ))
+          .then((_) {
           controller.resumeCamera();
           setState(() {
             _isScanning = false;
           });
         });
+
+
+        } catch (e) {
+          print(e);
+        }
+
+        
       }
     });
   }

@@ -35,7 +35,7 @@ class NavBarContainer extends StatelessWidget {
                   icon: Icons.new_label_rounded,
                   label: 'Create',
                   index: 1,
-                  route: '/new-order'),
+                  route: '/qr-code'),
               NavBarIcon(
                   icon: Icons.person,
                   label: 'Profile',

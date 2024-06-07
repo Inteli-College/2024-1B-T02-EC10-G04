@@ -45,4 +45,5 @@ class OrderService {
       throw Exception('Failed to load medicine orders');
     }
   }
+
 }
