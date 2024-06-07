@@ -8,7 +8,8 @@ class CheckOrderPage extends StatelessWidget {
   final String pyxis;
   final String medicine;
   final int quantity; // Adiciona a quantidade como parâmetro
-  final TextEditingController _textController = TextEditingController(); // Inicializa o controlador de texto
+  final TextEditingController _textController =
+      TextEditingController(); // Inicializa o controlador de texto
 
   CheckOrderPage({
     super.key,
@@ -106,7 +107,9 @@ class CheckOrderPage extends StatelessWidget {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
-                                const SizedBox(width: 10), // Espaçamento entre o avatar e o texto
+                                const SizedBox(
+                                    width:
+                                        10), // Espaçamento entre o avatar e o texto
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -123,7 +126,8 @@ class CheckOrderPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 20), // Espaçamento entre os elementos
+                            const SizedBox(
+                                height: 20), // Espaçamento entre os elementos
                             Container(
                               padding: const EdgeInsets.all(10.0),
                               decoration: BoxDecoration(
@@ -134,7 +138,8 @@ class CheckOrderPage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0, horizontal: 6.0),
                                     decoration: BoxDecoration(
                                       color: AppColors.grey3,
                                       borderRadius: BorderRadius.circular(5),
@@ -187,6 +192,7 @@ class CheckOrderPage extends StatelessWidget {
                             icon: const Icon(Icons.description),
                             label: 'Description',
                             controller: _textController,
+                            obscureText: false,
                           ),
                         ],
                       ),

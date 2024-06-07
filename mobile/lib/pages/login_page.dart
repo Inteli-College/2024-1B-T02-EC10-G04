@@ -18,6 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   late UserController _loginController;
   bool isButtonEnabled = false;
+  var showPassword = true;
+  IconData iconType = Icons.visibility;
 
   @override
   void initState() {
@@ -39,6 +41,15 @@ class _LoginScreenState extends State<LoginScreen> {
       _loginController.login(
           context, _emailController.text, _passwordController.text);
     }
+  }
+
+  void _onViewPassword() {
+    setState(() {
+      showPassword = !showPassword;
+      showPassword
+          ? iconType = Icons.visibility
+          : iconType = Icons.visibility_off;
+    });
   }
 
   @override
@@ -104,13 +115,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         controller: _emailController,
                         label: 'E-mail',
                         icon: const Icon(Icons.email),
+                        obscureText: false,
                       ),
                       const SizedBox(height: 8),
                       InputText(
                         controller: _passwordController,
                         label: 'Password',
-                        icon: const Icon(Icons.lock),
-                        //isPassword: true,
+                        obscureText: showPassword,
+                        icon: IconButton(
+                          icon: Icon(
+                            iconType,
+                            color: AppColors.black50,
+                          ),
+                          onPressed: _onViewPassword,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Align(

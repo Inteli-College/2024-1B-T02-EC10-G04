@@ -20,6 +20,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late UserController _signUpController;
   bool isButtonEnabled = false;
   bool _showContainer = false;
+  var showPassword = true;
+  IconData iconType = Icons.visibility;
 
   @override
   void initState() {
@@ -84,7 +86,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _onViewPassword() {
     setState(() {
-      _showContainer = !_showContainer;
+      showPassword = !showPassword;
+      showPassword
+          ? iconType = Icons.visibility
+          : iconType = Icons.visibility_off;
     });
   }
 
@@ -168,18 +173,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: _nameController,
                         label: 'Name',
                         icon: const Icon(null),
+                        obscureText: false,
                       ),
                       const SizedBox(height: 8),
                       InputText(
                         controller: _emailController,
                         label: 'E-mail',
                         icon: const Icon(Icons.email),
+                        obscureText: false,
                       ),
                       const SizedBox(height: 8),
                       InputText(
                         controller: _passwordController,
                         label: 'Password',
-                        icon: const Icon(Icons.lock),
+                        obscureText: showPassword,
+                        icon: IconButton(
+                          icon: Icon(
+                            iconType,
+                            color: AppColors.black50,
+                          ),
+                          onPressed: _onViewPassword,
+                        ),
                       ),
                       const SizedBox(height: 16),
                       _showContainer

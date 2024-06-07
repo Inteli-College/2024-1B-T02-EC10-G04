@@ -95,12 +95,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     icon: const Icon(Icons.edit),
                     label: 'Previous Password',
                     controller: _previousPasswordController,
+                    obscureText: true,
                   ),
                   const SizedBox(height: 16.0),
                   InputText(
                     icon: const Icon(Icons.edit),
                     label: 'New Password',
                     controller: _newPasswordController,
+                    obscureText: true,
                   ),
                   const SizedBox(height: 16.0),
                   _showContainer
