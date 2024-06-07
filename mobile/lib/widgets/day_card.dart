@@ -7,7 +7,8 @@ class DayCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const DayCard({super.key, 
+  const DayCard({
+    super.key,
     required this.day,
     required this.weekDay,
     required this.date,

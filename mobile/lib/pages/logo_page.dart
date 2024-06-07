@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:mobile/logic/local_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
@@ -28,8 +28,20 @@ class _SplashScreenState extends State<SplashScreen>
       curve: Curves.easeInOut,
     );
 
+    _navigateToNextScreen();
+  }
+
+  Future<void> _navigateToNextScreen() async {
+    String? isOnboardingSeen =
+        await LocalStorageService().getValue('isOnboarding');
+    bool onboardingSeen = isOnboardingSeen == 'true';
+
     Timer(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed('/onboarding');
+      if (onboardingSeen) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      } else {
+        Navigator.of(context).pushReplacementNamed('/onboarding');
+      }
     });
   }
 

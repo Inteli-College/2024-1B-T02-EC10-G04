@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/logic/local_storage.dart';
+
 class UserService {
   final String baseUrl = dotenv.env['PUCLIC_URL']!;
   final LocalStorageService localStorageService = LocalStorageService();
@@ -21,6 +22,7 @@ class UserService {
 
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
+      body['isOnboarding'] = true;
       for (var key in body.keys) {
         localStorageService.saveValue(key, body[key].toString());
       }
@@ -46,6 +48,7 @@ class UserService {
 
     if (response.statusCode == 201) {
       var body = jsonDecode(response.body);
+      body['isOnboarding'] = true;
       for (var key in body.keys) {
         localStorageService.saveValue(key, body[key].toString());
       }

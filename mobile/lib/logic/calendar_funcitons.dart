@@ -4,8 +4,11 @@ import 'package:mobile/widgets/day_card.dart';
 
 class CalendarLogic extends ChangeNotifier {
   DateTime selectedDate = DateTime.now();
-  DateTime? selectedDay;
-  List<String> months = List.generate(12, (index) => DateFormat('MMMM').format(DateTime(0, index + 1)));
+  DateTime? selectedDay = DateTime.now();
+  List<String> months = List.generate(
+    12,
+    (index) => DateFormat('MMMM').format(DateTime(0, index + 1)),
+  );
   List<int> years = List.generate(101, (index) => 2000 + index);
 
   void onMonthChanged(String? newMonth) {
@@ -20,7 +23,7 @@ class CalendarLogic extends ChangeNotifier {
   void onYearChanged(int? newYear) {
     if (newYear != null) {
       selectedDate = DateTime(newYear, selectedDate.month, 1);
-      selectedDay = null; 
+      selectedDay = null;
       notifyListeners();
     }
   }
@@ -30,13 +33,16 @@ class CalendarLogic extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Widget> generateDays(VoidCallback onTapCallback) {
+  List<Widget> generateDays() {
     int daysInMonth = DateTime(selectedDate.year, selectedDate.month + 1, 0).day;
     List<Widget> dayWidgets = [];
     for (int i = 1; i <= daysInMonth; i++) {
       DateTime date = DateTime(selectedDate.year, selectedDate.month, i);
-      String weekDay = DateFormat('E').format(date); 
-      bool isSelected = selectedDay != null && selectedDay!.day == date.day;
+      String weekDay = DateFormat('E').format(date);
+      bool isSelected = selectedDay != null &&
+                        selectedDay!.year == date.year &&
+                        selectedDay!.month == date.month &&
+                        selectedDay!.day == date.day;
       dayWidgets.add(DayCard(
         day: i.toString(),
         weekDay: weekDay,
@@ -44,7 +50,6 @@ class CalendarLogic extends ChangeNotifier {
         isSelected: isSelected,
         onTap: () {
           onDaySelected(date);
-          onTapCallback();
         },
       ));
     }

@@ -79,8 +79,6 @@ class HomeScreen extends StatelessWidget {
           '/orders': (BuildContext context) => FutureBuilder<List<String?>>(
                 future: Future.wait([
                   localStorageService.getValue('name'),
-                  localStorageService.getValue('role'),
-                  localStorageService.getValue('email'),
                 ]),
                 builder: (context, snapshot) {
                   final name = snapshot.data?[0] ?? 'Unknown';
