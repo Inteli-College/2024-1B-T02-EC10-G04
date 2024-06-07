@@ -107,7 +107,7 @@ class HomeScreen extends StatelessWidget {
                 },
               ),
           '/qr-code': (context) => const QRCodePage(),
-          'settings': (context) => const SettingsPage(),
+          '/settings': (context) => const SettingsPage(),
         },
       ),
     );
