@@ -9,7 +9,7 @@ class NewOrderService {
   Future<NewOrder> createOrder(NewOrder newOrder) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/orders'),
+        Uri.parse('$baseUrl/new-orders'),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
