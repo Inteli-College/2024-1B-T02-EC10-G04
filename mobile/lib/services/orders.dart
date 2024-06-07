@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/logic/local_storage.dart';
 import 'package:mobile/models/order.dart';
 import 'package:mobile/main.dart';
 
@@ -14,19 +15,14 @@ class OrderService {
 
   Future<void> _initializeToken() async {
     try {
-      accessToken = await returnToken();
+      accessToken = await LocalStorageService().getValue('access_token');
+      if (accessToken == null) {
+        throw Exception("Token is null");
+      }
     } catch (e) {
       print("Error initializing token: $e");
       // Handle error, e.g., by setting accessToken to a default value or rethrowing the exception
     }
-  }
-
-  Future<String> returnToken() async {
-    var token = await HomeScreen.localStorageService.getValue('token');
-    if (token == null) {
-      throw Exception("Token is null");
-    }
-    return token;
   }
 
   Future<List<Order>> getOrders() async {
@@ -44,7 +40,7 @@ class OrderService {
         // Log da resposta
         return jsonResponse.map((order) => Order.fromJson(order)).toList();
       } else {
-        throw Exception('Failed to load medicine orders');
+        return [];
       }
     } catch (e) {
       throw Exception('Failed to load medicine orders');

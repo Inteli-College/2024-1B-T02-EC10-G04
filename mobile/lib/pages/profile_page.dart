@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
+import 'package:mobile/logic/local_storage.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/custom_button.dart';
-import 'package:mobile/main.dart';
 
 class ProfilePage extends StatefulWidget {
   final String name;
@@ -18,7 +19,6 @@ class ProfilePage extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _ProfilePageState createState() => _ProfilePageState();
 }
 
@@ -28,73 +28,106 @@ class _ProfilePageState extends State<ProfilePage> {
   late final TextEditingController _emailController =
       TextEditingController(text: widget.email);
 
-  @override
-  Widget build(BuildContext context) {
-
-    Future<void> _logout() async {
-    await HomeScreen.localStorageService.cleanValues();
-    if (mounted) {
-      Navigator.of(context).pushReplacementNamed('/login');
+  String getInitials(String name) {
+    List<String> nameParts = name.split(' ');
+    String initials = '';
+    if (nameParts.isNotEmpty) {
+      initials = nameParts.map((part) => part[0]).take(2).join();
     }
+    return initials.toUpperCase();
   }
 
+  Color getRandomColor() {
+    Random random = Random();
+    return Color.fromARGB(
+      255,
+      random.nextInt(256),
+      random.nextInt(256),
+      random.nextInt(256),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Future<void> _logout() async {
+      await LocalStorageService().cleanValues();
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed('/login');
+      }
+    }
+
+    String initials = getInitials(widget.name);
+    Color avatarColor = getRandomColor();
+
     return Scaffold(
-        bottomNavigationBar: const NavBarContainer(),
-        body: SingleChildScrollView(
-            child: Column(
+      bottomNavigationBar: const NavBarContainer(),
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             Align(
               alignment: Alignment.centerLeft,
               child: Container(
-                  padding: const EdgeInsets.only(
-                      top: 60.0, bottom: 15.0, left: 20.0),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Profile',
-                        style: TextStyle(
-                            color: AppColors.black50,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins'),
+                padding:
+                    const EdgeInsets.only(top: 60.0, bottom: 15.0, left: 20.0),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: AppColors.black50,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
                       ),
-                      Text(
-                        'Here you can see your personal information',
-                        style: TextStyle(
-                            color: AppColors.black50,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Poppins'),
+                    ),
+                    Text(
+                      'Here you can see your personal information',
+                      style: TextStyle(
+                        color: AppColors.black50,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Poppins',
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
+                ),
+              ),
             ),
             Container(
               padding: const EdgeInsets.only(top: 20.0),
               child: Column(
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 35.0,
-                    backgroundColor: Colors.purple,
-                    child: Text('FL'),
+                    backgroundColor: avatarColor,
+                    child: Text(
+                      initials,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                   Text(
                     widget.name,
                     style: const TextStyle(
-                        color: AppColors.primary,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Poppins'),
+                      color: AppColors.primary,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
+                    ),
                   ),
                   Text(
                     widget.role,
                     style: const TextStyle(
-                        color: AppColors.black50,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: 'Poppins'),
-                  )
+                      color: AppColors.black50,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Poppins',
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -139,11 +172,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     onPressed: () async {
                       _logout();
                     },
-                  )
+                  ),
                 ],
               ),
-            )
+            ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }

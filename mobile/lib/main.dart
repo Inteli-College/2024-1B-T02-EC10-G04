@@ -19,15 +19,23 @@ import 'package:mobile/pages/settings_page.dart';
 Future<void> main() async {
   try {
     await dotenv.load(fileName: ".env.front");
-  } catch (e) {
-    print("Error loading .env.front file: $e");
+  } catch (error) {
+    print("Error loading .env.front file: $error");
+  } finally {
+    String? name = await LocalStorageService().getValue('name');
+    String? role = await LocalStorageService().getValue('role');
+    String? email = await LocalStorageService().getValue('email');
+
+    runApp(HomeScreen(name: name, role: role, email: email));
   }
-  runApp(const HomeScreen());
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-  static final LocalStorageService localStorageService = LocalStorageService();
+  const HomeScreen(
+      {super.key, required this.name, required this.role, required this.email});
+  final String? name;
+  final String? role;
+  final String? email;
 
   @override
   Widget build(BuildContext context) {
@@ -76,33 +84,13 @@ class HomeScreen extends StatelessWidget {
                 medicine: 'Ibuprofeno',
                 quantity: 1,
               ),
-          '/orders': (BuildContext context) => FutureBuilder<List<String?>>(
-                future: Future.wait([
-                  localStorageService.getValue('name'),
-                ]),
-                builder: (context, snapshot) {
-                  final name = snapshot.data?[0] ?? 'Unknown';
-                  return OrdersPage(
-                    name: name,
-                  );
-                },
+          '/orders': (BuildContext context) => OrdersPage(
+                name: name ?? 'Unknown',
               ),
-          '/profile': (context) => FutureBuilder<List<String?>>(
-                future: Future.wait([
-                  localStorageService.getValue('name'),
-                  localStorageService.getValue('role'),
-                  localStorageService.getValue('email'),
-                ]),
-                builder: (context, snapshot) {
-                  final name = snapshot.data?[0] ?? 'Unknown';
-                  final role = snapshot.data?[1] ?? 'Auxiliar de Enfermagem';
-                  final email = snapshot.data?[2] ?? 'email@email.com';
-                  return ProfilePage(
-                    name: name,
-                    role: role,
-                    email: email,
-                  );
-                },
+          '/profile': (context) => ProfilePage(
+                name: name ?? 'Unknown',
+                role: role ?? 'Unknown',
+                email: email ?? 'Unknown',
               ),
           '/qr-code': (context) => const QRCodePage(),
           '/settings': (context) => const SettingsPage(),

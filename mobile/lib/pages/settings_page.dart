@@ -75,12 +75,11 @@ class _SettingsPageState extends State<SettingsPage> {
                   alignment: Alignment.centerLeft,
                   child: Row(
                     children: [
-                      Icon(Icons.edit, size: 20, color: AppColors.primary),
                       Text(
                         'Update Password',
                         style: TextStyle(
                           color: AppColors.primary,
-                          fontSize: 14,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Poppins',
                         ),

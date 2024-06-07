@@ -25,6 +25,7 @@ class _TabSessionState extends State<TabSession> {
           alignment: Alignment.topCenter,
           child: Column(
             children: [
+              const SizedBox(height: 16),
               Expanded(
                   child: FutureBuilder<List<Order>>(
                       future: widget.orders,
@@ -54,7 +55,19 @@ class _TabSessionState extends State<TabSession> {
                             },
                           );
                         } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
+                          return const Padding(
+                            padding: EdgeInsets.all(
+                                16.0), // Define o padding desejado
+                            child: Text(
+                              'Orders not found!',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.black50,
+                              ),
+                            ),
+                          );
                         }
                         return const CircularProgressIndicator();
                       })),

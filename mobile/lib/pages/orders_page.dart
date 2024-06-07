@@ -91,18 +91,19 @@ class _OrdersPageState extends State<OrdersPage> {
                           Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Align(
-                                alignment: Alignment.topCenter,
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: ListView(
-                                        children: const [
-                                          // card aqui
-                                        ],
-                                      ),
+                              alignment: Alignment.topCenter,
+                              child: Column(
+                                children: [
+                                  Expanded(
+                                    child: ListView(
+                                      children: const [
+                                        // card aqui
+                                      ],
                                     ),
-                                  ],
-                                )),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
