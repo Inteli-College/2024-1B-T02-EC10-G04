@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/models/order.dart';
 import 'package:mobile/main.dart';
 
 class OrderService {
-  final String baseUrl = "http://10.150.4.116/api/v1";
+  final String baseUrl = dotenv.env['PUCLIC_URL']!;
   String? accessToken;
 
-   OrderService() {
+  OrderService() {
     _initializeToken();
   }
 
@@ -28,29 +29,25 @@ class OrderService {
     return token;
   }
 
-
   Future<List<Order>> getOrders() async {
     try {
-    final response = await http.get(
-      Uri.parse('$baseUrl/orders'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
+      final response = await http.get(
+        Uri.parse('$baseUrl/orders'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
 
-   if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
         // Log da resposta
         return jsonResponse.map((order) => Order.fromJson(order)).toList();
       } else {
         throw Exception('Failed to load medicine orders');
       }
-
     } catch (e) {
       throw Exception('Failed to load medicine orders');
     }
   }
-
-
 }

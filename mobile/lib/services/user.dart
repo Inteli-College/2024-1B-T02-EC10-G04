@@ -1,11 +1,12 @@
 // lib/services/api_service.dart
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/logic/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  final String baseUrl = "http://10.150.4.116/api/v1";
+  final String baseUrl = dotenv.env['PUCLIC_URL']!;
   final LocalStorageService localStorageService = LocalStorageService();
 
   Future<Map<String, dynamic>> login(String email, String password) async {
@@ -35,6 +36,7 @@ class UserService {
 
   Future<Map<String, dynamic>> signup(
       String name, String email, String password) async {
+    print('$baseUrl/users');
     final response = await http.post(
       Uri.parse('$baseUrl/users'),
       headers: <String, String>{

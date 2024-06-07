@@ -17,7 +17,11 @@ import 'package:mobile/pages/qr_code.dart';
 import 'package:mobile/pages/settings_page.dart';
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env.front");
+  try {
+    await dotenv.load(fileName: ".env.front");
+  } catch (e) {
+    print("Error loading .env.front file: $e");
+  }
   runApp(const HomeScreen());
 }
 
