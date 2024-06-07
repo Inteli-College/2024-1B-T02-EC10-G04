@@ -89,7 +89,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   )),
             ),
             Padding(
-              padding: const EdgeInsets.all(25.0),
+              padding: const EdgeInsets.all(24.0),
               child: Column(
                 children: [
                   InputText(
@@ -97,13 +97,13 @@ class _SettingsPageState extends State<SettingsPage> {
                     label: 'Previous Password',
                     controller: _previousPasswordController,
                   ),
-                  const SizedBox(height: 15.0),
+                  const SizedBox(height: 16.0),
                   InputText(
                     icon: const Icon(Icons.edit),
                     label: 'New Password',
                     controller: _newPasswordController,
                   ),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 16.0),
                   _showContainer
                       ? Align(
                           alignment: Alignment.centerLeft,
@@ -138,7 +138,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             ],
                           ))
                       : const SizedBox(),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 16.0),
                   CustomButton(
                     receivedColor: AppColors.secondary,
                     isEnabled: true,

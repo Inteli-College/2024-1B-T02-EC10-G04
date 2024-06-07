@@ -4,12 +4,12 @@ import 'package:mobile/models/colors.dart';
 import 'package:mobile/services/user.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';
+import 'package:mobile/widgets/password_rule.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _SignUpScreenState createState() => _SignUpScreenState();
 }
 
@@ -19,6 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   late UserController _signUpController;
   bool isButtonEnabled = false;
+  bool _showContainer = false;
 
   @override
   void initState() {
@@ -26,15 +27,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _signUpController = UserController(userService: UserService());
     _nameController.addListener(_validateInputs);
     _emailController.addListener(_validateInputs);
-    _passwordController.addListener(_validateInputs);
+    _passwordController.addListener(_onTextChanged);
   }
 
   void _validateInputs() {
     setState(() {
       isButtonEnabled = _emailController.text.isNotEmpty &&
           _nameController.text.isNotEmpty &&
-          _passwordController.text.isNotEmpty;
+          _passwordController.text.isNotEmpty &&
+          _arePasswordRulesSatisfied();
+      _showContainer = _passwordController.text.isNotEmpty;
     });
+  }
+
+  bool _arePasswordRulesSatisfied() {
+    final rules = [
+      PasswordRule(
+        expression: r'[A-Z]',
+        label: '1 uppercase letter',
+        text: _passwordController.text,
+      ),
+      PasswordRule(
+        expression: r'[a-z]',
+        label: '1 lowercase letter',
+        text: _passwordController.text,
+      ),
+      PasswordRule(
+        expression: r'[0-9]',
+        label: '1 number',
+        text: _passwordController.text,
+      ),
+      PasswordRule(
+        expression: r'[!@#$%^&*(),.?":{}|<>]',
+        label: '1 special character',
+        text: _passwordController.text,
+      ),
+      PasswordRule(
+        expression: r'^.{8,}$',
+        label: '8 characters',
+        text: _passwordController.text,
+      ),
+    ];
+    return rules.every((rule) => rule.isRuleSatisfied());
   }
 
   void _onSubmit() {
@@ -42,6 +76,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _signUpController.signup(context, _nameController.text,
           _emailController.text, _passwordController.text);
     }
+  }
+
+  void _onTextChanged() {
+    _validateInputs();
+  }
+
+  void _onViewPassword() {
+    setState(() {
+      _showContainer = !_showContainer;
+    });
   }
 
   @override
@@ -107,7 +151,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ],
                   ),
-
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -137,9 +180,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: _passwordController,
                         label: 'Password',
                         icon: const Icon(Icons.lock),
-                        //isPassword: true,
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 16),
+                      _showContainer
+                          ? Align(
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  PasswordRule(
+                                    expression: r'[A-Z]',
+                                    label: '1 uppercase letter',
+                                    text: _passwordController.text,
+                                  ),
+                                  PasswordRule(
+                                    expression: r'[a-z]',
+                                    label: '1 lowercase letter',
+                                    text: _passwordController.text,
+                                  ),
+                                  PasswordRule(
+                                    expression: r'[0-9]',
+                                    label: '1 number',
+                                    text: _passwordController.text,
+                                  ),
+                                  PasswordRule(
+                                    expression: r'[!@#$%^&*(),.?":{}|<>]',
+                                    label: '1 special character',
+                                    text: _passwordController.text,
+                                  ),
+                                  PasswordRule(
+                                    expression: r'^.{8,}$',
+                                    label: '8 characters',
+                                    text: _passwordController.text,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const SizedBox(),
+                      const SizedBox(height: 24),
                       CustomButton(
                         icon: const Icon(Icons.arrow_forward),
                         label: 'Next',
@@ -150,12 +228,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text("Have an account?",
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.normal,
-                                  color: AppColors.black50)),
+                          const Text(
+                            "Have an account?",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: AppColors.black50,
+                            ),
+                          ),
                           TextButton(
                             onPressed: () {
                               Navigator.of(context).pushNamed('/login');
@@ -163,17 +244,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: const Text(
                               'Sign In',
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins',
-                                  fontSize: 16,
-                                  color: AppColors.primary),
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
+                                fontSize: 16,
+                                color: AppColors.primary,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  // Additional form fields here
                 ],
               ),
             ),
