@@ -38,6 +38,8 @@ func init() {
 		"KAFKA_ORDERS_GROUP_ID",
 		"KAFKA_ORDERS_CLIENT_ID",
 		"JWT_SECRET_KEY",
+		"REDIS_PASSWORD",
+		"REDIS_ADDRESS",
 	); missing_var != nil {
 		panic(missing_var)
 	}
@@ -55,7 +57,7 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host	localhost:8080
+//	@host	localhost
 //	@BasePath	/api/v1
 
 // @SecurityDefinitions.apikey BearerAuth

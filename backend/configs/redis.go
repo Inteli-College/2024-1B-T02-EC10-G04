@@ -10,15 +10,20 @@ import (
 
 func SetupRedis() *redis.Client {
 	rdpass := os.Getenv("REDIS_PASSWORD")
+	rdaddress := os.Getenv("REDIS_ADDRESS")
 
 	if rdpass == "" {
 		log.Fatal("REDIS_PASSWORD variable not defined")
 	}
 
+	if rdaddress == "" {
+		log.Fatal("REDIS_ADDRESS not defined")
+	}
+
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // Endereço do servidor Redis
-		Password: rdpass,           // Senha, se não houver senha deixar vazio
-		DB:       0,                // Número do banco de dados
+		Addr:     rdaddress, // Endereço do servidor Redis
+		Password: rdpass,    // Senha, se não houver senha deixar vazio
+		DB:       0,         // Número do banco de dados
 	})
 
 	// Testar a conexão
