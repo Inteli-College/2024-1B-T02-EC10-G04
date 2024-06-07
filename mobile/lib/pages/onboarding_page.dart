@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/colors.dart';
 import 'package:mobile/pages/login_page.dart';
 import 'package:mobile/widgets/card_onboarding.dart';
-import 'package:mobile/widgets/custom_button.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  final PageController _controller = PageController();
   int _currentIndex = 0;
 
   final List<Map<String, String>> _onboardingData = [
