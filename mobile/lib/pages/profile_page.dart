@@ -19,6 +19,7 @@ class ProfilePage extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProfilePageState createState() => _ProfilePageState();
 }
 
@@ -49,9 +50,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    Future<void> _logout() async {
+    Future<void> logout() async {
       await LocalStorageService().cleanValues();
       if (mounted) {
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed('/login');
       }
     }
@@ -172,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     isEnabled: true,
                     label: 'LogOut',
                     onPressed: () async {
-                      _logout();
+                      logout();
                     },
                   ),
                 ],

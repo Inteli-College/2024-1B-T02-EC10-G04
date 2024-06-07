@@ -13,7 +13,7 @@ class OnboardingPage extends StatelessWidget {
   final int totalPages;
 
   const OnboardingPage({
-    Key? key,
+    super.key,
     required this.logoPath,
     required this.imagePath,
     required this.title,
@@ -21,7 +21,7 @@ class OnboardingPage extends StatelessWidget {
     required this.onNext,
     required this.currentIndex,
     required this.totalPages,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

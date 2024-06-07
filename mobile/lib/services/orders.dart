@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/logic/local_storage.dart';
 import 'package:mobile/models/order.dart';
-import 'package:mobile/main.dart';
 
 class OrderService {
   final String baseUrl = dotenv.env['PUCLIC_URL']!;

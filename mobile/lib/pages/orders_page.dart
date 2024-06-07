@@ -30,7 +30,7 @@ class _OrdersPageState extends State<OrdersPage> {
 
   @override
   Widget build(BuildContext context) {
-    var calendarLogic = Provider.of<CalendarLogic>(context);
+    Provider.of<CalendarLogic>(context);
     late String name = widget.name;
 
     return DefaultTabController(
