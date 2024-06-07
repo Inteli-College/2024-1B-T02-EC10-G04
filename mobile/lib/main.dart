@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:mobile/logic/local_storage.dart';
 import 'package:mobile/logic/navbar_state.dart';
+import 'package:mobile/models/pyxis.dart';
 import 'package:mobile/pages/orders_page.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/pages/login_page.dart';
@@ -35,10 +36,33 @@ class HomeScreen extends StatelessWidget {
           '/onboarding': (context) => const OnboardingScreen(),
           '/login': (context) => const LoginScreen(),
           '/signup': (context) => const SignUpScreen(),
-          '/new-order': (context) => const NewOrderPage(
-                pyxis: 'M10 G04',
-                medicine: 'Ibuprofeno',
-                medicineid: '4679',
+          '/new-order': (BuildContext context) => FutureBuilder<List<String?>>(
+                future: Future.wait([
+                  localStorageService.getValue('pyxis'),
+                  localStorageService.getValue('medicine'),
+                  localStorageService.getValue('medicineid'),
+                ]),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Error loading data'));
+                  } else {
+                    final data = snapshot.data;
+                    if (data == null || data.contains(null)) {
+                      return const Center(child: Text('Missing data'));
+                    } else {
+                      final pyxis = data[0]!;
+                      final medicine = data[1]!;
+                      final medicineid = data[2]!;
+                      return NewOrderPage(
+                        pyxis: pyxis,
+                        medicine: medicine,
+                        medicineid: medicineid,
+                      );
+                    }
+                  }
+                },
               ),
           '/check-order': (context) => CheckOrderPage(
                 pyxis: 'M10 G04',
