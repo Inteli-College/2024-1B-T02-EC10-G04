@@ -25,5 +25,5 @@ resource "aws_elasticache_replication_group" "redis" {
   engine_version       = "6.x"
 
   transit_encryption_enabled = true
-  auth_token                 = "abcdefgh1234567890"
+  auth_token                 = "myredispassword"
 }
