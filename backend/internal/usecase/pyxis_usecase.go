@@ -1,19 +1,24 @@
 package usecase
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"log"
 
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
+	cacheError "github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/errors"
 )
 
 type PyxisUseCase struct {
-	PyxisRepository         entity.PyxisRepository
-	MedicinePyxisRepository entity.MedicinePyxisRepository
+	PyxisRepository          entity.PyxisRepository
+	MedicinePyxisRepository  entity.MedicinePyxisRepository
+	MedicinesRedisRepository entity.MedicineRedisRepository
 }
 
-func NewPyxisUseCase(pyxisRepository entity.PyxisRepository, medicinePixysRepository entity.MedicinePyxisRepository) *PyxisUseCase {
-	return &PyxisUseCase{PyxisRepository: pyxisRepository, MedicinePyxisRepository: medicinePixysRepository}
+func NewPyxisUseCase(pyxisRepository entity.PyxisRepository, medicinePixysRepository entity.MedicinePyxisRepository, medicineRedisRepository entity.MedicineRedisRepository) *PyxisUseCase {
+	return &PyxisUseCase{PyxisRepository: pyxisRepository, MedicinePyxisRepository: medicinePixysRepository, MedicinesRedisRepository: medicineRedisRepository}
 }
 
 func (p *PyxisUseCase) CreatePyxis(input *dto.CreatePyxisInputDTO) (*dto.CreatePyxisOutputDTO, error) {
@@ -84,7 +89,14 @@ func (p *PyxisUseCase) DeletePyxis(id string) error {
 	if err != nil {
 		return err
 	}
-	return p.PyxisRepository.DeletePyxis(pyxis.ID)
+	if err := p.PyxisRepository.DeletePyxis(pyxis.ID); err != nil {
+		return err
+	} else {
+		if err := p.MedicinesRedisRepository.RemoveMedicinesPyxis(context.Background(), id); err != nil {
+			log.Printf("Error deleting from cache: %s\n", err.Error())
+		}
+		return nil
+	}
 }
 
 func (p *PyxisUseCase) RegisterMedicine(id string, medicines []string) error {
@@ -94,11 +106,36 @@ func (p *PyxisUseCase) RegisterMedicine(id string, medicines []string) error {
 
 	_, err := p.MedicinePyxisRepository.CreateMedicinePixys(id, medicines)
 
+	if err := p.MedicinesRedisRepository.RemoveMedicinesPyxis(context.Background(), id); err != nil {
+		log.Printf("Error deleting from cache: %s\n", err.Error())
+	}
+
 	return err
 }
 
 func (p *PyxisUseCase) GetMedicinesFromPyxis(pyxis_id string) ([]*dto.FindMedicineOutputDTO, error) {
-	medicines, err := p.MedicinePyxisRepository.FindMedicinesPyxis(pyxis_id)
+	ctx := context.Background()
+
+	medicines, err := p.MedicinesRedisRepository.FindMedicinesFromPyxis(ctx, pyxis_id)
+
+	if medicines == nil || err != nil {
+		switch {
+		case errors.Is(err, cacheError.KeyNil):
+			medicines, err = p.MedicinePyxisRepository.FindMedicinesPyxis(pyxis_id)
+			if err != nil {
+				return nil, err
+			}
+
+			if medicines != nil || len(medicines) > 0 {
+				err = p.MedicinesRedisRepository.InsertMedicinesPyxis(ctx, pyxis_id, medicines)
+				if err != nil {
+					return nil, err
+				}
+			}
+		default:
+			return nil, err
+		}
+	}
 
 	var output []*dto.FindMedicineOutputDTO
 	for _, medicine := range medicines {
@@ -129,6 +166,10 @@ func (p *PyxisUseCase) DisassociateMedicinesFromPyxis(pyxis_id string, medicines
 	for i, deletedMedicine := range deletedMedicines {
 		output.DisassociatedMedicines[i].MedicineID = deletedMedicine.MedicineId
 		output.DisassociatedMedicines[i].PyxisID = deletedMedicine.PyxisId
+	}
+
+	if err := p.MedicinesRedisRepository.RemoveMedicinesPyxis(context.Background(), pyxis_id); err != nil {
+		log.Printf("Error deleting from cache: %s\n", err.Error())
 	}
 
 	return &output, err

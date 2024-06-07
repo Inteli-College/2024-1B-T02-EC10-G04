@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"context"
 	"time"
 )
 
@@ -18,6 +19,12 @@ type MediceRepository interface {
 	FindAllMedicines() ([]*Medicine, error)
 	UpdateMedicine(medicine *Medicine) (*Medicine, error)
 	DeleteMedicine(id string) error
+}
+
+type MedicineRedisRepository interface {
+	FindMedicinesFromPyxis(ctx context.Context, pyxis_id string) ([]*Medicine, error)
+	InsertMedicinesPyxis(ctx context.Context, pyxis_id string, medicines []*Medicine) error
+  RemoveMedicinesPyxis(ctx context.Context, pyxis_id string) error
 }
 
 type Medicine struct {

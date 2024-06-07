@@ -28,7 +28,8 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     healthcheck:
-      test: ["CMD-SHELL", "kafka-topics --list --bootstrap-server localhost:9092"]
+      test:
+        ["CMD-SHELL", "kafka-topics --list --bootstrap-server localhost:9092"]
       interval: 30s
       timeout: 15s
       retries: 10
@@ -57,13 +58,13 @@ services:
     image: postgres:latest
     restart: always
     hostname: postgres
-    container_name: postgres
+    # container_name: postgres
     environment:
       POSTGRES_DB: db
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - ./database:/docker-entrypoint-initdb.d
       - postgres_data:/var/lib/postgresql/data
@@ -73,6 +74,9 @@ services:
     container_name: redis
     restart: always
     ports:
-        - '6379:6379'
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=myredispassword
+    command: ["sh", "-c", "redis-server --requirepass $$REDIS_PASSWORD"]
     volumes:
-        - redis_data:/data
+      - redis_data:/data

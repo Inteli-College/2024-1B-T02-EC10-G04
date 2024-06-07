@@ -61,6 +61,13 @@ func main() {
 	db := configs.SetupPostgres()
 	defer db.Close()
 
+	redis := configs.SetupRedis()
+	defer func() {
+		if err := redis.Close(); err != nil {
+			log.Fatalf("Erro while closing connection with Redis: %v", err)
+		}
+	}()
+
 	///////////////////////// Gin ///////////////////////////
 
 	router := gin.Default()
@@ -147,7 +154,8 @@ func main() {
 
 	pyxisRepository := repository.NewPyxisRepositoryPostgres(db)
 	medicinePyxisRepository := repository.NewMedicinePyxisRepositoryPostgres(db)
-	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository, medicinePyxisRepository)
+	medicineRedisRepository := repository.NewMedicineRepositoryRedis(redis)
+	pyxisUseCase := usecase.NewPyxisUseCase(pyxisRepository, medicinePyxisRepository, medicineRedisRepository)
 	pyxisHandlers := handler.NewPyxisHandlers(pyxisUseCase, medicineUseCase)
 
 	{

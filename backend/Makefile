@@ -62,3 +62,12 @@ redis:
 	fi
 	@docker compose -f ../docker-compose.yml up redis -d
 	$(END_LOG)
+
+.PHONY: db
+db:
+	$(START_LOG)
+	@if [ "$(reset)" = "true" ]; then \
+		docker compose -f ../docker-compose.yml down postgres -v; \
+	fi
+	@docker compose -f ../docker-compose.yml up postgres -d
+	$(END_LOG)
