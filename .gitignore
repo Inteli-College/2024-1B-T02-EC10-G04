@@ -7,5 +7,4 @@ linux/
 macos/
 windows/
 pubspec.lock
-android/
-ios/
+.env.front

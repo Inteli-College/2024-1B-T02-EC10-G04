@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:mobile/logic/local_storage.dart';
 import 'package:mobile/logic/navbar_state.dart';
@@ -14,7 +15,8 @@ import 'package:mobile/pages/new_orders_page.dart';
 import 'package:mobile/pages/check_orders_page.dart';
 import 'package:mobile/pages/qr_code.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env.front");
   runApp(const HomeScreen());
 }
 

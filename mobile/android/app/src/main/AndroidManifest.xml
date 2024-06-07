@@ -3,7 +3,7 @@
     <uses-feature android:name="android.hardware.camera"/>
 
     <application
-        android:label="mobile"
+        android:label="GoMedice"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
