@@ -144,6 +144,7 @@ func (p *PyxisHandlers) DeletePyxisHandler(c *gin.Context) {
 // @Param id path string true "Pyxis ID"
 // @Param input body dto.RegisterMedicinePyxisInputDTO true "Medicines to register into Pyxis"
 // @Success 200 {objetct} {"message": message}
+// @Security BearerAuth
 // @Router /pyxis/{id}/register-medicine [post]
 func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 	pixys_id := c.Param("id")
@@ -204,6 +205,7 @@ func (p *PyxisHandlers) RegisterMedicinePyxisHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "Pyxis ID"
 // @Success 200 {object} []dto.FindMedicineOutputDTO
+// @Security BearerAuth
 // @Router /pyxis/{id}/medicines [get]
 func (p *PyxisHandlers) GetMedicinesPyxisHandler(c *gin.Context) {
 	pixys_id := c.Param("id")
@@ -233,6 +235,7 @@ func (p *PyxisHandlers) GetMedicinesPyxisHandler(c *gin.Context) {
 // @Param id path string true "Pyxis ID"
 // @Param input body dto.DisassociateMedicineInputDTO true "Medicines to disassociate"
 // @Success 200 {string} string
+// @Security BearerAuth
 // @Router /pyxis/{id}/medicines [delete]
 func (p *PyxisHandlers) DisassociateMedicinePyxisHandler(c *gin.Context) {
 	pixys_id := c.Param("id")
@@ -296,6 +299,7 @@ func (p *PyxisHandlers) DisassociateMedicinePyxisHandler(c *gin.Context) {
 // @Produce image/png
 // @Param input body dto.GenerateQRCodeOutputDTO true "Pyxis ID to generate QR code for"
 // @Success 200 {string} string "QR code image"
+// @Security BearerAuth
 // @Router /pyxis/qrcode [post]
 func (p *PyxisHandlers) GeneratePyxisQRCodeHandler(c *gin.Context) {
 	var input dto.GenerateQRCodeOutputDTO
