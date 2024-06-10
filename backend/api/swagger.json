@@ -20,6 +20,11 @@
     "paths": {
         "/medicines": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all Medicines entities",
                 "consumes": [
                     "application/json"
@@ -44,6 +49,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new Medicine entity",
                 "consumes": [
                     "application/json"
@@ -78,6 +88,11 @@
         },
         "/medicines/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve a Medicine entity by ID",
                 "consumes": [
                     "application/json"
@@ -108,6 +123,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a Medicine entity",
                 "consumes": [
                     "application/json"
@@ -147,6 +167,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a Medicine entity",
                 "consumes": [
                     "application/json"
@@ -179,6 +204,11 @@
         },
         "/orders": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all Order entities",
                 "consumes": [
                     "application/json"
@@ -203,6 +233,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new Order entity and produce an event to Kafka",
                 "consumes": [
                     "application/json"
@@ -237,6 +272,11 @@
         },
         "/orders/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve an Order entity by ID",
                 "consumes": [
                     "application/json"
@@ -267,6 +307,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an Order entity",
                 "consumes": [
                     "application/json"
@@ -306,6 +351,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an Order entity",
                 "consumes": [
                     "application/json"
@@ -338,6 +388,11 @@
         },
         "/pyxis": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all Pyxis entities",
                 "consumes": [
                     "application/json"
@@ -435,6 +490,11 @@
         },
         "/pyxis/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve a Pyxis entity by ID",
                 "consumes": [
                     "application/json"
@@ -465,6 +525,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a Pyxis entity",
                 "consumes": [
                     "application/json"
@@ -504,6 +569,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a Pyxis entity",
                 "consumes": [
                     "application/json"
@@ -651,6 +721,11 @@
         },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all User entities",
                 "consumes": [
                     "application/json"
@@ -761,6 +836,11 @@
         },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve a User entity by ID",
                 "consumes": [
                     "application/json"
@@ -791,6 +871,11 @@
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a User entity",
                 "consumes": [
                     "application/json"
@@ -830,6 +915,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a User entity",
                 "consumes": [
                     "application/json"

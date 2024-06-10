@@ -32,6 +32,7 @@ func NewOrderHandlers(orderUsecase *usecase.OrderUseCase, KafkaProducer *kafka.K
 // @Produce json
 // @Param input body dto.CreateOrderInputDTO true "Order entity to create"
 // @Success 201 {object} string
+// @Security BearerAuth
 // @Router /orders [post]
 func (h *OrderHandlers) CreateOrderHandler(c *gin.Context) {
 	var input dto.CreateOrderInputDTO
@@ -62,6 +63,7 @@ func (h *OrderHandlers) CreateOrderHandler(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} dto.FindOrderOutputDTO
+// @Security BearerAuth
 // @Router /orders [get]
 func (h *OrderHandlers) FindAllOrdersHandler(c *gin.Context) {
 	output, err := h.OrderUseCase.FindAllOrders()
@@ -80,6 +82,7 @@ func (h *OrderHandlers) FindAllOrdersHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "Order ID"
 // @Success 200 {object} dto.FindOrderOutputDTO
+// @Security BearerAuth
 // @Router /orders/{id} [get]
 func (h *OrderHandlers) FindOrderByIdHandler(c *gin.Context) {
 	var input dto.FindOrderByIDInputDTO
@@ -101,6 +104,7 @@ func (h *OrderHandlers) FindOrderByIdHandler(c *gin.Context) {
 // @Param id path string true "Order ID"
 // @Param input body dto.UpdateOrderInputDTO true "Order entity to update"
 // @Success 200 {object} dto.UpdateOrderOutputDTO
+// @Security BearerAuth
 // @Router /orders/{id} [put]
 func (h *OrderHandlers) UpdateOrderHandler(c *gin.Context) {
 	var input dto.UpdateOrderInputDTO
@@ -125,6 +129,7 @@ func (h *OrderHandlers) UpdateOrderHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "Order ID"
 // @Success 200 {string} string
+// @Security BearerAuth
 // @Router /orders/{id} [delete]
 func (h *OrderHandlers) DeleteOrderHandler(c *gin.Context) {
 	var input dto.DeleteOrderInputDTO

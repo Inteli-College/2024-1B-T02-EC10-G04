@@ -26,6 +26,11 @@ const docTemplate = `{
     "paths": {
         "/medicines": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all Medicines entities",
                 "consumes": [
                     "application/json"
@@ -50,6 +55,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new Medicine entity",
                 "consumes": [
                     "application/json"
@@ -84,6 +94,11 @@ const docTemplate = `{
         },
         "/medicines/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve a Medicine entity by ID",
                 "consumes": [
                     "application/json"
@@ -114,6 +129,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a Medicine entity",
                 "consumes": [
                     "application/json"
@@ -153,6 +173,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a Medicine entity",
                 "consumes": [
                     "application/json"
@@ -185,6 +210,11 @@ const docTemplate = `{
         },
         "/orders": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all Order entities",
                 "consumes": [
                     "application/json"
@@ -209,6 +239,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new Order entity and produce an event to Kafka",
                 "consumes": [
                     "application/json"
@@ -243,6 +278,11 @@ const docTemplate = `{
         },
         "/orders/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve an Order entity by ID",
                 "consumes": [
                     "application/json"
@@ -273,6 +313,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an Order entity",
                 "consumes": [
                     "application/json"
@@ -312,6 +357,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an Order entity",
                 "consumes": [
                     "application/json"
@@ -344,6 +394,11 @@ const docTemplate = `{
         },
         "/pyxis": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all Pyxis entities",
                 "consumes": [
                     "application/json"
@@ -441,6 +496,11 @@ const docTemplate = `{
         },
         "/pyxis/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve a Pyxis entity by ID",
                 "consumes": [
                     "application/json"
@@ -471,6 +531,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a Pyxis entity",
                 "consumes": [
                     "application/json"
@@ -510,6 +575,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a Pyxis entity",
                 "consumes": [
                     "application/json"
@@ -657,6 +727,11 @@ const docTemplate = `{
         },
         "/users": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve all User entities",
                 "consumes": [
                     "application/json"
@@ -767,6 +842,11 @@ const docTemplate = `{
         },
         "/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Retrieve a User entity by ID",
                 "consumes": [
                     "application/json"
@@ -797,6 +877,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a User entity",
                 "consumes": [
                     "application/json"
@@ -836,6 +921,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a User entity",
                 "consumes": [
                     "application/json"

@@ -49,6 +49,7 @@ func (h *UserHandlers) CreateUser(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} dto.FindUserOutputDTO
+// @Security BearerAuth
 // @Router /users [get]
 func (h *UserHandlers) FindAllUsersHandler(c *gin.Context) {
 	output, err := h.UserUseCase.FindAllUsers()
@@ -67,6 +68,7 @@ func (h *UserHandlers) FindAllUsersHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "User ID"
 // @Success 200 {object} dto.FindUserOutputDTO
+// @Security BearerAuth
 // @Router /users/{id} [get]
 func (h *UserHandlers) FindUserByIdHandler(c *gin.Context) {
 	var input dto.FindUserByIdInputDTO
@@ -88,6 +90,7 @@ func (h *UserHandlers) FindUserByIdHandler(c *gin.Context) {
 // @Param id path string true "User ID"
 // @Param input body dto.UpdateUserInputDTO true "User entity to update"
 // @Success 200 {object} dto.UpdateUserOutputDTO
+// @Security BearerAuth
 // @Router /users/{id} [put]
 func (h *UserHandlers) UpdateUserHandler(c *gin.Context) {
 	var input dto.UpdateUserInputDTO
@@ -112,6 +115,7 @@ func (h *UserHandlers) UpdateUserHandler(c *gin.Context) {
 // @Produce json
 // @Param id path string true "User ID"
 // @Success 200 {string} string
+// @Security BearerAuth
 // @Router /users/{id} [delete]
 func (h *UserHandlers) DeleteUserHandler(c *gin.Context) {
 	var input dto.DeleteUserInputDTO
