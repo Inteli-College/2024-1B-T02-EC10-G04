@@ -56,7 +56,6 @@ class _NewOrderPageState extends State<NewOrderPage> {
     });
     }
 
-  final NewOrderService newOrderService = NewOrderService();
 
   @override
   Widget build(BuildContext context) {
