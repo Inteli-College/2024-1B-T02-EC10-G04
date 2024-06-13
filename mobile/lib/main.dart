@@ -46,19 +46,16 @@ class HomeScreen extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/orders',
-        //home: const SplashScreen(),
+        //initialRoute: '/orders',
+        home: const SplashScreen(),
         routes: {
           '/onboarding': (context) => const OnboardingScreen(),
           '/login': (context) => const LoginScreen(),
           '/signup': (context) => const SignUpScreen(),
           NewOrderPage.routeName: (context) =>
           const NewOrderPage(),
-          '/check-order': (context) => CheckOrderPage(
-                pyxis: 'M10 G04',
-                medicine: 'Ibuprofeno',
-                quantity: 1,
-              ),
+          CheckOrderPage.routeName: (context) => 
+          const CheckOrderPage(),
           '/orders': (BuildContext context) => OrdersPage(
                 name: name ?? 'Unknown',
               ),

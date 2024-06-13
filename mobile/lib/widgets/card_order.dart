@@ -136,8 +136,8 @@ class CardOrder extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (context) => OrderDetailsPage(
-                          orderNumber: orderNumber,
-                          orderDate: orderDate,
+                          orderNumber: orderNumber.substring(0, 6),
+                          orderDate: "2024-06-07",
                           orderStatus: orderStatus,
                           orderValue: orderValue,
                           medicines: medicines,

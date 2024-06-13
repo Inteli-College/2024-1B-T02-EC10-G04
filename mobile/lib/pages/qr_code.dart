@@ -35,7 +35,7 @@ class _QRCodePageState extends State<QRCodePage> {
         title: const Text(
           'Leitor de QR Code',
           style: TextStyle(
-            fontFamily: 'Poppins', // Definindo a fonte como Poppins
+            fontFamily: 'Poppins',
           ),
         ),
       ),
@@ -93,9 +93,8 @@ class _QRCodePageState extends State<QRCodePage> {
           context, 
           NewOrderPage.routeName,
           arguments: QRCodeArguments(
+            scanData.code!,
             pyxis.label!,
-            'Medicine',
-            'Lote',
           ))
           .then((_) {
           controller.resumeCamera();

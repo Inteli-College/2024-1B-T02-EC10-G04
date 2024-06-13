@@ -1,4 +1,4 @@
-class Medice {
+class Medicines {
   String? batch;
   String? createdAt;
   String? id;
@@ -6,7 +6,7 @@ class Medice {
   String? stripe;
   String? updatedAt;
 
-  Medice(
+  Medicines(
       {this.batch,
       this.createdAt,
       this.id,
@@ -14,7 +14,7 @@ class Medice {
       this.stripe,
       this.updatedAt});
 
-  Medice.fromJson(Map<String, dynamic> json) {
+  Medicines.fromJson(Map<String, dynamic> json) {
     batch = json['batch'];
     createdAt = json['created_at'];
     id = json['id'];
