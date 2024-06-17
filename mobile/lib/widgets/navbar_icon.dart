@@ -23,8 +23,10 @@ class NavBarIcon extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        navBarState.setSelectedIndex(index);
-        Navigator.pushReplacementNamed(context, route);
+        if (ModalRoute.of(context)!.settings.name != route) {
+          navBarState.setSelectedIndex(index);
+          Navigator.pushReplacementNamed(context, route);
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(8.0),
