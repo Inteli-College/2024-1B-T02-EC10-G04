@@ -20,6 +20,15 @@ class _SettingsPageState extends State<SettingsPage> {
       TextEditingController();
   late TextEditingController _newPasswordController = TextEditingController();
   bool _showContainer = false;
+  bool _isUpperCase = false;
+  bool _isLowerCase = false;
+  bool _isNumber = false;
+  bool _isSpecialChar = false;
+  bool _isMinLength = false;
+  bool _isButtonEnabled = false;
+  var showPreviousPassword = true;
+  var showNewPassword = true;
+  IconData iconType = Icons.visibility;
 
   @override
   void initState() {
@@ -37,9 +46,36 @@ class _SettingsPageState extends State<SettingsPage> {
     super.dispose();
   }
 
+  void _onViewPreviousPassword() {
+    setState(() {
+      showPreviousPassword = !showPreviousPassword;
+      showPreviousPassword
+          ? iconType = Icons.visibility
+          : iconType = Icons.visibility_off;
+    });
+  }
+
+  void _onViewNewPassword() {
+    setState(() {
+      showNewPassword = !showNewPassword;
+      showNewPassword
+          ? iconType = Icons.visibility
+          : iconType = Icons.visibility_off;
+    });
+  }
+
   void _onTextChanged() {
     setState(() {
-      _showContainer = _newPasswordController.text.isNotEmpty;
+      final newPassword = _newPasswordController.text;
+      setState(() {
+      _showContainer = newPassword.isNotEmpty;
+      _isUpperCase = RegExp(r'[A-Z]').hasMatch(newPassword);
+      _isLowerCase = RegExp(r'[a-z]').hasMatch(newPassword);
+      _isNumber = RegExp(r'[0-9]').hasMatch(newPassword);
+      _isSpecialChar = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(newPassword);
+      _isMinLength = newPassword.length >= 8;
+      _isButtonEnabled = _isUpperCase && _isLowerCase && _isNumber && _isSpecialChar && _isMinLength;
+    });
     });
   }
 
@@ -92,17 +128,29 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 children: [
                   InputText(
-                    icon: const Icon(Icons.edit),
+                    icon: IconButton(
+                          icon: Icon(
+                            iconType,
+                            color: AppColors.black50,
+                          ),
+                          onPressed: _onViewPreviousPassword,
+                        ),
                     label: 'Previous Password',
                     controller: _previousPasswordController,
-                    obscureText: true,
+                    obscureText: showPreviousPassword,
                   ),
                   const SizedBox(height: 16.0),
                   InputText(
-                    icon: const Icon(Icons.edit),
+                    icon: IconButton(
+                          icon: Icon(
+                            iconType,
+                            color: AppColors.black50,
+                          ),
+                          onPressed: _onViewNewPassword,
+                        ),
                     label: 'New Password',
                     controller: _newPasswordController,
-                    obscureText: true,
+                    obscureText: showNewPassword,
                   ),
                   const SizedBox(height: 16.0),
                   _showContainer
@@ -142,7 +190,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   const SizedBox(height: 16.0),
                   CustomButton(
                     receivedColor: AppColors.secondary,
-                    isEnabled: true,
+                    isEnabled: _isButtonEnabled,
                     label: 'Submit',
                     onPressed: () {},
                   )

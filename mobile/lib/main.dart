@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 import 'package:mobile/logic/local_storage.dart';
 import 'package:mobile/logic/navbar_state.dart';
-import 'package:mobile/models/pyxis.dart';
 import 'package:mobile/pages/orders_page.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/pages/login_page.dart';
