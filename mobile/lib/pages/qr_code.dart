@@ -32,6 +32,12 @@ class _QRCodePageState extends State<QRCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pushNamed('/orders');
+          },
+        ),
         title: const Text(
           'Leitor de QR Code',
           style: TextStyle(

@@ -6,7 +6,11 @@ class NavBarState with ChangeNotifier {
   int get selectedIndex => _selectedIndex;
 
   void setSelectedIndex(int index) {
-    _selectedIndex = index;
+    if (index == 1){
+      _selectedIndex = 0;
+    } else {
+      _selectedIndex = index;
+    }
     notifyListeners();
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/widgets/dropdown.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/models/qrcode.dart';
@@ -74,7 +73,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed('/orders');
+              Navigator.pop(context);
             },
           ),
         ),
@@ -214,7 +213,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                   label: 'Back',
                                   receivedColor: AppColors.grey3,
                                   onPressed: () {
-                                    Navigator.of(context).pushNamed('/qr-code');
+                                    Navigator.pop(context);
                                   },
                                   isEnabled: true,
                                 ),

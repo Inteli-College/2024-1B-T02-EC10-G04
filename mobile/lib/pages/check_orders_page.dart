@@ -246,7 +246,7 @@ class _CheckOrderPageState extends State<CheckOrderPage> {
                 Expanded(
                   child: CustomButton(
                     icon: const Icon(Icons.arrow_forward),
-                    label: 'Submit',
+                    label: 'Next',
                     receivedColor: AppColors.secondary,
                     onPressed: () {
                       _showSuccessModal(context);
