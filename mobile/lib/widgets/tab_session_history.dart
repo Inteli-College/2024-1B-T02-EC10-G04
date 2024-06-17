@@ -1,26 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mobile/widgets/card_order.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/models/order.dart';
-import 'package:provider/provider.dart';
-import 'package:mobile/logic/calendar_funcitons.dart';
 
-
-class TabSessionPendingOrders extends StatefulWidget {
+class TabSessionHistory extends StatefulWidget {
   final Future<List<Order>> orders;
 
   @override
   // ignore: library_private_types_in_public_api
-  _TabSessionPendingOrdersState createState() => _TabSessionPendingOrdersState();
+  _TabSessionHistoryState createState() => _TabSessionHistoryState();
 
-  const TabSessionPendingOrders({
+  const TabSessionHistory({
     super.key,
     required this.orders,
   });
 }
 
-class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
+class _TabSessionHistoryState extends State<TabSessionHistory> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -29,41 +25,38 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
           alignment: Alignment.topCenter,
           child: Column(
             children: [
+              const SizedBox(height: 16),
               Expanded(
                   child: FutureBuilder<List<Order>>(
                       future: widget.orders,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          DateTime selectedDate = Provider.of<CalendarLogic>(context).selectedDay ?? DateTime.now();
-                          List<Order> filteredOrders = snapshot.data!.where((order) {
-                            return DateFormat('yyyy-MM-dd').format(DateTime.parse(order.createdAt!)) == DateFormat('yyyy-MM-dd').format(selectedDate) && order.status != "completed" && order.status != "cancelled";
-                          }).toList();
                           return ListView.builder(
-                            itemCount: filteredOrders.length,
+                            itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return CardOrder(
-                                orderNumber: "Order: ${filteredOrders[index].id!.substring(0, 6).toUpperCase()}",
-                                orderDate: filteredOrders[index].createdAt!,
-                                orderStatus: filteredOrders[index].status!.toUpperCase(),
+                                orderNumber: "Order: ${snapshot.data![index].id!.substring(0, 6).toUpperCase()}",
+                                orderDate: snapshot.data![index].createdAt!,
+                                orderStatus: snapshot.data![index].status!.toUpperCase(),
                                 onPressed: () {},
-                                color: filteredOrders[index].priority == "red" ? AppColors.error : filteredOrders[index].priority == "green" ? AppColors.success : AppColors.warning,
-                                priority: filteredOrders[index].priority!,
+                                color: snapshot.data![index].priority == "red" ? AppColors.error : snapshot.data![index].priority == "green" ? AppColors.success : AppColors.warning,
+                                priority: snapshot.data![index].priority!,
                                 pyxis: 'MS-01D',
                                 iconStatus:
-                                filteredOrders[index].status == "requested" ?
+                                snapshot.data![index].status == "requested" ?
                                 const Icon(
                                  Icons.change_circle,
                                  color: AppColors.warning,
                                 )
-                                : filteredOrders[index].status == "pending" ? 
+                                : snapshot.data![index].status == "pending" ? 
                                 const Icon(
                                  Icons.change_circle,
                                  color: AppColors.warning,
-                                ) : filteredOrders[index].status == "completed" ? 
+                                ) : snapshot.data![index].status == "completed" ? 
                                 const Icon(
                                  Icons.check_circle,
                                  color: AppColors.success,
-                                ) : filteredOrders[index].status == "cancelled" ?
+                                ) : snapshot.data![index].status == "cancelled" ?
                                 const Icon(
                                  Icons.cancel,
                                  color: AppColors.error,
@@ -73,7 +66,7 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                                 ),
                                 //medicineList.map((medicine) => medicine['name'] as String).toList();
                                 medicines: [
-                                  filteredOrders[index].medicine!.name!,
+                                  snapshot.data![index].medicine!.name!,
                                 ]
                               );
                             },
@@ -81,7 +74,7 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                         } else if (snapshot.hasError) {
                           return const Padding(
                             padding: EdgeInsets.all(
-                                16.0), 
+                                16.0), // Define o padding desejado
                             child: Text(
                               'Orders not found!',
                               style: TextStyle(

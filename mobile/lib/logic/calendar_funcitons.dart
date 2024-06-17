@@ -9,7 +9,7 @@ class CalendarLogic extends ChangeNotifier {
     12,
     (index) => DateFormat('MMMM').format(DateTime(0, index + 1)),
   );
-  List<int> years = List.generate(101, (index) => 2000 + index);
+  List<int> years = List.generate(5, (index) => DateTime.now().year - index);
 
   void onMonthChanged(String? newMonth) {
     if (newMonth != null) {

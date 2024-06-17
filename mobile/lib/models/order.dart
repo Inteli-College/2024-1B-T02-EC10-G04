@@ -1,48 +1,55 @@
+import 'package:mobile/models/medicines.dart';
+import 'package:mobile/models/user.dart';
 class Order {
   String? createdAt;
   String? id;
-  String? medicineId;
+  Medicines? medicine;
   String? observation;
   String? priority;
   int? quantity;
   String? status;
   String? updatedAt;
-  String? userId;
+  User? user;
 
-  Order(
-      {this.createdAt,
-      this.id,
-      this.medicineId,
-      this.observation,
-      this.priority,
-      this.quantity,
-      this.status,
-      this.updatedAt,
-      this.userId});
+  Order({
+    this.createdAt,
+    this.id,
+    this.medicine,
+    this.observation,
+    this.priority,
+    this.quantity,
+    this.status,
+    this.updatedAt,
+    this.user,
+  });
 
   Order.fromJson(Map<String, dynamic> json) {
     createdAt = json['created_at'];
     id = json['id'];
-    medicineId = json['medicine_id'];
+    medicine = json['medicine'] != null ? Medicines.fromJson(json['medicine']) : null;
     observation = json['observation'];
     priority = json['priority'];
     quantity = json['quantity'];
     status = json['status'];
     updatedAt = json['updated_at'];
-    userId = json['user_id'];
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['created_at'] = createdAt;
     data['id'] = id;
-    data['medicine_id'] = medicineId;
+    if (medicine != null) {
+      data['medicine'] = medicine!.toJson();
+    }
     data['observation'] = observation;
     data['priority'] = priority;
     data['quantity'] = quantity;
     data['status'] = status;
     data['updated_at'] = updatedAt;
-    data['user_id'] = userId;
+    if (user != null) {
+      data['user'] = user!.toJson();
+    }
     return data;
   }
 }

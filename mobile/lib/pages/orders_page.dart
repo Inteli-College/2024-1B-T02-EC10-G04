@@ -6,6 +6,7 @@ import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/models/order.dart';
 import 'package:mobile/services/orders.dart';
+import 'package:mobile/widgets/tab_session_history.dart';
 import 'package:mobile/widgets/tab_session.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -21,10 +22,11 @@ class OrdersPage extends StatefulWidget {
 class _OrdersPageState extends State<OrdersPage> {
   late Future<List<Order>> futureMedicineOrders;
   final OrderService orderService = OrderService();
-
+  
   @override
   void initState() {
     super.initState();
+    
     futureMedicineOrders = orderService.getOrders();
   }
 
@@ -72,38 +74,24 @@ class _OrdersPageState extends State<OrdersPage> {
                           child: Text(
                               style: TextStyle(
                                   fontFamily: 'Poppins', fontSize: 14),
-                              'History'),
+                              'Pedding orders'),
                         ),
                         Tab(
                           child: Text(
                               style: TextStyle(
                                   fontFamily: 'Poppins', fontSize: 14),
-                              'Pedding orders'),
+                              'History'),
                         ),
                       ],
                     ),
                     Expanded(
                       child: TabBarView(
                         children: [
-                          TabSession(
+                          TabSessionPendingOrders(
                             orders: futureMedicineOrders,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Align(
-                              alignment: Alignment.topCenter,
-                              child: Column(
-                                children: [
-                                  Expanded(
-                                    child: ListView(
-                                      children: const [
-                                        // card aqui
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                          TabSessionHistory(
+                            orders: futureMedicineOrders,
                           ),
                         ],
                       ),

@@ -7,14 +7,22 @@ import 'package:mobile/models/order.dart';
 class OrderService {
   final String baseUrl = dotenv.env['PUCLIC_URL']!;
   String? accessToken;
+  String? id;
+  String? role;
+  List<Order> orders = [];
+  List<Order> userOrders = [];
 
   OrderService() {
-    _initializeToken();
+    _initializeLocalStorage();
   }
 
-  Future<void> _initializeToken() async {
+  Future<void> _initializeLocalStorage() async {
     try {
+
       accessToken = await LocalStorageService().getValue('access_token');
+      id = await LocalStorageService().getValue('id');
+      role = await LocalStorageService().getValue('role');
+
       if (accessToken == null) {
         throw Exception("Token is null");
       }
@@ -36,8 +44,17 @@ class OrderService {
 
       if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
-        // Log da resposta
-        return jsonResponse.map((order) => Order.fromJson(order)).toList();
+        orders = jsonResponse.map((order) => Order.fromJson(order)).toList();
+        if (role == 'user') {
+          
+          userOrders = orders.where((order) => order.user?.id == id).toList();
+          if (userOrders.isNotEmpty) {
+            return userOrders;
+          } else {
+            throw Exception('No orders found for user');
+          }
+        }
+        return [];
       } else {
         return [];
       }
