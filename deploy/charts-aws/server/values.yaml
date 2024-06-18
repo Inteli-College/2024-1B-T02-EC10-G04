@@ -53,14 +53,14 @@ env:
     value: "postgresql://postgres:postgres123@prod-db.cs9aqstoxqms.us-east-1.rds.amazonaws.com:5432/prod"
   - name: JWT_SECRET_KEY
     value: "secret"
-  - name: KAFKA_BOOTSTRAP_SERVER
-    value: "host.docker.internal:9094"
-  - name: KAFKA_ORDERS_TOPIC_NAME
+  - name: CONFLUENT_KAFKA_TOPIC_NAME
     value: "orders"
-  - name: KAFKA_ORDERS_GROUP_ID
-    value: "group"
-  - name: KAFKA_ORDERS_CLIENT_ID
-    value: "client"
+  - name: CONFLUENT_API_KEY
+    value: "U5PSHZNRQQSSXGBW"  
+  - name: CONFLUENT_API_SECRET
+    value: "w05m+9f2aGoKAc7yWv7xfwOUz7YL30Hr55Y6Ot5x8fKhxzto6KPkB6ZGxA+jtz+F"
+  - name: CONFLUENT_BOOTSTRAP_SERVER_SASL
+    value: "pkc-12576z.us-west2.gcp.confluent.cloud:9092"
   - name: REDIS_PASSWORD
     value: "abcdefgh1234567890"
   - name: REDIS_ADDRESS

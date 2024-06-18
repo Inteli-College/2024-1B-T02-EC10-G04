@@ -229,12 +229,20 @@ jobs:
       - name: Update kubeconfig
         run: aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name eks-prod
 
+      - name: Ensure server namespace exists
+        run: |
+          kubectl get namespace server || kubectl create namespace server
+
       - name: Deploy to EKS - Server
         working-directory: deploy/charts-aws/
         run: |
           helm upgrade --install server server/ \
           --namespace server \
           --values server/values.yaml
+
+      - name: Ensure conductor namespace exists
+        run: |
+          kubectl get namespace conductor || kubectl create namespace conductor
 
       - name: Deploy to EKS - Conductor
         working-directory: deploy/charts-aws/
