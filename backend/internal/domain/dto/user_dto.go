@@ -5,10 +5,11 @@ import (
 )
 
 type CreateUserInputDTO struct {
-	Name     string `json:"name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
+	Name       string `json:"name"`
+	Email      string `json:"email"`
+	Password   string `json:"password"`
+	Role       string `json:"role"`
+	Profession string `json:"profession"`
 }
 
 type LoginUserInputDTO struct {
