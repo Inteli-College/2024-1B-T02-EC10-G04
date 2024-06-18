@@ -5,7 +5,6 @@ class OrderDetailsPage extends StatelessWidget {
   final String orderNumber;
   final String orderDate;
   final String orderStatus;
-  final String orderValue;
   final VoidCallback onPressed;
   final Color color;
   final String priority;
@@ -18,7 +17,6 @@ class OrderDetailsPage extends StatelessWidget {
     required this.orderNumber,
     required this.orderDate,
     required this.orderStatus,
-    required this.orderValue,
     required this.onPressed,
     required this.color,
     required this.priority,

@@ -6,7 +6,6 @@ class CardOrder extends StatelessWidget {
   final String orderNumber;
   final String orderDate;
   final String orderStatus;
-  final String orderValue;
   final VoidCallback onPressed;
   final Color color;
   final String priority;
@@ -19,7 +18,6 @@ class CardOrder extends StatelessWidget {
     required this.orderNumber,
     required this.orderDate,
     required this.orderStatus,
-    required this.orderValue,
     required this.onPressed,
     required this.color,
     required this.priority,
@@ -47,9 +45,9 @@ class CardOrder extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     backgroundColor: Colors.purple,
-                    child: Text('MS'),
+                    child: Text(pyxis.substring(0, 2)),
                   ),
                   const SizedBox(width: 10),
                   Text(
@@ -64,14 +62,14 @@ class CardOrder extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: Colors.green[100],
+                    color: priority == "red" ? Colors.red[100] : priority == "green" ? Colors.green[100] : Colors.yellow[100],
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: Colors.green),
+                    border: Border.all(color: priority == "red" ? AppColors.error : priority == "green" ? AppColors.success : AppColors.warning,),
                   ),
                   child: Text(
-                    priority,
+                    priority == "red" ? "Urgent" : priority == "green" ? "Not Urgent" : "Moderate",
                     style: TextStyle(
-                      color: color,
+                      color: priority == "red" ? AppColors.error : priority == "green" ? AppColors.success : AppColors.warning,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -120,26 +118,25 @@ class CardOrder extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                TextButton(
-                  onPressed: () {
+                // TextButton(
+                //   onPressed: () {
                   
-                  },
-                  child: const Text('Request Again',
-                      style: TextStyle(
-                        color: AppColors.secondary,
-                        fontFamily: 'Poppins',
-                      )),
-                ),
+                //   },
+                //   child: const Text('Request Again',
+                //       style: TextStyle(
+                //         color: AppColors.secondary,
+                //         fontFamily: 'Poppins',
+                //       )),
+                // ),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => OrderDetailsPage(
-                          orderNumber: orderNumber,
-                          orderDate: orderDate,
+                          orderNumber: orderNumber.substring(0, 6),
+                          orderDate: "2024-06-07",
                           orderStatus: orderStatus,
-                          orderValue: orderValue,
                           medicines: medicines,
                           onPressed: () {},
                           color: AppColors.warning,

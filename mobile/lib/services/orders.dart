@@ -1,33 +1,66 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/logic/local_storage.dart';
 import 'package:mobile/models/order.dart';
 
 class OrderService {
-  final String baseUrl = "http://10.254.19.182/api/v1";
-  final String accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJJbnRlbGlNb2R1bG8xMCIsInN1YiI6IjQ3Yzk1NmM2LTIxMGEtNGU2My04ZDEyLWMwMTJlZGMxZjFhMCIsImV4cCI6MTcxNjc3NjA1OX0.EWSuAKHOH0SYBAvMmgSaz2I2gkVApo8ICHh_SuFzjhg";
+  final String baseUrl = dotenv.env['PUCLIC_URL']!;
+  String? accessToken;
+  String? id;
+  String? role;
+  List<Order> orders = [];
+  List<Order> userOrders = [];
+
+  OrderService() {
+    _initializeLocalStorage();
+  }
+
+  Future<void> _initializeLocalStorage() async {
+    try {
+
+      accessToken = await LocalStorageService().getValue('access_token');
+      id = await LocalStorageService().getValue('id');
+      role = await LocalStorageService().getValue('role');
+
+      if (accessToken == null) {
+        throw Exception("Token is null");
+      }
+    } catch (e) {
+      print("Error initializing token: $e");
+      // Handle error, e.g., by setting accessToken to a default value or rethrowing the exception
+    }
+  }
 
   Future<List<Order>> getOrders() async {
     try {
-    final response = await http.get(
-      Uri.parse('$baseUrl/orders'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $accessToken',
-      },
-    );
+      final response = await http.get(
+        Uri.parse('$baseUrl/orders'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
 
-   if (response.statusCode == 200) {
+      if (response.statusCode == 200) {
         List<dynamic> jsonResponse = json.decode(response.body);
-        // Log da resposta
-        return jsonResponse.map((order) => Order.fromJson(order)).toList();
+        orders = jsonResponse.map((order) => Order.fromJson(order)).toList();
+        if (role == 'user') {
+          
+          userOrders = orders.where((order) => order.user?.id == id).toList();
+          if (userOrders.isNotEmpty) {
+            return userOrders;
+          } else {
+            throw Exception('No orders found for user');
+          }
+        }
+        return [];
       } else {
-        throw Exception('Failed to load medicine orders');
+        return [];
       }
-
     } catch (e) {
       throw Exception('Failed to load medicine orders');
     }
   }
-
 
 }

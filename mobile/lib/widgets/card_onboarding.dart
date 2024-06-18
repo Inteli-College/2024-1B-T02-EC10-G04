@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
-import 'package:mobile/pages/login_page.dart';
-import 'package:mobile/widgets/custom_button.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:mobile/widgets/custom_button.dart';
 
 class OnboardingPage extends StatelessWidget {
-  final PageController controller;
   final String logoPath;
   final String imagePath;
   final String title;
   final String description;
+  final VoidCallback onNext;
+  final int currentIndex;
+  final int totalPages;
 
   const OnboardingPage({
     super.key,
-    required this.controller,
     required this.logoPath,
     required this.imagePath,
     required this.title,
     required this.description,
+    required this.onNext,
+    required this.currentIndex,
+    required this.totalPages,
   });
 
   @override
@@ -41,15 +44,15 @@ class OnboardingPage extends StatelessWidget {
               const SizedBox(height: 16),
               Container(
                 decoration: BoxDecoration(
-                  color: AppColors.secondary, // Background color
-                  borderRadius: BorderRadius.circular(16), // Border radius
+                  color: AppColors.secondary,
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     SmoothPageIndicator(
-                      controller: controller,
-                      count: 3,
+                      controller: PageController(initialPage: currentIndex),
+                      count: totalPages,
                       effect: const ScrollingDotsEffect(
                         dotColor: Colors.grey,
                         activeDotColor: AppColors.white100,
@@ -64,9 +67,10 @@ class OnboardingPage extends StatelessWidget {
                           title,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.white100),
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.white100,
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -84,20 +88,7 @@ class OnboardingPage extends StatelessWidget {
                       icon: const Icon(Icons.arrow_forward),
                       label: 'Next',
                       receivedColor: AppColors.primary,
-                      onPressed: () {
-                        if (controller.page == 2) {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
-                          );
-                        } else {
-                          controller.nextPage(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                          );
-                        }
-                      },
+                      onPressed: onNext,
                       isEnabled: true,
                     ),
                   ],

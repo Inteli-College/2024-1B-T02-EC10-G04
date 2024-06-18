@@ -1,11 +1,11 @@
 // lib/services/api_service.dart
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/logic/local_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  final String baseUrl = "http://10.254.19.182/api/v1";
+  final String baseUrl = dotenv.env['PUCLIC_URL']!;
   final LocalStorageService localStorageService = LocalStorageService();
 
   Future<Map<String, dynamic>> login(String email, String password) async {
@@ -22,12 +22,10 @@ class UserService {
 
     if (response.statusCode == 200) {
       var body = jsonDecode(response.body);
-      Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-      body.forEach((key, value) {
-        prefs.then((pref) {
-          pref.setString(key, value.toString());
-        });
-      });
+      body['isOnboarding'] = true;
+      for (var key in body.keys) {
+        localStorageService.saveValue(key, body[key].toString());
+      }
       return body;
     }
     return {};
@@ -50,12 +48,10 @@ class UserService {
 
     if (response.statusCode == 201) {
       var body = jsonDecode(response.body);
-      Future<SharedPreferences> prefs = SharedPreferences.getInstance();
-      body.forEach((key, value) {
-        prefs.then((pref) {
-          pref.setString(key, value.toString());
-        });
-      });
+      body['isOnboarding'] = true;
+      for (var key in body.keys) {
+        localStorageService.saveValue(key, body[key].toString());
+      }
       return body;
     }
     return {};

@@ -7,7 +7,7 @@ class NavBarContainer extends StatelessWidget {
   @override
   Widget build(context) {
     return Container(
-        height: 90,
+        height: 110,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(50.0),
@@ -23,29 +23,32 @@ class NavBarContainer extends StatelessWidget {
           ),
           color: AppColors.white50,
         ),
-        child: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              NavBarIcon(
-                  icon: Icons.home_rounded,
-                  label: 'Home',
-                  index: 0,
-                  route: '/orders'),
-              NavBarIcon(
-                  icon: Icons.new_label_rounded,
-                  label: 'Create',
-                  index: 1,
-                  route: '/new-order'),
-              NavBarIcon(
-                  icon: Icons.person,
-                  label: 'Profile',
-                  index: 2,
-                  route: '/profile'),
-              NavBarIcon(
-                  icon: Icons.settings,
-                  label: 'Settings',
-                  index: 3,
-                  route: '/settings'),
-            ]));
+        child: const Padding(
+            padding: EdgeInsets.only(top: 5.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  NavBarIcon(
+                      icon: Icons.home_rounded,
+                      label: 'Home',
+                      index: 0,
+                      route: '/orders'),
+                  NavBarIcon(
+                      icon: Icons.new_label_rounded,
+                      label: 'Create',
+                      index: 1,
+                      route: '/qr-code'),
+                  NavBarIcon(
+                      icon: Icons.person,
+                      label: 'Profile',
+                      index: 2,
+                      route: '/profile'),
+                  NavBarIcon(
+                      icon: Icons.settings,
+                      label: 'Settings',
+                      index: 3,
+                      route: '/settings'),
+                ])));
   }
 }

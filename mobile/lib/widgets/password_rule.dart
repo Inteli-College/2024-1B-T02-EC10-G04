@@ -10,21 +10,25 @@ class PasswordRule extends StatelessWidget {
     required this.text,
     required this.expression,
     required this.label,
-    
   });
+
+  bool isRuleSatisfied() {
+    return text.contains(RegExp(expression));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        text.contains(RegExp(expression)) ?
-        const Icon(
-          Icons.check,
-          color: Colors.green,
-        ) : const Icon(
-          Icons.block_flipped,
-          color: Colors.red,
-        ),
+        isRuleSatisfied()
+            ? const Icon(
+                Icons.check,
+                color: Colors.green,
+              )
+            : const Icon(
+                Icons.block,
+                color: Colors.red,
+              ),
         const SizedBox(width: 5),
         Text(
           label,

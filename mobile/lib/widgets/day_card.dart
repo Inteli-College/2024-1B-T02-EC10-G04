@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/colors.dart';
 
 class DayCard extends StatelessWidget {
   final String day;
@@ -7,7 +8,8 @@ class DayCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
 
-  const DayCard({super.key, 
+  const DayCard({
+    super.key,
     required this.day,
     required this.weekDay,
     required this.date,
@@ -23,9 +25,10 @@ class DayCard extends StatelessWidget {
         margin: const EdgeInsets.all(4.0),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.white,
+          color: isSelected ? AppColors.secondary : null,
           borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey.shade300),
+          border:
+              isSelected ? null : Border.all(color: AppColors.grey2, width: 1),
         ),
         child: Column(
           children: [

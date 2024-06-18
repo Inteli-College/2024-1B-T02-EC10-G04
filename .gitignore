@@ -3,3 +3,8 @@
 .terraform.lock.hcl
 .terraform.lock.info
 .terraformrc
+linux/
+macos/
+windows/
+pubspec.lock
+.env.front

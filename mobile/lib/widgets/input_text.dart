@@ -6,12 +6,14 @@ class InputText extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final bool enabled = true;
+  final bool obscureText;
 
   const InputText(
       {super.key,
       required this.icon,
       required this.label,
       required this.controller,
+      required this.obscureText,
       bool enabled = true});
 
   @override
@@ -25,7 +27,7 @@ class InputText extends StatelessWidget {
         child: TextField(
           enabled: enabled,
           controller: controller,
-          obscureText: label == 'Password' ? true : false,
+          obscureText: obscureText,
           decoration: InputDecoration(
             labelText: label,
             focusColor: AppColors.secondary,

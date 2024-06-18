@@ -3,24 +3,27 @@ import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/modal.dart';
+import 'package:mobile/models/order_details.dart';
 
-class CheckOrderPage extends StatelessWidget {
-  final String pyxis;
-  final String medicine;
-  final int quantity; // Adiciona a quantidade como parâmetro
-  final TextEditingController _textController = TextEditingController(); // Inicializa o controlador de texto
+class CheckOrderPage extends StatefulWidget {
+  static const routeName = '/check-order';
 
-  CheckOrderPage({
+  const CheckOrderPage({
     super.key,
-    required this.pyxis,
-    required this.medicine,
-    required this.quantity, // Adiciona a quantidade como parâmetro
   });
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _CheckOrderPageState createState() => _CheckOrderPageState();
+}
+
+class _CheckOrderPageState extends State<CheckOrderPage> {
+  final TextEditingController _textController = TextEditingController();
 
   void _showSuccessModal(BuildContext context) {
     showDialog(
       context: context,
-      barrierColor: Colors.black.withOpacity(0.5), // Semitransparent background
+      barrierColor: Colors.black.withOpacity(0.5),
       builder: (BuildContext context) {
         return const Modal(
           title: 'Success',
@@ -34,7 +37,15 @@ class CheckOrderPage extends StatelessWidget {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)!.settings.arguments as OrderDetailsArguments;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -48,7 +59,7 @@ class CheckOrderPage extends StatelessWidget {
               color: AppColors.primary,
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed('/new-order');
+              Navigator.of(context).pushNamed('/qr-code');
             },
           ),
         ),
@@ -106,12 +117,12 @@ class CheckOrderPage extends StatelessWidget {
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
-                                const SizedBox(width: 10), // Espaçamento entre o avatar e o texto
+                                const SizedBox(width: 10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Pixys - $pyxis',
+                                      'Pixys - ${args.pyxis}',
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontFamily: 'Poppins',
@@ -123,48 +134,66 @@ class CheckOrderPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 20), // Espaçamento entre os elementos
+                            const SizedBox(height: 20),
                             Container(
-                              padding: const EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 6.0),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.grey3,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Text(
-                                      '$quantity',
-                                      style: const TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 14.0,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(
-                                    medicine,
-                                    style: const TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14.0,
-                                      color: AppColors.grey2,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                padding: const EdgeInsets.all(10.0),
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: args.medicinesNames.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 10.0),
+                                          child: Container(
+                                              padding: const EdgeInsets.all(10.0),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey[300],
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                              ),
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 2.0,
+                                                                horizontal:
+                                                                    6.0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              AppColors.grey3,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5),
+                                                        ),
+                                                        child: const Icon(
+                                                          Icons.medication,
+                                                          color: Colors.white,
+                                                          size: 20,
+                                                        )),
+                                                    const SizedBox(width: 10),
+                                                    Text(
+                                                      args.medicinesNames[
+                                                          index],
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Poppins',
+                                                        fontSize: 18.0,
+                                                        color: Colors.black87,
+                                                      ),
+                                                    ),
+                                                  ])));
+                                    })),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20), // Espaçamento entre as seções
+                    const SizedBox(height: 10),
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -187,6 +216,7 @@ class CheckOrderPage extends StatelessWidget {
                             icon: const Icon(Icons.description),
                             label: 'Description',
                             controller: _textController,
+                            obscureText: false,
                           ),
                         ],
                       ),
@@ -207,7 +237,7 @@ class CheckOrderPage extends StatelessWidget {
                     label: 'Back',
                     receivedColor: AppColors.grey3,
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/new-order');
+                      Navigator.of(context).pushNamed('/qr-code');
                     },
                     isEnabled: true,
                   ),
@@ -216,7 +246,7 @@ class CheckOrderPage extends StatelessWidget {
                 Expanded(
                   child: CustomButton(
                     icon: const Icon(Icons.arrow_forward),
-                    label: 'Submit',
+                    label: 'Next',
                     receivedColor: AppColors.secondary,
                     onPressed: () {
                       _showSuccessModal(context);

@@ -52,7 +52,7 @@ class UserController {
             "You’ve successfully logged in. Enjoy your seamless experience with our service. ",
             Icons.check,
             AppColors.success,
-            "/orders");
+            "/login");
         return;
       }
       showModal(
