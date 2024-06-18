@@ -7,11 +7,12 @@ import (
 )
 
 type CreateOrderInputDTO struct {
-	Priority    string `json:"priority"`
-	User_ID     string `json:"user_id"`
-	Observation string `json:"observation"`
-	Medicine_ID string `json:"medicine_id"`
-	Quantity    int    `json:"quantity"`
+	Priority       string `json:"priority"`
+	User_ID        string `json:"user_id"`
+	Observation    string `json:"observation"`
+	Medicine_ID    string `json:"medicine_id"`
+	Quantity       int    `json:"quantity"`
+	Responsible_ID string `json:"responsible_id"`
 }
 
 type FindOrderByIDInputDTO struct {
@@ -19,12 +20,13 @@ type FindOrderByIDInputDTO struct {
 }
 
 type UpdateOrderInputDTO struct {
-	ID          string `json:"id"`
-	Priority    string `json:"priority"`
-	Observation string `json:"observation"`
-	Status      string `json:"status"`
-	Medicine_ID string `json:"medicine_id"`
-	Quantity    int    `json:"quantity"`
+	ID             string `json:"id"`
+	Priority       string `json:"priority"`
+	Observation    string `json:"observation"`
+	Status         string `json:"status"`
+	Medicine_ID    string `json:"medicine_id"`
+	Quantity       int    `json:"quantity"`
+	Responsible_ID string `json:"responsible_id"`
 }
 
 type DeleteOrderInputDTO struct {
@@ -32,14 +34,15 @@ type DeleteOrderInputDTO struct {
 }
 
 type CreateOrderOutputDTO struct {
-	ID          string    `json:"id"`
-	Priority    string    `json:"priority"`
-	User_ID     string    `json:"user_id"`
-	Observation string    `json:"observation"`
-	Status      string    `json:"status"`
-	Medicine_ID string    `json:"medicine_id"`
-	Quantity    int       `json:"quantity"`
-	CreatedAt   time.Time `json:"created_at"`
+	ID             string    `json:"id"`
+	Priority       string    `json:"priority"`
+	User_ID        string    `json:"user_id"`
+	Observation    string    `json:"observation"`
+	Status         string    `json:"status"`
+	Responsible_ID *string   `json:"responsible_id"`
+	Medicine_ID    string    `json:"medicine_id"`
+	Quantity       int       `json:"quantity"`
+	CreatedAt      time.Time `json:"created_at"`
 }
 
 type FindOrderOutputDTO struct {
@@ -55,14 +58,15 @@ type FindOrderOutputDTO struct {
 }
 
 type UpdateOrderOutputDTO struct {
-	ID          string    `json:"id"`
-	Priority    string    `json:"priority"`
-	User_ID     string    `json:"user_id"`
-	Observation string    `json:"observation"`
-	Status      string    `json:"status"`
-	Medicine_ID string    `json:"medicine_id"`
-	Quantity    int       `json:"quantity"`
-	UpdatedAt   time.Time `json:"updated_at"`
+	ID             string    `json:"id"`
+	Priority       string    `json:"priority"`
+	User_ID        string    `json:"user_id"`
+	Observation    string    `json:"observation"`
+	Status         string    `json:"status"`
+	Medicine_ID    string    `json:"medicine_id"`
+	Quantity       int       `json:"quantity"`
+	UpdatedAt      time.Time `json:"updated_at"`
+	Responsible_ID *string   `json:"responsible_id"`
 }
 
 type DeleteOrderOutputDTO struct {

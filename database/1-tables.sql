@@ -84,8 +84,10 @@ CREATE TABLE IF NOT EXISTS Orders (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     medicine_id UUID NOT NULL,
     quantity INT NOT NULL,
+    responsible_id UUID,
     FOREIGN KEY (user_id) REFERENCES Users(id),
-    FOREIGN KEY (medicine_id) REFERENCES Medicines(id)
+    FOREIGN KEY (medicine_id) REFERENCES Medicines(id),
+    FOREIGN KEY (responsible_id) REFERENCES Users(id)
 );
 
 -- Tabela de Responsabilidade de Pedidos de Usuário

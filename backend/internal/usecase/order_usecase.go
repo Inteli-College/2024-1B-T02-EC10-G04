@@ -16,20 +16,21 @@ func NewOrderUseCase(orderRepository entity.OrderRepository) *OrderUseCase {
 }
 
 func (o *OrderUseCase) CreateOrder(input *dto.CreateOrderInputDTO) (*dto.CreateOrderOutputDTO, error) {
-	order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, input.Medicine_ID, input.Quantity)
+	order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, input.Medicine_ID, input.Quantity, input.Responsible_ID)
 	res, err := o.orderRepository.CreateOrder(order)
 	if err != nil {
 		return nil, err
 	}
 	return &dto.CreateOrderOutputDTO{
-		ID:          res.ID,
-		Priority:    res.Priority,
-		User_ID:     res.User_ID,
-		Observation: res.Observation,
-		Status:      res.Status,
-		Medicine_ID: res.Medicine_ID,
-		Quantity:    res.Quantity,
-		CreatedAt:   res.CreatedAt,
+		ID:             res.ID,
+		Priority:       res.Priority,
+		User_ID:        res.User_ID,
+		Observation:    res.Observation,
+		Responsible_ID: res.Responsible_ID,
+		Status:         res.Status,
+		Medicine_ID:    res.Medicine_ID,
+		Quantity:       res.Quantity,
+		CreatedAt:      res.CreatedAt,
 	}, nil
 }
 
@@ -92,14 +93,15 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 	}
 
 	return &dto.UpdateOrderOutputDTO{
-		ID:          updatedOrder.ID,
-		Priority:    updatedOrder.Priority,
-		User_ID:     updatedOrder.User_ID,
-		Observation: updatedOrder.Observation,
-		Status:      updatedOrder.Status,
-		Medicine_ID: updatedOrder.Medicine_ID,
-		Quantity:    updatedOrder.Quantity,
-		UpdatedAt:   updatedOrder.UpdatedAt,
+		ID:             updatedOrder.ID,
+		Priority:       updatedOrder.Priority,
+		User_ID:        updatedOrder.User_ID,
+		Observation:    updatedOrder.Observation,
+		Status:         updatedOrder.Status,
+		Medicine_ID:    updatedOrder.Medicine_ID,
+		Quantity:       updatedOrder.Quantity,
+		UpdatedAt:      updatedOrder.UpdatedAt,
+		Responsible_ID: updatedOrder.Responsible_ID,
 	}, nil
 }
 
@@ -110,4 +112,3 @@ func (o *OrderUseCase) DeleteOrder(id string) error {
 	}
 	return o.orderRepository.DeleteOrder(order.ID)
 }
-

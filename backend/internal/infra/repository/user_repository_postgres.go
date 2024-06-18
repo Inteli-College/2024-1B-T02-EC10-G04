@@ -17,7 +17,7 @@ func NewUserRepositoryPostgres(db *sqlx.DB) *UserRepositoryPostgres {
 
 func (r *UserRepositoryPostgres) CreateUser(user *entity.User) (*entity.User, error) {
 	var userCreated entity.User
-	err := r.db.QueryRow("INSERT INTO users (name, email, password, role, on_duty) VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, role, on_duty, created_at", user.Name, user.Email, user.Password, user.Role, user.OnDuty).Scan(&userCreated.ID, &userCreated.Name, &userCreated.Email, &userCreated.Role, &userCreated.OnDuty, &userCreated.CreatedAt)
+	err := r.db.QueryRow("INSERT INTO users (name, email, password, role, on_duty, profession) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, name, email, role, on_duty, created_at, profession", user.Name, user.Email, user.Password, user.Role, user.OnDuty, user.Profession).Scan(&userCreated.ID, &userCreated.Name, &userCreated.Email, &userCreated.Role, &userCreated.OnDuty, &userCreated.CreatedAt, &userCreated.Profession)
 	if err != nil {
 		return nil, err
 	}
