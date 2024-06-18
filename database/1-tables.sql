@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS Users (
     role role_type NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    on_duty BOOLEAN DEFAULT true
+    on_duty BOOLEAN DEFAULT true,
+    profession VARCHAR(255) NOT NULL
 );
 
 -- Pyxis Table

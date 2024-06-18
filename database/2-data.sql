@@ -1,10 +1,10 @@
 -- Populando a tabela Users
-INSERT INTO Users (name, email, password, role)
+INSERT INTO Users (name, email, password, role, profession)
 VALUES 
-    ('Alice Silva', 'alice@example.com', crypt('password123', gen_salt('bf')), 'admin'),
-    ('Bob Santos', 'bob@example.com', crypt('password456', gen_salt('bf')), 'user'),
-    ('Carlos Pereira', 'carlos@example.com', crypt('password789', gen_salt('bf')), 'collector'),
-    ('Daniela Lima', 'daniela@example.com', crypt('password321', gen_salt('bf')), 'manager');
+    ('Alice Silva', 'alice@example.com', crypt('password123', gen_salt('bf')), 'admin', 'Diretor'),
+    ('Bob Santos', 'bob@example.com', crypt('password456', gen_salt('bf')), 'user', 'Enfermeiro'),
+    ('Carlos Pereira', 'carlos@example.com', crypt('password789', gen_salt('bf')), 'collector', 'Farmacêutico'),
+    ('Daniela Lima', 'daniela@example.com', crypt('password321', gen_salt('bf')), 'manager', 'Gerente');
 
 -- Populando a tabela Pyxis
 INSERT INTO Pyxis (label)
