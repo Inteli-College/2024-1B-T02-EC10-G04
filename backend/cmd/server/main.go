@@ -34,10 +34,10 @@ func init() {
 
 	if missing_var := initialization.VerifyEnvs(
 		"POSTGRES_URL",
-		"KAFKA_BOOTSTRAP_SERVER",
-		"KAFKA_ORDERS_TOPIC_NAME",
-		"KAFKA_ORDERS_GROUP_ID",
-		"KAFKA_ORDERS_CLIENT_ID",
+		"CONFLUENT_KAFKA_TOPIC_NAME",
+		"CONFLUENT_API_KEY",
+		"CONFLUENT_API_SECRET",
+		"CONFLUENT_BOOTSTRAP_SERVER_SASL",
 		"JWT_SECRET_KEY",
 		"REDIS_PASSWORD",
 		"REDIS_ADDRESS",
@@ -128,8 +128,11 @@ func main() {
 	/////////////////////// Order /////////////////////////
 
 	orderProducerConfigMap := &ckafka.ConfigMap{
-		"bootstrap.servers": os.Getenv("KAFKA_BOOTSTRAP_SERVER"),
-		"client.id":         os.Getenv("KAFKA_ORDERS_CLIENT_ID"),
+		"bootstrap.servers": os.Getenv("CONFLUENT_BOOTSTRAP_SERVER_SASL"),
+		"sasl.mechanisms":   "PLAIN",
+		"security.protocol": "SASL_SSL",
+		"sasl.username":     os.Getenv("CONFLUENT_API_KEY"),
+		"sasl.password":     os.Getenv("CONFLUENT_API_SECRET"),
 	}
 	kafkaProducerRepository := kafka.NewKafkaProducer(orderProducerConfigMap)
 

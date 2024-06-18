@@ -47,7 +47,7 @@ func (h *OrderHandlers) CreateOrderHandler(c *gin.Context) {
 		return
 	}
 
-	err = h.KafkaProducer.Produce(inputBytes, []byte("new_order"), os.Getenv("KAFKA_ORDERS_TOPIC_NAME"))
+	err = h.KafkaProducer.Produce(inputBytes, []byte("new_order"), os.Getenv("CONFLUENT_KAFKA_TOPIC_NAME"))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

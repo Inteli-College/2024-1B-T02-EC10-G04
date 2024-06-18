@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "localhost",
     "basePath": "/api/v1",
     "paths": {
         "/medicines": {
@@ -456,6 +456,11 @@
         },
         "/pyxis/qrcode": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a QR code for a given pyxis ID",
                 "consumes": [
                     "application/json"
@@ -606,6 +611,11 @@
         },
         "/pyxis/{id}/medicines": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get all medicines related to a Pyxis",
                 "consumes": [
                     "application/json"
@@ -639,6 +649,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Disassociate a sequence n of medicines from a Pyxis",
                 "consumes": [
                     "application/json"
@@ -680,6 +695,11 @@
         },
         "/pyxis/{id}/register-medicine": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Register a existing medicine to a existing Pyxis entity",
                 "consumes": [
                     "application/json"

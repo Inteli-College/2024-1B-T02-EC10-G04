@@ -323,7 +323,7 @@ definitions:
       updated_at:
         type: string
     type: object
-host: localhost:8080
+host: localhost
 info:
   contact:
     email: gomedicine@inteli.edu.br
@@ -706,6 +706,8 @@ paths:
           description: OK
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Disassociate medicines from a Pyxis
       tags:
       - Pyxis
@@ -728,6 +730,8 @@ paths:
             items:
               $ref: '#/definitions/dto.FindMedicineOutputDTO'
             type: array
+      security:
+      - BearerAuth: []
       summary: Get medicines from a Pyxis
       tags:
       - Pyxis
@@ -755,6 +759,8 @@ paths:
           description: 'message": message}'
           schema:
             type: objetct
+      security:
+      - BearerAuth: []
       summary: Register a to a Pyxis entity
       tags:
       - Pyxis
@@ -777,6 +783,8 @@ paths:
           description: QR code image
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Generate a QR code for a Pyxis
       tags:
       - Pyxis
