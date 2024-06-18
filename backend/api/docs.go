@@ -462,6 +462,11 @@ const docTemplate = `{
         },
         "/pyxis/qrcode": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a QR code for a given pyxis ID",
                 "consumes": [
                     "application/json"
@@ -612,6 +617,11 @@ const docTemplate = `{
         },
         "/pyxis/{id}/medicines": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get all medicines related to a Pyxis",
                 "consumes": [
                     "application/json"
@@ -645,6 +655,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Disassociate a sequence n of medicines from a Pyxis",
                 "consumes": [
                     "application/json"
@@ -686,6 +701,11 @@ const docTemplate = `{
         },
         "/pyxis/{id}/register-medicine": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Register a existing medicine to a existing Pyxis entity",
                 "consumes": [
                     "application/json"
@@ -1467,7 +1487,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "localhost",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Manager API",

@@ -78,13 +78,17 @@ func main() {
 	msgChan := make(chan *ckafka.Message)
 
 	consumerConfigMap := &ckafka.ConfigMap{
-		"bootstrap.servers":  os.Getenv("KAFKA_BOOTSTRAP_SERVER"),
+		"bootstrap.servers":  os.Getenv("CONFLUENT_BOOTSTRAP_SERVER_SASL"),
+		"sasl.mechanisms":    "PLAIN",
+		"security.protocol":  "SASL_SSL",
+		"sasl.username":      os.Getenv("CONFLUENT_API_KEY"),
+		"sasl.password":      os.Getenv("CONFLUENT_API_SECRET"),
 		"session.timeout.ms": 6000,
-		"group.id":           os.Getenv("KAFKA_ORDERS_GROUP_ID"),
+		"group.id":           "go-medicine",
 		"auto.offset.reset":  "latest",
 	}
 
-	kafkaConsumerRepository := kafka.NewKafkaConsumer([]string{os.Getenv("KAFKA_ORDERS_TOPIC_NAME")}, consumerConfigMap)
+	kafkaConsumerRepository := kafka.NewKafkaConsumer([]string{os.Getenv("CONFLUENT_KAFKA_TOPIC_NAME")}, consumerConfigMap)
 	orderRepository := repository.NewOrderRepositoryPostgres(db)
 	ordersUseCase := usecase.NewOrderUseCase(orderRepository)
 
