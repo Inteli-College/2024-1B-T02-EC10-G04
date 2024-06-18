@@ -85,18 +85,20 @@ func main() {
 	router.Use(gin.Recovery())
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true, // TODO: change to false and make it for production
-		AllowMethods:     []string{"PUT", "PATCH, POST, GET, OPTIONS, DELETE"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowMethods:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
 		AllowCredentials: true,
 	}))
-
-	api := router.Group("/api/v1")
 
 	///////////////////// Logging //////////////////////
 
 	m := ginmetrics.GetMonitor()
 	m.SetMetricPath("/api/v1/metrics")
 	m.Use(router)
+
+	///////////////////// Base Group //////////////////////
+
+	api := router.Group("/api/v1")
 
 	///////////////////// Swagger //////////////////////
 	if swaggerHost, ok := os.LookupEnv("SWAGGER_HOST"); ok {
