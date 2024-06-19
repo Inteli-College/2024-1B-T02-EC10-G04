@@ -51,6 +51,7 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 			Quantity:    order.Quantity,
 			UpdatedAt:   order.UpdatedAt,
 			CreatedAt:   order.CreatedAt,
+			Responsible: order.Responsible,
 		})
 	}
 	return ordersOutput, nil
@@ -71,6 +72,7 @@ func (o *OrderUseCase) FindOrderById(id string) (*dto.FindOrderOutputDTO, error)
 		Quantity:    order.Quantity,
 		UpdatedAt:   order.UpdatedAt,
 		CreatedAt:   order.CreatedAt,
+		Responsible: order.Responsible,
 	}, nil
 }
 

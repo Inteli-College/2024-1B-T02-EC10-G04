@@ -111,18 +111,26 @@ definitions:
         type: string
       medicine:
         $ref: '#/definitions/entity.Medicine'
+      medicine_id:
+        type: string
       observation:
         type: string
       priority:
         type: string
       quantity:
         type: integer
+      responsible:
+        $ref: '#/definitions/entity.User'
+      responsible_id:
+        type: string
       status:
         type: string
       updated_at:
         type: string
       user:
         $ref: '#/definitions/entity.User'
+      user_id:
+        type: string
     type: object
   dto.FindPyxisOutputDTO:
     properties:
@@ -333,7 +341,7 @@ definitions:
       updated_at:
         type: string
     type: object
-host: localhost
+host: localhost:8080
 info:
   contact:
     email: gomedicine@inteli.edu.br

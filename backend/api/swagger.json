@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost",
+    "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
         "/medicines": {
@@ -1143,6 +1143,9 @@
                 "medicine": {
                     "$ref": "#/definitions/entity.Medicine"
                 },
+                "medicine_id": {
+                    "type": "string"
+                },
                 "observation": {
                     "type": "string"
                 },
@@ -1152,6 +1155,12 @@
                 "quantity": {
                     "type": "integer"
                 },
+                "responsible": {
+                    "$ref": "#/definitions/entity.User"
+                },
+                "responsible_id": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "string"
                 },
@@ -1160,6 +1169,9 @@
                 },
                 "user": {
                     "$ref": "#/definitions/entity.User"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             }
         },

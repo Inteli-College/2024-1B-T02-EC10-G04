@@ -4,6 +4,7 @@ go 1.22.1
 
 require (
 	github.com/confluentinc/confluent-kafka-go/v2 v2.4.0
+	github.com/emicklei/go-restful/v3 v3.10.1
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v4 v4.5.0

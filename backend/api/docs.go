@@ -1149,6 +1149,9 @@ const docTemplate = `{
                 "medicine": {
                     "$ref": "#/definitions/entity.Medicine"
                 },
+                "medicine_id": {
+                    "type": "string"
+                },
                 "observation": {
                     "type": "string"
                 },
@@ -1158,6 +1161,12 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer"
                 },
+                "responsible": {
+                    "$ref": "#/definitions/entity.User"
+                },
+                "responsible_id": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "string"
                 },
@@ -1166,6 +1175,9 @@ const docTemplate = `{
                 },
                 "user": {
                     "$ref": "#/definitions/entity.User"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             }
         },
@@ -1502,7 +1514,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost",
+	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Manager API",

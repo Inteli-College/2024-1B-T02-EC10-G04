@@ -46,15 +46,19 @@ type CreateOrderOutputDTO struct {
 }
 
 type FindOrderOutputDTO struct {
-	ID          string          `json:"id"`
-	Priority    string          `json:"priority"`
-	User        entity.User     `json:"user"`
-	Observation string          `json:"observation"`
-	Status      string          `json:"status"`
-	Medicine    entity.Medicine `json:"medicine"`
-	Quantity    int             `json:"quantity"`
-	UpdatedAt   time.Time       `json:"updated_at"`
-	CreatedAt   time.Time       `json:"created_at"`
+	ID             string          `json:"id"`
+	Priority       string          `json:"priority"`
+	Observation    string          `json:"observation"`
+	Status         string          `json:"status"`
+	Quantity       int             `json:"quantity"`
+	CreatedAt      time.Time       `json:"created_at"`
+	UpdatedAt      time.Time       `json:"updated_at"`
+	User           entity.User     `json:"user"`
+	Medicine       entity.Medicine `json:"medicine"`
+	Responsible    *entity.User    `json:"responsible,omitempty"`
+	Medicine_ID    string          `json:"medicine_id,omitempty"`
+	User_ID        string          `json:"user_id,omitempty"`
+	Responsible_ID *string         `json:"responsible_id,omitempty"`
 }
 
 type UpdateOrderOutputDTO struct {
