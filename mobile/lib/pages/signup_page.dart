@@ -3,6 +3,7 @@ import 'package:mobile/controller/user.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/services/user.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/widgets/role_dropdown.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/password_rule.dart';
 
@@ -23,6 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _showContainer = false;
   var showPassword = true;
   IconData iconType = Icons.visibility;
+  String? selectedRole;
 
   @override
   void initState() {
@@ -38,6 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       isButtonEnabled = _emailController.text.isNotEmpty &&
           _nameController.text.isNotEmpty &&
           _passwordController.text.isNotEmpty &&
+          selectedRole != null &&
           _arePasswordRulesSatisfied();
       _showContainer = _passwordController.text.isNotEmpty;
     });
@@ -76,8 +79,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _onSubmit() {
     if (isButtonEnabled) {
-      _signUpController.signup(context, _nameController.text,
-          _emailController.text, _passwordController.text);
+      _signUpController.signup(
+          context, _nameController.text, _emailController.text, _passwordController.text);
     }
   }
 
@@ -99,7 +102,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-
     super.dispose();
   }
 
@@ -195,6 +197,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                           onPressed: _onViewPassword,
                         ),
+                      ),
+                      const SizedBox(height: 16),
+                      Dropdown(
+                        items: const ['Auxiliar de Enfermagem', 'Auxiliar de Farmácia', 'Gerente'],
+                        onChanged: (value) {
+                          setState(() {
+                            selectedRole = value;
+                            _validateInputs();
+                          });
+                        },
                       ),
                       const SizedBox(height: 16),
                       _showContainer
