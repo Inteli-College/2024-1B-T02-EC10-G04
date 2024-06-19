@@ -202,7 +202,7 @@ func main() {
 		}
 	}
 
-	err := router.Run(":31503")
+	err := router.Run(":8080")
 	if err != nil {
 		log.Fatal("Error running server:", err)
 	}

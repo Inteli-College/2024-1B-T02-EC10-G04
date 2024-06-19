@@ -42,7 +42,7 @@ securityContext: {}
 service:
   type: LoadBalancer
   port: 80
-  targetPort: 32575
+  targetPort: 8081
   protocol: TCP
   name: node-app
 
