@@ -246,8 +246,9 @@ jobs:
         working-directory: deploy/charts-aws/
         run: |
           helm upgrade --install server server/ \
-          --namespace server \
-          --values server/values.yaml
+           --namespace server \
+           --values server/values.yaml \
+           --set image.tag=latest
 
       - name: Ensure conductor namespace exists
         run: |
@@ -258,4 +259,5 @@ jobs:
         run: |
           helm upgrade --install conductor conductor/ \
           --namespace conductor \
-          --values conductor/values.yaml
+          --values conductor/values.yaml \
+          --set image.tag=latest
