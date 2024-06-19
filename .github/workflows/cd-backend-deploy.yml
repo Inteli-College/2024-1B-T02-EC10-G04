@@ -185,6 +185,7 @@ jobs:
           echo "CONFLUENT_BOOTSTRAP_SERVER_SASL=${{ secrets.CONFLUENT_BOOTSTRAP_SERVER_SASL }}" >> ./.env
           echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> ./.env
           echo "REDIS_ADDRESS=${{ secrets.REDIS_ADDRESS }}" >> ./.env
+          echo "SWAGGER_HOST=${{ secrets.SWAGGER_HOST }}" >> ./.env
 
       - name: Build Conductor Monolith
         working-directory: ./backend/
