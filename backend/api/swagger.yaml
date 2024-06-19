@@ -24,10 +24,12 @@ definitions:
       updated_at:
         type: string
     type: object
-  dto.CreateOrderInputDTO:
+  dto.CreateOrdersInputDTO:
     properties:
-      medicine_id:
-        type: string
+      medicine_ids:
+        items:
+          type: string
+        type: array
       observation:
         type: string
       priority:
@@ -38,6 +40,11 @@ definitions:
         type: string
       user_id:
         type: string
+    required:
+    - medicine_ids
+    - observation
+    - priority
+    - quantity
     type: object
   dto.CreatePyxisInputDTO:
     properties:
@@ -491,7 +498,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateOrderInputDTO'
+          $ref: '#/definitions/dto.CreateOrdersInputDTO'
       produces:
       - application/json
       responses:

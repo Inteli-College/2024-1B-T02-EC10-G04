@@ -6,13 +6,13 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
 )
 
-type CreateOrderInputDTO struct {
-	Priority       string `json:"priority"`
-	User_ID        string `json:"user_id"`
-	Observation    string `json:"observation"`
-	Medicine_ID    string `json:"medicine_id"`
-	Quantity       int    `json:"quantity"`
-	Responsible_ID string `json:"responsible_id"`
+type CreateOrdersInputDTO struct {
+	Priority       string   `json:"priority" binding:"required"`
+	User_ID        string   `json:"user_id"`
+	Observation    string   `json:"observation" binding:"required"`
+	Medicine_IDs   []string `json:"medicine_ids" binding:"required"`
+	Quantity       int      `json:"quantity" binding:"required"`
+	Responsible_ID string   `json:"responsible_id"`
 }
 
 type FindOrderByIDInputDTO struct {
@@ -43,6 +43,7 @@ type CreateOrderOutputDTO struct {
 	Medicine_ID    string    `json:"medicine_id"`
 	Quantity       int       `json:"quantity"`
 	CreatedAt      time.Time `json:"created_at"`
+	OrderGroup_ID  *string   `json:"order_group_id"`
 }
 
 type FindOrderOutputDTO struct {

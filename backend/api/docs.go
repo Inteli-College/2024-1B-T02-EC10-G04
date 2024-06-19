@@ -262,7 +262,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateOrderInputDTO"
+                            "$ref": "#/definitions/dto.CreateOrdersInputDTO"
                         }
                     }
                 ],
@@ -1015,11 +1015,20 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.CreateOrderInputDTO": {
+        "dto.CreateOrdersInputDTO": {
             "type": "object",
+            "required": [
+                "medicine_ids",
+                "observation",
+                "priority",
+                "quantity"
+            ],
             "properties": {
-                "medicine_id": {
-                    "type": "string"
+                "medicine_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "observation": {
                     "type": "string"

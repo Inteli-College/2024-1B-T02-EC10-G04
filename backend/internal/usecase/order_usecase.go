@@ -3,6 +3,7 @@ package usecase
 import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
+	"github.com/google/uuid"
 )
 
 type OrderUseCase struct {
@@ -15,23 +16,29 @@ func NewOrderUseCase(orderRepository entity.OrderRepository) *OrderUseCase {
 	}
 }
 
-func (o *OrderUseCase) CreateOrder(input *dto.CreateOrderInputDTO) (*dto.CreateOrderOutputDTO, error) {
-	order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, input.Medicine_ID, input.Quantity, input.Responsible_ID)
-	res, err := o.orderRepository.CreateOrder(order)
-	if err != nil {
-		return nil, err
+func (o *OrderUseCase) CreateOrders(input *dto.CreateOrdersInputDTO) ([]*dto.CreateOrderOutputDTO, error) {
+	newOrderGroupID := uuid.New().String()
+	createdOrders := []*dto.CreateOrderOutputDTO{}
+	for _, medicine_id := range input.Medicine_IDs {
+		order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, medicine_id, input.Quantity, input.Responsible_ID, newOrderGroupID)
+		res, err := o.orderRepository.CreateOrder(order)
+		if err != nil {
+			return nil, err
+		}
+		createdOrders = append(createdOrders, &dto.CreateOrderOutputDTO{
+			ID:             res.ID,
+			Priority:       res.Priority,
+			User_ID:        res.User_ID,
+			Observation:    res.Observation,
+			Responsible_ID: res.Responsible_ID,
+			Status:         res.Status,
+			Medicine_ID:    res.Medicine_ID,
+			Quantity:       res.Quantity,
+			CreatedAt:      res.CreatedAt,
+			OrderGroup_ID:  res.OrderGroup_ID,
+		})
 	}
-	return &dto.CreateOrderOutputDTO{
-		ID:             res.ID,
-		Priority:       res.Priority,
-		User_ID:        res.User_ID,
-		Observation:    res.Observation,
-		Responsible_ID: res.Responsible_ID,
-		Status:         res.Status,
-		Medicine_ID:    res.Medicine_ID,
-		Quantity:       res.Quantity,
-		CreatedAt:      res.CreatedAt,
-	}, nil
+	return createdOrders, nil
 }
 
 func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
