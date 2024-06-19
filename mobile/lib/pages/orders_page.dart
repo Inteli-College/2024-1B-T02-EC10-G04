@@ -8,6 +8,7 @@ import 'package:mobile/models/order.dart';
 import 'package:mobile/services/orders.dart';
 import 'package:mobile/widgets/tab_session_history.dart';
 import 'package:mobile/widgets/tab_session.dart';
+import 'dart:async';
 
 class OrdersPage extends StatefulWidget {
   final String name;
@@ -22,12 +23,28 @@ class OrdersPage extends StatefulWidget {
 class _OrdersPageState extends State<OrdersPage> {
   late Future<List<Order>> futureMedicineOrders;
   final OrderService orderService = OrderService();
+  late Timer _timer;
   
   @override
   void initState() {
     super.initState();
     
     futureMedicineOrders = orderService.getOrders();
+    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+      _fetchData();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _fetchData() {
+    setState(() {
+      futureMedicineOrders = orderService.getOrders();
+    });
   }
 
   @override
