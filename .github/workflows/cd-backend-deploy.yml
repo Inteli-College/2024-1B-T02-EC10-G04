@@ -250,6 +250,10 @@ jobs:
            --values server/values.yaml \
            --set image.tag=latest
 
+      - name: Restart server deployment
+        run: |
+          kubectl rollout restart deployment server
+
       - name: Ensure conductor namespace exists
         run: |
           kubectl get namespace conductor || kubectl create namespace conductor
@@ -261,3 +265,7 @@ jobs:
           --namespace conductor \
           --values conductor/values.yaml \
           --set image.tag=latest
+
+      - name: Restart conductor deployment
+        run: |
+          kubectl rollout restart deployment conductor
