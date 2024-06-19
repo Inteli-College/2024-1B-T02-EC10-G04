@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS Orders (
     medicine_id UUID NOT NULL,
     quantity INT NOT NULL,
     responsible_id UUID,
+    order_group_id UUID NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (medicine_id) REFERENCES Medicines(id),
     FOREIGN KEY (responsible_id) REFERENCES Users(id)
