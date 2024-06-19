@@ -176,7 +176,15 @@ jobs:
 
       - name: Setup .ENV
         working-directory: ./backend/
-        run: make env
+        run: |
+          echo "POSTGRES_URL=${{ secrets.POSTGRES_URL }}" >> ./.env
+          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> ./.env
+          echo "CONFLUENT_KAFKA_TOPIC_NAME=${{ secrets.CONFLUENT_KAFKA_TOPIC_NAME }}" >> ./.env
+          echo "CONFLUENT_API_KEY=${{ secrets.CONFLUENT_API_KEY }}" >> ./.env
+          echo "CONFLUENT_API_SECRET=${{ secrets.CONFLUENT_API_SECRET }}" >> ./.env
+          echo "CONFLUENT_BOOTSTRAP_SERVER_SASL=${{ secrets.CONFLUENT_BOOTSTRAP_SERVER_SASL }}" >> ./.env
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> ./.env
+          echo "REDIS_ADDRESS=${{ secrets.REDIS_ADDRESS }}" >> ./.env
 
       - name: Build Conductor Monolith
         working-directory: ./backend/
