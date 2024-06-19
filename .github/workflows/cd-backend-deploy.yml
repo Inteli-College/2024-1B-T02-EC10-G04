@@ -176,7 +176,16 @@ jobs:
 
       - name: Setup .ENV
         working-directory: ./backend/
-        run: make env
+        run: |
+          echo "POSTGRES_URL=${{ secrets.POSTGRES_URL }}" >> ./.env
+          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> ./.env
+          echo "CONFLUENT_KAFKA_TOPIC_NAME=${{ secrets.CONFLUENT_KAFKA_TOPIC_NAME }}" >> ./.env
+          echo "CONFLUENT_API_KEY=${{ secrets.CONFLUENT_API_KEY }}" >> ./.env
+          echo "CONFLUENT_API_SECRET=${{ secrets.CONFLUENT_API_SECRET }}" >> ./.env
+          echo "CONFLUENT_BOOTSTRAP_SERVER_SASL=${{ secrets.CONFLUENT_BOOTSTRAP_SERVER_SASL }}" >> ./.env
+          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> ./.env
+          echo "REDIS_ADDRESS=${{ secrets.REDIS_ADDRESS }}" >> ./.env
+          echo "SWAGGER_HOST=${{ secrets.SWAGGER_HOST }}" >> ./.env
 
       - name: Build Conductor Monolith
         working-directory: ./backend/
@@ -229,16 +238,34 @@ jobs:
       - name: Update kubeconfig
         run: aws eks --region ${{ env.AWS_REGION }} update-kubeconfig --name eks-prod
 
+      - name: Ensure server namespace exists
+        run: |
+          kubectl get namespace server || kubectl create namespace server
+
       - name: Deploy to EKS - Server
         working-directory: deploy/charts-aws/
         run: |
           helm upgrade --install server server/ \
-          --namespace server \
-          --values server/values.yaml
+           --namespace server \
+           --values server/values.yaml \
+           --set image.tag=latest
+
+      - name: Restart server deployment
+        run: |
+          kubectl rollout restart deployment server
+
+      - name: Ensure conductor namespace exists
+        run: |
+          kubectl get namespace conductor || kubectl create namespace conductor
 
       - name: Deploy to EKS - Conductor
         working-directory: deploy/charts-aws/
         run: |
           helm upgrade --install conductor conductor/ \
           --namespace conductor \
-          --values conductor/values.yaml
+          --values conductor/values.yaml \
+          --set image.tag=latest
+
+      - name: Restart conductor deployment
+        run: |
+          kubectl rollout restart deployment conductor
