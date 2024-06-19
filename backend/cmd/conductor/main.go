@@ -66,7 +66,7 @@ func main() {
 		log.Printf("Consumer received a healthcheck request")
 		c.JSON(http.StatusOK, gin.H{"status": "success"})
 	})
-	
+
 	go func() {
 		if err := router.Run(":8081"); err != nil {
 			log.Fatalf("Falha ao iniciar o servidor: %v", err)
@@ -95,7 +95,7 @@ func main() {
 	}()
 
 	for msg := range msgChan {
-		var orderInputDTO dto.CreateOrderInputDTO
+		var orderInputDTO dto.CreateOrdersInputDTO
 		err := json.Unmarshal(msg.Value, &orderInputDTO)
 		if err != nil {
 			log.Printf("Error decoding message: %v", err)

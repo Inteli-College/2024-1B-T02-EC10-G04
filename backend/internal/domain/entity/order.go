@@ -23,6 +23,7 @@ type Order struct {
 	CreatedAt      time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at" db:"updated_at"`
 	Responsible_ID *string   `json:"responsible_id" db:"responsible_id"`
+	OrderGroup_ID  *string   `json:"order_group_id" db:"order_group_id"`
 }
 
 type OrderComplete struct {
@@ -39,9 +40,10 @@ type OrderComplete struct {
 	Medicine_ID    string    `json:"medicine_id" db:"medicine_id"`
 	User_ID        string    `json:"user_id" db:"user_id"`
 	Responsible_ID *string   `json:"responsible_id" db:"responsible_id"`
+	OrderGroup_ID  *string   `json:"order_group_id" db:"order_group_id"`
 }
 
-func NewOrder(priority string, user_id string, observation string, medicine_id string, quantity int, responsible_id string) *Order {
+func NewOrder(priority string, user_id string, observation string, medicine_id string, quantity int, responsible_id string, order_group_id string) *Order {
 	return &Order{
 		Priority:       priority,
 		User_ID:        user_id,
@@ -49,5 +51,6 @@ func NewOrder(priority string, user_id string, observation string, medicine_id s
 		Medicine_ID:    medicine_id,
 		Quantity:       quantity,
 		Responsible_ID: &responsible_id,
+		OrderGroup_ID:  &order_group_id,
 	}
 }

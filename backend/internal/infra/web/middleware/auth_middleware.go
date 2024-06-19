@@ -7,6 +7,7 @@ import (
 	"os"
 	"strings"
 
+	"fmt"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
@@ -23,7 +24,7 @@ const (
 	BearerPrefix             = "Bearer "
 )
 
-func AuthMiddleware(userRepository entity.UserRepository, requiredRole string) gin.HandlerFunc {
+func AuthMiddleware(userRepository entity.UserRepository, requiredRoles []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		tokenString, err := getTokenFromHeader(c)
 		if err != nil {
@@ -44,8 +45,18 @@ func AuthMiddleware(userRepository entity.UserRepository, requiredRole string) g
 			handleUserError(c, err)
 			return
 		}
+		fmt.Println("user.Role: ", user.Role)
+		fmt.Println("requiredRoles: ", requiredRoles)
 
-		if user.Role != requiredRole {
+		roleAuthorized := false
+		for _, role := range requiredRoles {
+			if user.Role == role {
+				roleAuthorized = true
+				break
+			}
+		}
+
+		if !roleAuthorized {
 			c.JSON(http.StatusForbidden, gin.H{"error": ErrNoPermission})
 			c.Abort()
 			return
