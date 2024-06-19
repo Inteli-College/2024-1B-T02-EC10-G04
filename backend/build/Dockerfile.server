@@ -67,7 +67,7 @@ COPY ../.env .
 # Copy the executable from the "build" stage.
 COPY --from=build /bin/server /bin/
 
-EXPOSE 8080
+EXPOSE 31492
 
 # What the container should run when it is started.
 ENTRYPOINT [ "/bin/server" ]

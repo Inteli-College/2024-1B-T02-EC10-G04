@@ -42,32 +42,12 @@ securityContext: {}
 service:
   type: LoadBalancer
   port: 80
-  targetPort: 8081
+  targetPort: 32575
   protocol: TCP
   name: node-app
 
-env:
-  - name: PORT
-    value: "8081"
-  - name: POSTGRES_URL
-    value: "postgresql://postgres:postgres123@prod-db.cs9aqstoxqms.us-east-1.rds.amazonaws.com:5432/prod"
-  - name: JWT_SECRET_KEY
-    value: "secret"
-  - name: CONFLUENT_KAFKA_TOPIC_NAME
-    value: "orders"
-  - name: CONFLUENT_API_KEY
-    value: "U5PSHZNRQQSSXGBW"  
-  - name: CONFLUENT_API_SECRET
-    value: "w05m+9f2aGoKAc7yWv7xfwOUz7YL30Hr55Y6Ot5x8fKhxzto6KPkB6ZGxA+jtz+F"
-  - name: CONFLUENT_BOOTSTRAP_SERVER_SASL
-    value: "pkc-12576z.us-west2.gcp.confluent.cloud:9092"
-  - name: REDIS_PASSWORD
-    value: "myredispassword"
-  - name: REDIS_ADDRESS
-    value: "100.27.50.78:6379"
-
 ingress:
-  enabled: false
+  enabled: true
   className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
