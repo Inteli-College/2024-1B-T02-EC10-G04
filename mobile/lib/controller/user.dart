@@ -69,4 +69,37 @@ class UserController {
       // Handle login failure
     }
   }
+
+  Future<void> updatePassword(
+      BuildContext context, String newPassword) async {
+    try {
+      final response = await userService.updatePassword(newPassword);
+
+      if (response.isNotEmpty) {
+        showModal(
+            // ignore: use_build_context_synchronously
+            context,
+            "Password updated!",
+            "Your password has been successfully updated!",
+            Icons.check,
+            AppColors.success,
+            "");
+        return;
+      }
+      showModal(
+          // ignore: use_build_context_synchronously
+          context,
+          "Oops! Something Went Wrong",
+          "Something went wrong. Please check the new password!",
+          Icons.error,
+          AppColors.error,
+          "");
+
+      // Handle login success
+    } catch (e) {
+      // Handle login failure
+    }
+  }
+
+
 }

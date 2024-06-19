@@ -56,4 +56,35 @@ class UserService {
     }
     return {};
   }
+
+  Future<Map<String, dynamic>> updatePassword(
+    String newPassword) async {
+    var id = await localStorageService.getValue('id');
+    var email = await localStorageService.getValue('email');
+    var role = await localStorageService.getValue('role');
+    var name = await localStorageService.getValue('name');
+
+    final response = await http.put(
+      Uri.parse('$baseUrl/users/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "email": email,
+        "id": id,
+        "name": name,
+        "on_duty": true,
+        "password": newPassword,
+        "role": role
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      return body;
+    }
+    return {};
+  }
+
+
 }
