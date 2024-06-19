@@ -42,7 +42,7 @@ class OrderService {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200  || response.statusCode == 201) {
         List<dynamic> jsonResponse = json.decode(response.body);
         orders = jsonResponse.map((order) => Order.fromJson(order)).toList();
         if (role == 'user') {
@@ -63,4 +63,32 @@ class OrderService {
     }
   }
 
+  Future<Map<String, dynamic>> createOrder(List<String> medicineIds, String observation) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/orders'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(<String, dynamic>{
+        "medicine_id": medicineIds,
+        "user_id": id,
+        "observation": observation,
+        "on_duty": true,
+        "quantity": "",
+        "priority": "",
+      }),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+        return body;
+      }
+      return {};
+
+    } catch (e) {
+      throw Exception('Failed to load medicine orders');
+    }
+  }
 }

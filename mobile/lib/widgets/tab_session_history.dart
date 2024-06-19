@@ -35,7 +35,7 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return CardOrder(
-                                orderNumber: "Order: ${snapshot.data![index].id!.substring(0, 6).toUpperCase()}",
+                                orderNumber: "Nº ${snapshot.data![index].id!.substring(0, 6).toUpperCase()}",
                                 orderDate: snapshot.data![index].createdAt!,
                                 orderStatus: snapshot.data![index].status!.toUpperCase(),
                                 onPressed: () {},

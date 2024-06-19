@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/custom_button.dart';
 import 'package:mobile/widgets/input_text.dart';
-import 'package:mobile/widgets/modal.dart';
 import 'package:mobile/models/order_details.dart';
+import 'package:mobile/controller/orders.dart';
+import 'package:mobile/services/orders.dart';
 
 class CheckOrderPage extends StatefulWidget {
   static const routeName = '/check-order';
@@ -19,32 +20,28 @@ class CheckOrderPage extends StatefulWidget {
 
 class _CheckOrderPageState extends State<CheckOrderPage> {
   final TextEditingController _textController = TextEditingController();
-
-  void _showSuccessModal(BuildContext context) {
-    showDialog(
-      context: context,
-      barrierColor: Colors.black.withOpacity(0.5),
-      builder: (BuildContext context) {
-        return const Modal(
-          title: 'Success',
-          description: 'Order placed successfully!',
-          icon: Icons.check_circle,
-          iconColor: Colors.green,
-          routeName: '/orders',
-        );
-      },
-    );
-  }
+  late OrdersController _ordersController; 
+  late OrderDetailsArguments args;
 
   @override
   void initState() {
     super.initState();
+    _ordersController = OrdersController(orderService: OrderService());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    args = ModalRoute.of(context)!.settings.arguments as OrderDetailsArguments;
+  }
+
+  void _createOrder(){
+    _ordersController.createOrder(context, args.medicinesIds, _textController.text);
   }
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as OrderDetailsArguments;
+    final args = ModalRoute.of(context)!.settings.arguments as OrderDetailsArguments;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -246,11 +243,9 @@ class _CheckOrderPageState extends State<CheckOrderPage> {
                 Expanded(
                   child: CustomButton(
                     icon: const Icon(Icons.arrow_forward),
-                    label: 'Next',
+                    label: 'Submit',
                     receivedColor: AppColors.secondary,
-                    onPressed: () {
-                      _showSuccessModal(context);
-                    },
+                    onPressed: _createOrder,
                     isEnabled: true,
                   ),
                 ),

@@ -42,7 +42,7 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                             itemCount: filteredOrders.length,
                             itemBuilder: (context, index) {
                               return CardOrder(
-                                orderNumber: "Order: ${filteredOrders[index].id!.substring(0, 6).toUpperCase()}",
+                                orderNumber: "Nº ${filteredOrders[index].id!.substring(0, 6).toUpperCase()}",
                                 orderDate: filteredOrders[index].createdAt!,
                                 orderStatus: filteredOrders[index].status!.toUpperCase(),
                                 onPressed: () {},
