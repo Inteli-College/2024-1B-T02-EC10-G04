@@ -8,7 +8,6 @@ import 'package:mobile/models/medicines.dart';
 import 'package:mobile/models/order_details.dart';
 import 'package:mobile/pages/check_orders_page.dart';
 
-
 class NewOrderPage extends StatefulWidget {
   static const routeName = '/new-order';
 
@@ -31,20 +30,19 @@ class _NewOrderPageState extends State<NewOrderPage> {
   List<String> selectedMedicineNames = [];
 
   @override
-    void initState() {
-      super.initState();
-      
-    }
+  void initState() {
+    super.initState();
+  }
 
-    @override
-    void didChangeDependencies() {
+  @override
+  void didChangeDependencies() {
     super.didChangeDependencies();
     final args = ModalRoute.of(context)!.settings.arguments as QRCodeArguments;
-    medicinesFuture = PyxisService().getMedicinesByPyxisId(args.IdPyxis);
-    }
+    medicinesFuture = PyxisService().getMedicinesByPyxisId(args.idPyxis);
+  }
 
-    void handleCardTap(String id, String name) {
-      setState(() {
+  void handleCardTap(String id, String name) {
+    setState(() {
       if (selectedMedicineIds.contains(id)) {
         selectedMedicineIds.remove(id);
         selectedMedicineNames.remove(name);
@@ -53,8 +51,7 @@ class _NewOrderPageState extends State<NewOrderPage> {
         selectedMedicineNames.add(name);
       }
     });
-    }
-
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -180,12 +177,17 @@ class _NewOrderPageState extends State<NewOrderPage> {
                           FutureBuilder<List<Medicines>>(
                             future: medicinesFuture,
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const Center(child: CircularProgressIndicator());
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
                               } else if (snapshot.hasError) {
-                                return const Center(child: Text('Error loading medicines'));
-                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                return const Center(child: Text('No medicines available'));
+                                return const Center(
+                                    child: Text('Error loading medicines'));
+                              } else if (!snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return const Center(
+                                    child: Text('No medicines available'));
                               } else {
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -194,15 +196,16 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                     return CardMedicines(
                                       medicine: medicine.name!,
                                       lote: medicine.batch!,
-                                      isChecked: selectedMedicineIds.contains(id),
-                                      onTap: () => handleCardTap(id, medicine.name!),
+                                      isChecked:
+                                          selectedMedicineIds.contains(id),
+                                      onTap: () =>
+                                          handleCardTap(id, medicine.name!),
                                     );
                                   }).toList(),
                                 );
                               }
                             },
                           ),
-
                           const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -226,15 +229,12 @@ class _NewOrderPageState extends State<NewOrderPage> {
                                   receivedColor: AppColors.secondary,
                                   onPressed: () {
                                     Navigator.pushNamed(
-                                    context, 
-                                    CheckOrderPage.routeName,
-                                    arguments: OrderDetailsArguments(
-                                      selectedMedicineIds,
-                                      selectedMedicineNames,
-                                      args.IdPyxis,
-                                      args.pyxis
-                                    )
-                                    );
+                                        context, CheckOrderPage.routeName,
+                                        arguments: OrderDetailsArguments(
+                                            selectedMedicineIds,
+                                            selectedMedicineNames,
+                                            args.idPyxis,
+                                            args.pyxis));
                                   },
                                   isEnabled: true,
                                 ),

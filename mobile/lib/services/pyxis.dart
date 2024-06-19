@@ -30,7 +30,6 @@ class PyxisService{
 
   Future<List<Medicines>> getMedicinesByPyxisId(String id) async {
     try {
-      print(id);
       final response = await http.get(
         Uri.parse('$baseUrl/pyxis/$id/medicines'),
         headers: <String, String>{

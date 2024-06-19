@@ -8,12 +8,12 @@ class CardMedicines extends StatelessWidget {
   final VoidCallback onTap;
 
   const CardMedicines({
-    Key? key,
+    super.key,
     required this.medicine,
     required this.lote,
     required this.isChecked,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,3 +8,4 @@ macos/
 windows/
 pubspec.lock
 .env.front
+.env
