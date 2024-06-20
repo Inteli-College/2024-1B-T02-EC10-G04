@@ -16,14 +16,15 @@ func NewOrderRepositoryPostgres(db *sqlx.DB) *OrderRepositoryPostgres {
 
 func (r *OrderRepositoryPostgres) CreateOrder(order *entity.Order) (*entity.Order, error) {
 	var createdOrder entity.Order
-	err := r.db.QueryRow(
-		"INSERT INTO orders (priority, user_id, observation, medicine_id, quantity) VALUES ($1, $2, $3, $4, $5) RETURNING id, priority, user_id, observation, status, medicine_id, quantity, created_at", "responsible_id",
+	err := r.db.QueryRowx(
+		"INSERT INTO orders (priority, user_id, observation, medicine_id, quantity, order_group_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, priority, user_id, observation, status, medicine_id, quantity, created_at",
 		order.Priority,
 		order.User_ID,
 		order.Observation,
 		order.Medicine_ID,
 		order.Quantity,
-	).Scan(&createdOrder.ID, &createdOrder.Priority, &createdOrder.User_ID, &createdOrder.Observation, &createdOrder.Status, &createdOrder.Medicine_ID, &createdOrder.Quantity, &createdOrder.CreatedAt, &createdOrder.Responsible_ID)
+		order.OrderGroup_ID,
+	).StructScan(&createdOrder)
 	if err != nil {
 		return nil, err
 	}
@@ -32,12 +33,13 @@ func (r *OrderRepositoryPostgres) CreateOrder(order *entity.Order) (*entity.Orde
 
 func (r *OrderRepositoryPostgres) FindAllOrders() ([]*entity.OrderComplete, error) {
 	var ordersComplete []*entity.OrderComplete
+	log.Print("cheguei")
 
 	// Primeira consulta para obter todas as informações menos o responsible
 	err := r.db.Select(&ordersComplete, `SELECT 
 		o.id as "id", o.priority, o.observation, o.status, 
 		o.quantity, o.created_at as "created_at", o.updated_at as "updated_at",
-		o.user_id, o.medicine_id, o.responsible_id,
+		o.user_id, o.medicine_id, o.responsible_id, o.order_group_id,
 		u.id as "user.id", u.name as "user.name", u.email as "user.email", 
 		u.password as "user.password", u.role as "user.role", 
 		u.created_at as "user.created_at", u.updated_at as "user.updated_at", u.on_duty as "user.on_duty", u.profession as "user.profession",
@@ -67,10 +69,31 @@ func (r *OrderRepositoryPostgres) FindAllOrders() ([]*entity.OrderComplete, erro
 	return ordersComplete, nil
 }
 
+func (r *OrderRepositoryPostgres) FindAllOrdersByOrderGroup(order_group_id string) ([]*entity.OrderComplete, error) {
+	var ordersComplete []*entity.OrderComplete
+	log.Print("cheguei")
+
+	err := r.db.Select(&ordersComplete, `SELECT 
+		o.id as "id", o.priority, o.observation, o.status, 
+		o.quantity, o.created_at as "created_at", o.updated_at as "updated_at",
+		o.user_id, o.medicine_id, o.responsible_id, o.order_group_id,
+		m.id as "medicine.id", m.batch as "medicine.batch", m.name as "medicine.name", 
+		m.stripe as "medicine.stripe", m.created_at as "medicine.created_at", m.updated_at as "medicine.updated_at"
+		FROM orders o
+		JOIN medicines m ON o.medicine_id = m.id
+    WHERE o.order_group_id = $1
+    `, order_group_id)
+	if err != nil {
+		return nil, err
+	}
+
+	return ordersComplete, nil
+}
+
 func (r *OrderRepositoryPostgres) FindOrderById(id string) (*entity.OrderComplete, error) {
 	var orderComplete entity.OrderComplete
 	err := r.db.Get(&orderComplete, `SELECT 
-    o.id as "id", o.priority, o.observation, o.status, 
+    o.id as "id", o.priority, o.observation, o.status, o.order_group_id, 
     o.quantity, o.created_at as "created_at", o.updated_at as "updated_at",
     o.user_id, o.medicine_id, o.responsible_id,
     u.id as "user.id", u.name as "user.name", u.email as "user.email", 

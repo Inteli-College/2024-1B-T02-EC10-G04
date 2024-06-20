@@ -8,6 +8,7 @@ type OrderRepository interface {
 	CreateOrder(order *Order) (*Order, error)
 	FindOrderById(id string) (*OrderComplete, error)
 	FindAllOrders() ([]*OrderComplete, error)
+	FindAllOrdersByOrderGroup(order_group_id string) ([]*OrderComplete, error)
 	UpdateOrder(order *OrderComplete) (*Order, error)
 	DeleteOrder(id string) error
 }

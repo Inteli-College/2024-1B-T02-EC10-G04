@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"log"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/entity"
 	"github.com/google/uuid"
@@ -47,19 +49,37 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 		return nil, err
 	}
 	var ordersOutput []*dto.FindOrderOutputDTO
-	for _, order := range orders {
-		ordersOutput = append(ordersOutput, &dto.FindOrderOutputDTO{
-			ID:          order.ID,
-			Priority:    order.Priority,
-			User:        order.User,
-			Observation: order.Observation,
-			Status:      order.Status,
-			Medicine:    order.Medicine,
-			Quantity:    order.Quantity,
-			UpdatedAt:   order.UpdatedAt,
-			CreatedAt:   order.CreatedAt,
-			Responsible: order.Responsible,
-		})
+	for i := 0; i < len(orders); i++ {
+		temp := dto.FindOrderOutputDTO{
+			ID:          orders[i].ID,
+			Priority:    orders[i].Priority,
+			User:        orders[i].User,
+			Observation: orders[i].Observation,
+			Status:      orders[i].Status,
+			Medicine:    []*entity.Medicine{&orders[i].Medicine},
+			Quantity:    orders[i].Quantity,
+			UpdatedAt:   orders[i].UpdatedAt,
+			CreatedAt:   orders[i].CreatedAt,
+			Responsible: orders[i].Responsible,
+		}
+
+		next := 1
+		for {
+			if next+i < len(orders) {
+				if *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
+					temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
+					next++
+					continue
+				}
+			} else {
+				i = i + next
+				break
+			}
+		}
+
+		ordersOutput = append(ordersOutput, &temp)
+
+		// ordersOutput = append(ordersOutput,
 	}
 	return ordersOutput, nil
 }
@@ -69,13 +89,27 @@ func (o *OrderUseCase) FindOrderById(id string) (*dto.FindOrderOutputDTO, error)
 	if err != nil {
 		return nil, err
 	}
+
+	log.Printf("Ordergroup_id: %s\n", *order.OrderGroup_ID)
+	remainingOrders, new_err := o.orderRepository.FindAllOrdersByOrderGroup(*order.OrderGroup_ID)
+	log.Printf("Remaining orders: %#v\n", remainingOrders)
+	if new_err != nil || len(remainingOrders) <= 0 {
+		return nil, err
+	}
+
+	var medicines []*entity.Medicine
+
+	for _, remeiningOrder := range remainingOrders {
+		medicines = append(medicines, &remeiningOrder.Medicine)
+	}
+
 	return &dto.FindOrderOutputDTO{
 		ID:          order.ID,
 		Priority:    order.Priority,
 		User:        order.User,
 		Observation: order.Observation,
 		Status:      order.Status,
-		Medicine:    order.Medicine,
+		Medicine:    medicines,
 		Quantity:    order.Quantity,
 		UpdatedAt:   order.UpdatedAt,
 		CreatedAt:   order.CreatedAt,

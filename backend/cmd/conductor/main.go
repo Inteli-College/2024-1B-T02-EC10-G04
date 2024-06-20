@@ -2,6 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/domain/dto"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
@@ -9,9 +13,6 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
 	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"os"
 	// "github.com/joho/godotenv"
 	// "log"
 )
@@ -100,10 +101,10 @@ func main() {
 		if err != nil {
 			log.Printf("Error decoding message: %v", err)
 		}
-		res, err := ordersUseCase.CreateOrder(&orderInputDTO)
+		res, err := ordersUseCase.CreateOrders(&orderInputDTO)
 		if err != nil {
 			log.Printf("Error creating order entity: %v", err)
 		}
-		log.Printf("Order created with id: %s", res.ID)
+		log.Printf("Orders created with id: %v", res)
 	}
 }
