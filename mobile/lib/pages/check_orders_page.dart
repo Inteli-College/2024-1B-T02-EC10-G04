@@ -136,59 +136,56 @@ class _CheckOrderPageState extends State<CheckOrderPage> {
                             ),
                             const SizedBox(height: 20),
                             Container(
-                                padding: const EdgeInsets.all(10.0),
-                                child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: args.medicinesNames.length,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 10.0),
-                                          child: Container(
-                                              padding: const EdgeInsets.all(10.0),
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey[300],
-                                                borderRadius:
-                                                    BorderRadius.circular(5),
-                                              ),
-                                              child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                                vertical: 2.0,
-                                                                horizontal:
-                                                                    6.0),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              AppColors.grey3,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        child: const Icon(
-                                                          Icons.medication,
-                                                          color: Colors.white,
-                                                          size: 20,
-                                                        )),
-                                                    const SizedBox(width: 10),
-                                                    Text(
-                                                      args.medicinesNames[
-                                                          index],
-                                                      style: const TextStyle(
-                                                        fontFamily: 'Poppins',
-                                                        fontSize: 18.0,
-                                                        color: Colors.black87,
-                                                      ),
-                                                    ),
-                                                  ])));
-                                    })),
+                              padding: const EdgeInsets.all(10.0),
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: args.medicinesNames.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 10.0),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(10.0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[300],
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 2.0, horizontal: 6.0),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.grey3,
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                            ),
+                                            child: const Icon(
+                                              Icons.medication,
+                                              color: Colors.white,
+                                              size: 20,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            args.medicinesNames[index],
+                                            style: const TextStyle(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 18.0,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                           ],
                         ),
                       ),

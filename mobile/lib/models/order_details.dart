@@ -1,8 +1,9 @@
 class OrderDetailsArguments {
   final List<String> medicinesIds;
   final List<String> medicinesNames;
-  final String IdPyxis;
+  final String idPyxis;
   final String pyxis;
 
-  OrderDetailsArguments(this.medicinesIds, this.medicinesNames, this.IdPyxis, this.pyxis);
+  OrderDetailsArguments(
+      this.medicinesIds, this.medicinesNames, this.idPyxis, this.pyxis);
 }
