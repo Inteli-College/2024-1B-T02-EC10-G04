@@ -1,3 +1,4 @@
+
 -- Populando a tabela Users
 INSERT INTO Users (name, email, password, role, profession)
 VALUES 
@@ -37,23 +38,25 @@ VALUES
     ('BATCH003', 'Aspirin', 'black');
 
 -- Populando a tabela Orders
--- Primeiro, precisamos de IDs válidos de usuários e medicamentos existentes
+-- Primeiro, precisamos de IDs válidos de usuários, medicamentos e Pyxis existentes
 DO $$
 DECLARE
     alice_id UUID;
     carlos_id UUID;
     paracetamol_id UUID;
     ibuprofen_id UUID;
+    pyxis_id UUID;
 BEGIN
+    SELECT id INTO pyxis_id FROM Pyxis WHERE label = 'Pyxis A';
     SELECT id INTO alice_id FROM Users WHERE email = 'alice@example.com';
     SELECT id INTO carlos_id FROM Users WHERE email = 'carlos@example.com';
     SELECT id INTO paracetamol_id FROM Medicines WHERE name = 'Paracetamol';
     SELECT id INTO ibuprofen_id FROM Medicines WHERE name = 'Ibuprofen';
     
-    INSERT INTO Orders (priority, user_id, observation, status, medicine_id, quantity, order_group_id)
+    INSERT INTO Orders (priority, user_id, observation, status, medicine_id, quantity, order_group_id, pyxis_id)
     VALUES 
-        ('red', alice_id, 'Urgent request', 'pending', paracetamol_id, 10, '64773e82-385e-4cb3-aba9-73cbbce2c901'),
-        ('yellow', carlos_id, 'Routine request', 'ongoing', ibuprofen_id, 20, '64773e82-385e-4cb3-aba9-73cbbce2c901');
+        ('red', alice_id, 'Urgent request', 'pending', paracetamol_id, 10, '64773e82-385e-4cb3-aba9-73cbbce2c901', pyxis_id),
+        ('yellow', carlos_id, 'Routine request', 'ongoing', ibuprofen_id, 20, '64773e82-385e-4cb3-aba9-73cbbce2c901', pyxis_id);
 END
 $$;
 
@@ -75,3 +78,4 @@ BEGIN
         (bob_id, order_id);
 END
 $$;
+
