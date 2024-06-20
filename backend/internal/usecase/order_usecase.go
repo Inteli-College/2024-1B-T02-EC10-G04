@@ -10,11 +10,13 @@ import (
 
 type OrderUseCase struct {
 	orderRepository entity.OrderRepository
+	userRepository  entity.UserRepository
 }
 
-func NewOrderUseCase(orderRepository entity.OrderRepository) *OrderUseCase {
+func NewOrderUseCase(orderRepository entity.OrderRepository, userRepository entity.UserRepository) *OrderUseCase {
 	return &OrderUseCase{
 		orderRepository: orderRepository,
+		userRepository:  userRepository,
 	}
 }
 
@@ -115,33 +117,52 @@ func (o *OrderUseCase) FindOrderById(id string) (*dto.FindOrderOutputDTO, error)
 }
 
 func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateOrderOutputDTO, error) {
-	res, err := o.orderRepository.FindOrderById(input.ID)
-	if err != nil {
+	var responsibleUser *entity.User
+	var userErr error
+	if input.Responsible_ID != nil {
+		responsibleUser, userErr = o.userRepository.FindUserById(*input.Responsible_ID)
+		if userErr != nil {
+			return nil, userErr
+		}
+	}
+
+	res, err := o.orderRepository.FindAllOrdersByOrderGroup(input.Order_ID)
+	if err != nil || len(res) <= 0 {
 		return nil, err
 	}
 
-	// TODO: Implement update that does not require all fields of input DTO  (Maybe i can do this only in the repository?)
-	res.Medicine_ID = input.Medicine_ID
-	res.Status = input.Status
-	res.Priority = input.Priority
-	res.Observation = input.Observation
-	res.Responsible_ID = &input.Responsible_ID
+	output := &dto.UpdateOrderOutputDTO{
+		Order_ID:    input.Order_ID,
+		User:        res[0].User,
+		Responsible: responsibleUser,
+	}
+	for i, order := range res {
+		order.Priority = *input.Priority
+		order.Observation = input.Observation
+		// TODO: change status to pointer
+		if input.Status != nil {
+			order.Status = *input.Status
+		}
+		order.Responsible_ID = input.Responsible_ID
 
-	updatedOrder, err := o.orderRepository.UpdateOrder(res)
-	if err != nil {
-		return nil, err
+		updatedOrder, update_err := o.orderRepository.UpdateOrder(order)
+
+		if update_err != nil {
+			return nil, update_err
+		}
+
+		output.Medicines = append(output.Medicines, &res[i].Medicine)
+
+		if i == len(res)-1 {
+			output.CreatedAt = updatedOrder.CreatedAt
+			output.UpdatedAt = updatedOrder.UpdatedAt
+			output.Status = updatedOrder.Status
+			output.Observation = &updatedOrder.Status
+			output.Priority = updatedOrder.Priority
+		}
 	}
 
-	return &dto.UpdateOrderOutputDTO{
-		ID:             updatedOrder.ID,
-		Priority:       updatedOrder.Priority,
-		User_ID:        updatedOrder.User_ID,
-		Observation:    updatedOrder.Observation,
-		Status:         updatedOrder.Status,
-		Medicine_ID:    updatedOrder.Medicine_ID,
-		UpdatedAt:      updatedOrder.UpdatedAt,
-		Responsible_ID: updatedOrder.Responsible_ID,
-	}, nil
+	return output, nil
 }
 
 func (o *OrderUseCase) DeleteOrder(id string) error {

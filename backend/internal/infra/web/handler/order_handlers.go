@@ -117,7 +117,7 @@ func (h *OrderHandlers) FindOrderByIdHandler(c *gin.Context) {
 // @Router /orders/{id} [put]
 func (h *OrderHandlers) UpdateOrderHandler(c *gin.Context) {
 	var input dto.UpdateOrderInputDTO
-	input.ID = c.Param("id")
+	input.Order_ID = c.Param("id")
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

@@ -146,7 +146,7 @@ func main() {
 	kafkaProducerRepository := kafka.NewKafkaProducer(orderProducerConfigMap)
 
 	orderRepository := repository.NewOrderRepositoryPostgres(db)
-	orderUseCase := usecase.NewOrderUseCase(orderRepository)
+	orderUseCase := usecase.NewOrderUseCase(orderRepository, userRepository)
 	orderHandlers := handler.NewOrderHandlers(orderUseCase, kafkaProducerRepository)
 
 	{
