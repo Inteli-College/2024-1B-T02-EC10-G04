@@ -1282,6 +1282,9 @@ const docTemplate = `{
                 "on_duty": {
                     "type": "boolean"
                 },
+                "profession": {
+                    "type": "string"
+                },
                 "role": {
                     "type": "string"
                 }
