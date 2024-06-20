@@ -13,6 +13,7 @@ type CreateOrdersInputDTO struct {
 	Medicine_IDs   []string `json:"medicine_ids" binding:"required"`
 	Quantity       int      `json:"quantity" binding:"required"`
 	Responsible_ID string   `json:"responsible_id"`
+	Pyxis_ID       string   `json:"pyxis_id"`
 }
 
 type FindOrderByIDInputDTO struct {
@@ -60,6 +61,7 @@ type FindOrderOutputDTO struct {
 	Medicine_ID    string             `json:"medicine_id,omitempty"`
 	User_ID        string             `json:"user_id,omitempty"`
 	Responsible_ID *string            `json:"responsible_id,omitempty"`
+	Pyxis_ID       string             `json:"pyxis_id,omitempty"`
 }
 
 type UpdateOrderOutputDTO struct {

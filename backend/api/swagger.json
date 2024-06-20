@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "localhost",
+    "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
         "/medicines": {
@@ -1030,6 +1030,9 @@
                 "priority": {
                     "type": "string"
                 },
+                "pyxis_id": {
+                    "type": "string"
+                },
                 "quantity": {
                     "type": "integer"
                 },
@@ -1150,7 +1153,10 @@
                     "type": "string"
                 },
                 "medicine": {
-                    "$ref": "#/definitions/entity.Medicine"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Medicine"
+                    }
                 },
                 "medicine_id": {
                     "type": "string"
@@ -1159,6 +1165,9 @@
                     "type": "string"
                 },
                 "priority": {
+                    "type": "string"
+                },
+                "pyxis_id": {
                     "type": "string"
                 },
                 "quantity": {
