@@ -30,7 +30,14 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                   child: FutureBuilder<List<Order>>(
                       future: widget.orders,
                       builder: (context, snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.secondary,
+                            ),
+                          );
+                        } 
+                        else if (snapshot.hasData) {
                           return ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
@@ -67,7 +74,8 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                                 //medicineList.map((medicine) => medicine['name'] as String).toList();
                                 medicines: [
                                   snapshot.data![index].medicine!.name!,
-                                ]
+                                ],
+                                date: snapshot.data![index].createdAt!,
                               );
                             },
                           );

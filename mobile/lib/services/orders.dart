@@ -54,9 +54,15 @@ class OrderService {
             throw Exception('No orders found for user');
           }
         }
-        return [];
+        if(role == 'collector'){
+
+        }
+        if (role == 'manager' || role == 'admin') {
+          return orders;
+        }
+        throw Exception('No orders found');
       } else {
-        return [];
+        throw Exception('No orders found');
       }
     } catch (e) {
       throw Exception('Failed to load medicine orders');

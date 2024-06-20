@@ -12,6 +12,7 @@ class CardOrder extends StatelessWidget {
   final String pyxis;
   final Icon iconStatus;
   final List<String> medicines;
+  final String date;
 
   const CardOrder({
     super.key,
@@ -24,6 +25,7 @@ class CardOrder extends StatelessWidget {
     required this.pyxis,
     required this.iconStatus,
     required this.medicines,
+    required this.date,
   });
 
   @override
