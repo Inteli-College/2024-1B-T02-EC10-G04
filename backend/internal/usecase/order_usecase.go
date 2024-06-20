@@ -22,7 +22,7 @@ func (o *OrderUseCase) CreateOrders(input *dto.CreateOrdersInputDTO) ([]*dto.Cre
 	newOrderGroupID := uuid.New().String()
 	createdOrders := []*dto.CreateOrderOutputDTO{}
 	for _, medicine_id := range input.Medicine_IDs {
-		order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, medicine_id, input.Quantity, input.Responsible_ID, newOrderGroupID)
+		order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, medicine_id, input.Quantity, input.Responsible_ID, newOrderGroupID, input.Pyxis_ID)
 		res, err := o.orderRepository.CreateOrder(order)
 		if err != nil {
 			return nil, err
@@ -61,6 +61,7 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 			UpdatedAt:   orders[i].UpdatedAt,
 			CreatedAt:   orders[i].CreatedAt,
 			Responsible: orders[i].Responsible,
+			Pyxis_ID:    orders[i].Pyxis_ID,
 		}
 
 		next := 1
@@ -112,6 +113,7 @@ func (o *OrderUseCase) FindOrderById(id string) (*dto.FindOrderOutputDTO, error)
 		UpdatedAt:   order.UpdatedAt,
 		CreatedAt:   order.CreatedAt,
 		Responsible: order.Responsible,
+		Pyxis_ID:    order.Pyxis_ID,
 	}, nil
 }
 

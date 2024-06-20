@@ -1036,6 +1036,9 @@ const docTemplate = `{
                 "priority": {
                     "type": "string"
                 },
+                "pyxis_id": {
+                    "type": "string"
+                },
                 "quantity": {
                     "type": "integer"
                 },
@@ -1156,7 +1159,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "medicine": {
-                    "$ref": "#/definitions/entity.Medicine"
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Medicine"
+                    }
                 },
                 "medicine_id": {
                     "type": "string"
@@ -1165,6 +1171,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "priority": {
+                    "type": "string"
+                },
+                "pyxis_id": {
                     "type": "string"
                 },
                 "quantity": {
@@ -1523,7 +1532,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost",
+	Host:             "localhost:8080",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Manager API",
