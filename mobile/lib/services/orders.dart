@@ -78,12 +78,12 @@ class OrderService {
           'Authorization': 'Bearer $accessToken',
         },
         body: jsonEncode(<String, dynamic>{
-        "medicine_id": medicineIds,
+        "medicine_ids": medicineIds,
         "user_id": id,
-        "observation": observation,
+        "observation": observation == "" ? "Order without comments" : observation,
         "on_duty": true,
-        "quantity": "",
-        "priority": "",
+        "quantity": 1,
+        "priority": "green",
       }),
       );
 

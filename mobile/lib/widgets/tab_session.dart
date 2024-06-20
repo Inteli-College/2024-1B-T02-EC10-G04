@@ -33,7 +33,14 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                   child: FutureBuilder<List<Order>>(
                       future: widget.orders,
                       builder: (context, snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.secondary,
+                            ),
+                          );
+                        } 
+                        else if (snapshot.hasData) {
                           DateTime selectedDate =
                               Provider.of<CalendarLogic>(context).selectedDay ??
                                   DateTime.now();

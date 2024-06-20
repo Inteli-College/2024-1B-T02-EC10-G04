@@ -5,6 +5,8 @@ import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/logic/navbar_state.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   final String name;
@@ -28,7 +30,6 @@ class _ProfilePageState extends State<ProfilePage> {
       TextEditingController(text: widget.name);
   late final TextEditingController _emailController =
       TextEditingController(text: widget.email);
-
   String getInitials(String name) {
     List<String> nameParts = name.split(' ');
     String initials = '';
@@ -50,11 +51,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final navBarState = Provider.of<NavBarState>(context);
+
     Future<void> logout() async {
       await LocalStorageService().cleanValues();
       if (mounted) {
         // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed('/login');
+        navBarState.setSelectedIndex(0);
       }
     }
 
