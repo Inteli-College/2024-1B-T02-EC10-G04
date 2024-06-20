@@ -1,6 +1,11 @@
 name: "CD - Application"
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+        - 'backend/**'
   workflow_dispatch:
 
 permissions:

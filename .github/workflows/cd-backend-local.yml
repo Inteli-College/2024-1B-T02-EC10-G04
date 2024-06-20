@@ -128,7 +128,7 @@ jobs:
         run: minikube start --driver=docker
 
       - name: Create Kubernetes Postgres deployment
-        working-directory: deploy/charts/postgres
+        working-directory: deploy/charts-local/postgres
         run: |
           kubectl apply -f postgres-deployment.yaml
 
@@ -138,7 +138,7 @@ jobs:
           kubectl get pods
 
       - name: Create Kubernetes Redis deployment
-        working-directory: deploy/charts/redis
+        working-directory: deploy/charts-local/redis
         run: |
           kubectl apply -f redis-deployment.yaml
 
@@ -148,7 +148,7 @@ jobs:
           kubectl get pods
 
       - name: Create Kubernetes Kafka deployment
-        working-directory: deploy/charts/kafka
+        working-directory: deploy/charts-local/kafka
         run: |
           kubectl apply -f zookeeper-deployment.yaml
           kubectl apply -f kafka-deployment.yaml
@@ -160,7 +160,7 @@ jobs:
           kubectl get pods
 
       - name: Create Kubernetes Control Center deployment
-        working-directory: deploy/charts/backend
+        working-directory: deploy/charts-local/backend
         run: |
           kubectl apply -f backend-deployment.yaml
 
@@ -179,11 +179,11 @@ jobs:
 
       - name: Delete all resources
         run: |
-          kubectl delete -f deploy/charts/backend/backend-deployment.yaml
-          kubectl delete -f deploy/charts/kafka/kafka-deployment.yaml
-          kubectl delete -f deploy/charts/kafka/zookeeper-deployment.yaml
-          kubectl delete -f deploy/charts/redis/redis-deployment.yaml
-          kubectl delete -f deploy/charts/postgres/postgres-deployment.yaml
+          kubectl delete -f deploy/charts-local/backend/backend-deployment.yaml
+          kubectl delete -f deploy/charts-local/kafka/kafka-deployment.yaml
+          kubectl delete -f deploy/charts-local/kafka/zookeeper-deployment.yaml
+          kubectl delete -f deploy/charts-local/redis/redis-deployment.yaml
+          kubectl delete -f deploy/charts-local/postgres/postgres-deployment.yaml
 
       - name: Stop Minikube
         run: minikube stop
