@@ -262,7 +262,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.CreateOrderInputDTO"
+                            "$ref": "#/definitions/dto.CreateOrdersInputDTO"
                         }
                     }
                 ],
@@ -1015,11 +1015,20 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.CreateOrderInputDTO": {
+        "dto.CreateOrdersInputDTO": {
             "type": "object",
+            "required": [
+                "medicine_ids",
+                "observation",
+                "priority",
+                "quantity"
+            ],
             "properties": {
-                "medicine_id": {
-                    "type": "string"
+                "medicine_ids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "observation": {
                     "type": "string"
@@ -1029,6 +1038,9 @@ const docTemplate = `{
                 },
                 "quantity": {
                     "type": "integer"
+                },
+                "responsible_id": {
+                    "type": "string"
                 },
                 "user_id": {
                     "type": "string"
@@ -1067,6 +1079,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "password": {
+                    "type": "string"
+                },
+                "profession": {
                     "type": "string"
                 },
                 "role": {
@@ -1143,6 +1158,9 @@ const docTemplate = `{
                 "medicine": {
                     "$ref": "#/definitions/entity.Medicine"
                 },
+                "medicine_id": {
+                    "type": "string"
+                },
                 "observation": {
                     "type": "string"
                 },
@@ -1152,6 +1170,12 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer"
                 },
+                "responsible": {
+                    "$ref": "#/definitions/entity.User"
+                },
+                "responsible_id": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "string"
                 },
@@ -1160,6 +1184,9 @@ const docTemplate = `{
                 },
                 "user": {
                     "$ref": "#/definitions/entity.User"
+                },
+                "user_id": {
+                    "type": "string"
                 }
             }
         },
@@ -1303,6 +1330,9 @@ const docTemplate = `{
                 "quantity": {
                     "type": "integer"
                 },
+                "responsible_id": {
+                    "type": "string"
+                },
                 "status": {
                     "type": "string"
                 }
@@ -1325,6 +1355,9 @@ const docTemplate = `{
                 },
                 "quantity": {
                     "type": "integer"
+                },
+                "responsible_id": {
+                    "type": "string"
                 },
                 "status": {
                     "type": "string"
@@ -1463,6 +1496,9 @@ const docTemplate = `{
                     "type": "boolean"
                 },
                 "password": {
+                    "type": "string"
+                },
+                "profession": {
                     "type": "string"
                 },
                 "role": {

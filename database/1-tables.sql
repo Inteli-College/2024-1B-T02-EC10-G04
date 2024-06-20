@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS Users (
     role role_type NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    on_duty BOOLEAN DEFAULT true
+    on_duty BOOLEAN DEFAULT true,
+    profession VARCHAR(255) NOT NULL
 );
 
 -- Pyxis Table
@@ -83,8 +84,11 @@ CREATE TABLE IF NOT EXISTS Orders (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     medicine_id UUID NOT NULL,
     quantity INT NOT NULL,
+    responsible_id UUID,
+    order_group_id UUID NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(id),
-    FOREIGN KEY (medicine_id) REFERENCES Medicines(id)
+    FOREIGN KEY (medicine_id) REFERENCES Medicines(id),
+    FOREIGN KEY (responsible_id) REFERENCES Users(id)
 );
 
 -- Tabela de Responsabilidade de Pedidos de Usuário
