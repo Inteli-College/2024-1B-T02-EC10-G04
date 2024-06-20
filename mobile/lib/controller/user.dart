@@ -39,10 +39,11 @@ class UserController {
     }
   }
 
-  Future<void> signup(
-      BuildContext context, String name, String email, String password) async {
+  Future<void> signup(BuildContext context, String name, String email,
+      String password, String profession) async {
     try {
-      final response = await userService.signup(name, email, password);
+      final response =
+          await userService.signup(name, email, password, profession);
 
       if (response.isNotEmpty) {
         showModal(
@@ -70,8 +71,7 @@ class UserController {
     }
   }
 
-  Future<void> updatePassword(
-      BuildContext context, String newPassword) async {
+  Future<void> updatePassword(BuildContext context, String newPassword) async {
     try {
       final response = await userService.updatePassword(newPassword);
 
@@ -100,6 +100,4 @@ class UserController {
       // Handle login failure
     }
   }
-
-
 }

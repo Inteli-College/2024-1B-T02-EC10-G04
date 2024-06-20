@@ -79,8 +79,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _onSubmit() {
     if (isButtonEnabled) {
-      _signUpController.signup(
-          context, _nameController.text, _emailController.text, _passwordController.text);
+      _signUpController.signup(context, _nameController.text,
+          _emailController.text, _passwordController.text, selectedRole!);
     }
   }
 
@@ -200,7 +200,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 16),
                       Dropdown(
-                        items: const ['Auxiliar de Enfermagem', 'Auxiliar de Farmácia', 'Gerente'],
+                        items: const [
+                          'Auxiliar de Enfermagem',
+                          'Auxiliar de Farmácia',
+                          'Gerente'
+                        ],
                         onChanged: (value) {
                           setState(() {
                             selectedRole = value;

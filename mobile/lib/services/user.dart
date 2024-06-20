@@ -32,7 +32,7 @@ class UserService {
   }
 
   Future<Map<String, dynamic>> signup(
-      String name, String email, String password) async {
+      String name, String email, String password, String profession) async {
     final response = await http.post(
       Uri.parse('$baseUrl/users'),
       headers: <String, String>{
@@ -42,7 +42,8 @@ class UserService {
         'email': email,
         'name': name,
         'password': password,
-        'role': 'user'
+        'profession': profession,
+        'role': 'user',
       }),
     );
 
@@ -57,8 +58,7 @@ class UserService {
     return {};
   }
 
-  Future<Map<String, dynamic>> updatePassword(
-    String newPassword) async {
+  Future<Map<String, dynamic>> updatePassword(String newPassword) async {
     var id = await localStorageService.getValue('id');
     var email = await localStorageService.getValue('email');
     var role = await localStorageService.getValue('role');
@@ -85,6 +85,4 @@ class UserService {
     }
     return {};
   }
-
-
 }
