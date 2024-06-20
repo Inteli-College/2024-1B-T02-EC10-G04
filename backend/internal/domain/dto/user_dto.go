@@ -23,6 +23,7 @@ type LoginUserOutputDTO struct {
 	Email       string    `json:"email"`
 	Role        string    `json:"role"`
 	OnDuty      bool      `json:"on_duty"`
+	Profession  string    `json:"profession"`
 	CreatedAt   time.Time `json:"created_at"`
 	AccessToken string    `json:"access_token"`
 }
