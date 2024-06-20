@@ -33,14 +33,7 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                   child: FutureBuilder<List<Order>>(
                       future: widget.orders,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.secondary,
-                            ),
-                          );
-                        } else if (snapshot.hasData) {
+                        if (snapshot.hasData) {
                           DateTime selectedDate =
                               Provider.of<CalendarLogic>(context).selectedDay ??
                                   DateTime.now();
@@ -97,10 +90,7 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                                                     Icons.cancel,
                                                     color: AppColors.error,
                                                   ),
-                                //medicineList.map((medicine) => medicine['name'] as String).toList();
-                                medicines: [
-                                  filteredOrders[index].medicine!.name!,
-                                ],
+                                medicines: filteredOrders[index].medicines!,
                                 date: snapshot.data![index].createdAt!,
                               );
                             },

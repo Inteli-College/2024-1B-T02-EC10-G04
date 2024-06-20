@@ -3,7 +3,7 @@ import 'package:mobile/models/user.dart';
 class Order {
   String? createdAt;
   String? id;
-  Medicines? medicine;
+  List<Medicines>? medicines;
   String? observation;
   String? priority;
   int? quantity;
@@ -14,7 +14,7 @@ class Order {
   Order({
     this.createdAt,
     this.id,
-    this.medicine,
+    this.medicines,
     this.observation,
     this.priority,
     this.quantity,
@@ -26,7 +26,15 @@ class Order {
   Order.fromJson(Map<String, dynamic> json) {
     createdAt = json['created_at'];
     id = json['id'];
-    medicine = json['medicine'] != null ? Medicines.fromJson(json['medicine']) : null;
+    medicines = <Medicines>[];
+    if (json['medicine'] != null) {
+      json['medicine'].forEach((x) {
+        var medicine = Medicines.fromJson(x);
+        if (medicines != null) {
+          medicines!.add(medicine);
+        }      
+      });
+    }
     observation = json['observation'];
     priority = json['priority'];
     quantity = json['quantity'];
@@ -39,8 +47,8 @@ class Order {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['created_at'] = createdAt;
     data['id'] = id;
-    if (medicine != null) {
-      data['medicine'] = medicine!.toJson();
+    if (medicines != null) {
+      data['medicine'] = medicines!.map((v) => v.toJson()).toList();
     }
     data['observation'] = observation;
     data['priority'] = priority;

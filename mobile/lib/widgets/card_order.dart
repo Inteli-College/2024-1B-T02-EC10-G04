@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/pages/details_page.dart';
+import 'package:mobile/models/medicines.dart';
 
 class CardOrder extends StatelessWidget {
   final String orderNumber;
@@ -11,7 +12,7 @@ class CardOrder extends StatelessWidget {
   final String priority;
   final String pyxis;
   final Icon iconStatus;
-  final List<String> medicines;
+  final List<Medicines> medicines;
   final String date;
 
   const CardOrder({
@@ -101,7 +102,7 @@ class CardOrder extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              for (String medicine in medicines)
+                              for (Medicines medicine in medicines)
                                 Padding(
                                   padding: const EdgeInsets.only(top: 2.0,),
                                   child: Text(
@@ -109,7 +110,7 @@ class CardOrder extends StatelessWidget {
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: 'Poppins'),
-                                    medicine)
+                                    medicine.name!)
                                 ) 
                             ],
                           )),

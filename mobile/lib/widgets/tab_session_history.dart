@@ -71,10 +71,7 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                                  Icons.cancel,
                                  color: AppColors.error,
                                 ),
-                                //medicineList.map((medicine) => medicine['name'] as String).toList();
-                                medicines: [
-                                  snapshot.data![index].medicine!.name!,
-                                ],
+                                medicines: snapshot.data![index].medicines!,
                                 date: snapshot.data![index].createdAt!,
                               );
                             },

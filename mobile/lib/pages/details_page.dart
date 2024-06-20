@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
+import 'package:mobile/models/medicines.dart';
+
 
 class OrderDetailsPage extends StatelessWidget {
   final String orderNumber;
@@ -10,7 +12,7 @@ class OrderDetailsPage extends StatelessWidget {
   final String priority;
   final String pyxis;
   final Icon iconStatus;
-  final List<String> medicines;
+  final List<Medicines> medicines;
 
   const OrderDetailsPage({
     super.key,
@@ -157,7 +159,7 @@ class OrderDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 10),
-                                  for (var medicine in medicines)
+                                  for (Medicines medicine in medicines)
                                     Padding(
                                         padding: const EdgeInsets.only(
                                           top: 2.0,
@@ -167,7 +169,7 @@ class OrderDetailsPage extends StatelessWidget {
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400,
                                                 fontFamily: 'Poppins'),
-                                            medicine))
+                                            medicine.name!))
                                 ],
                               )),
                           const Divider(),
