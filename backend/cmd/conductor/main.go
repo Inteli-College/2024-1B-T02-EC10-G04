@@ -12,20 +12,36 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/repository"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
+	initialization "github.com/Inteli-College/2024-1B-T02-EC10-G04/init"
 	"github.com/gin-gonic/gin"
-	// "github.com/joho/godotenv"
+	"github.com/joho/godotenv"
 	// "log"
 )
 
 // Please use .env file for local development. After that, please comment out the lines below,
 // their dependencies as well, and update the go.mod file with command $ go mod tidy.
 
-// func init() {
-// 	err := godotenv.Load()
-// 	if err != nil {
-// 		log.Fatal("Error loading .env file")
-// 	}
-// }
+func init() {
+	if _, stat_err := os.Stat("./.env"); stat_err == nil {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
+	}
+
+	if missing_var := initialization.VerifyEnvs(
+		"POSTGRES_URL",
+		"CONFLUENT_KAFKA_TOPIC_NAME",
+		"CONFLUENT_API_KEY",
+		"CONFLUENT_API_SECRET",
+		"CONFLUENT_BOOTSTRAP_SERVER_SASL",
+		"JWT_SECRET_KEY",
+		"REDIS_PASSWORD",
+		"REDIS_ADDRESS",
+	); missing_var != nil {
+		panic(missing_var)
+	}
+}
 
 //	@title			Conductor API
 //	@version		1.0
