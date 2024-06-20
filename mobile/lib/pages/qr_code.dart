@@ -5,6 +5,7 @@ import 'package:mobile/pages/new_orders_page.dart';
 import 'package:mobile/models/qrcode.dart';
 import 'package:mobile/services/pyxis.dart';
 import 'package:mobile/models/pyxis.dart';
+import 'package:mobile/controller/pyxis.dart';
 
 class QRCodePage extends StatefulWidget {
   const QRCodePage({super.key});
@@ -88,20 +89,26 @@ class _QRCodePageState extends State<QRCodePage> {
 
         try {
           PyxisService pyxisService = PyxisService();
-          Pyxis pyxis = await pyxisService.getPyxisById(scanData.code!);
+          PyxisController pyxisController = PyxisController(pyxisService: pyxisService);
+          Pyxis? pyxis = await pyxisController.getPyxisById(context, scanData.code!);
 
           if (pyxis == null) {
-            throw Exception('Pyxis not found');
+            controller.resumeCamera();
+            setState(() {
+              _isScanning = false;
+            });
+            return;
           }
 
           Navigator.pushNamed(
-              // ignore: use_build_context_synchronously
-              context,
-              NewOrderPage.routeName,
-              arguments: QRCodeArguments(
-                scanData.code!,
-                pyxis.label!,
-              )).then((_) {
+            // ignore: use_build_context_synchronously
+            context,
+            NewOrderPage.routeName,
+            arguments: QRCodeArguments(
+              scanData.code!,
+              pyxis.label!,
+            ),
+          ).then((_) {
             controller.resumeCamera();
             setState(() {
               _isScanning = false;
@@ -109,6 +116,10 @@ class _QRCodePageState extends State<QRCodePage> {
           });
         } catch (e) {
           print(e);
+          controller.resumeCamera();
+          setState(() {
+            _isScanning = false;
+          });
         }
       }
     });
