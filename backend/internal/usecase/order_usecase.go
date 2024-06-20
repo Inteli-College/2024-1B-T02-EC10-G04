@@ -78,8 +78,6 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 		}
 
 		ordersOutput = append(ordersOutput, &temp)
-
-		// ordersOutput = append(ordersOutput,
 	}
 	return ordersOutput, nil
 }
@@ -129,6 +127,7 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 	res.Priority = input.Priority
 	res.Observation = input.Observation
 	res.Quantity = input.Quantity
+	res.Responsible_ID = &input.Responsible_ID
 
 	updatedOrder, err := o.orderRepository.UpdateOrder(res)
 	if err != nil {
