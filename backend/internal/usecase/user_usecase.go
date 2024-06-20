@@ -40,7 +40,7 @@ func (u *UserUseCase) CreateUser(input *dto.CreateUserInputDTO) (*dto.CreateUser
 
 	hashedPassword := hashPassword(input.Password)
 
-	user := entity.NewUser(input.Name, input.Email, string(hashedPassword), input.Role)
+	user := entity.NewUser(input.Name, input.Email, string(hashedPassword), input.Role, input.Profession)
 	res, err := u.UserRepository.CreateUser(user)
 	if err != nil {
 		return nil, err

@@ -24,18 +24,27 @@ func NewOrderHandlers(orderUsecase *usecase.OrderUseCase, KafkaProducer *kafka.K
 	}
 }
 
-// CreateOrderHandler
+// CreateOrdersHandler
 // @Summary Create a new Order entity
 // @Description Create a new Order entity and produce an event to Kafka
 // @Tags Orders
 // @Accept json
 // @Produce json
-// @Param input body dto.CreateOrderInputDTO true "Order entity to create"
+// @Param input body dto.CreateOrdersInputDTO true "Order entity to create"
 // @Success 201 {object} string
 // @Security BearerAuth
 // @Router /orders [post]
-func (h *OrderHandlers) CreateOrderHandler(c *gin.Context) {
-	var input dto.CreateOrderInputDTO
+func (h *OrderHandlers) CreateOrdersHandler(c *gin.Context) {
+	var input dto.CreateOrdersInputDTO
+	userID, exists := c.Get("userID")
+
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	input.User_ID = userID.(string)
+
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

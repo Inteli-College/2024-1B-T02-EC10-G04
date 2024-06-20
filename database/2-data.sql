@@ -1,10 +1,10 @@
 -- Populando a tabela Users
-INSERT INTO Users (name, email, password, role)
+INSERT INTO Users (name, email, password, role, profession)
 VALUES 
-    ('Alice Silva', 'alice@example.com', crypt('password123', gen_salt('bf')), 'admin'),
-    ('Bob Santos', 'bob@example.com', crypt('password456', gen_salt('bf')), 'user'),
-    ('Carlos Pereira', 'carlos@example.com', crypt('password789', gen_salt('bf')), 'collector'),
-    ('Daniela Lima', 'daniela@example.com', crypt('password321', gen_salt('bf')), 'manager');
+    ('Alice Silva', 'alice@example.com', crypt('password123', gen_salt('bf')), 'admin', 'Diretor'),
+    ('Bob Santos', 'bob@example.com', crypt('password456', gen_salt('bf')), 'user', 'Enfermeiro'),
+    ('Carlos Pereira', 'carlos@example.com', crypt('password789', gen_salt('bf')), 'collector', 'Farmacêutico'),
+    ('Daniela Lima', 'daniela@example.com', crypt('password321', gen_salt('bf')), 'manager', 'Gerente');
 
 -- Populando a tabela Pyxis
 INSERT INTO Pyxis (label)
@@ -50,10 +50,10 @@ BEGIN
     SELECT id INTO paracetamol_id FROM Medicines WHERE name = 'Paracetamol';
     SELECT id INTO ibuprofen_id FROM Medicines WHERE name = 'Ibuprofen';
     
-    INSERT INTO Orders (priority, user_id, observation, status, medicine_id, quantity)
+    INSERT INTO Orders (priority, user_id, observation, status, medicine_id, quantity, order_group_id)
     VALUES 
-        ('red', alice_id, 'Urgent request', 'pending', paracetamol_id, 10),
-        ('yellow', carlos_id, 'Routine request', 'ongoing', ibuprofen_id, 20);
+        ('red', alice_id, 'Urgent request', 'pending', paracetamol_id, 10, '64773e82-385e-4cb3-aba9-73cbbce2c901'),
+        ('yellow', carlos_id, 'Routine request', 'ongoing', ibuprofen_id, 20, '64773e82-385e-4cb3-aba9-73cbbce2c901');
 END
 $$;
 

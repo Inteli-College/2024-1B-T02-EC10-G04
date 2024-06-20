@@ -24,18 +24,27 @@ definitions:
       updated_at:
         type: string
     type: object
-  dto.CreateOrderInputDTO:
+  dto.CreateOrdersInputDTO:
     properties:
-      medicine_id:
-        type: string
+      medicine_ids:
+        items:
+          type: string
+        type: array
       observation:
         type: string
       priority:
         type: string
       quantity:
         type: integer
+      responsible_id:
+        type: string
       user_id:
         type: string
+    required:
+    - medicine_ids
+    - observation
+    - priority
+    - quantity
     type: object
   dto.CreatePyxisInputDTO:
     properties:
@@ -58,6 +67,8 @@ definitions:
       name:
         type: string
       password:
+        type: string
+      profession:
         type: string
       role:
         type: string
@@ -107,18 +118,26 @@ definitions:
         type: string
       medicine:
         $ref: '#/definitions/entity.Medicine'
+      medicine_id:
+        type: string
       observation:
         type: string
       priority:
         type: string
       quantity:
         type: integer
+      responsible:
+        $ref: '#/definitions/entity.User'
+      responsible_id:
+        type: string
       status:
         type: string
       updated_at:
         type: string
       user:
         $ref: '#/definitions/entity.User'
+      user_id:
+        type: string
     type: object
   dto.FindPyxisOutputDTO:
     properties:
@@ -211,6 +230,8 @@ definitions:
         type: string
       quantity:
         type: integer
+      responsible_id:
+        type: string
       status:
         type: string
     type: object
@@ -226,6 +247,8 @@ definitions:
         type: string
       quantity:
         type: integer
+      responsible_id:
+        type: string
       status:
         type: string
       updated_at:
@@ -317,6 +340,8 @@ definitions:
       on_duty:
         type: boolean
       password:
+        type: string
+      profession:
         type: string
       role:
         type: string
@@ -481,7 +506,7 @@ paths:
         name: input
         required: true
         schema:
-          $ref: '#/definitions/dto.CreateOrderInputDTO'
+          $ref: '#/definitions/dto.CreateOrdersInputDTO'
       produces:
       - application/json
       responses:
