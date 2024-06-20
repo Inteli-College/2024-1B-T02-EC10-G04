@@ -83,13 +83,13 @@ CREATE TABLE IF NOT EXISTS Orders (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     medicine_id UUID NOT NULL,
-    quantity INT NOT NULL,
     responsible_id UUID,
     order_group_id UUID NOT NULL,
     pyxis_id UUID NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (medicine_id) REFERENCES Medicines(id),
-    FOREIGN KEY (responsible_id) REFERENCES Users(id)
+    FOREIGN KEY (responsible_id) REFERENCES Users(id),
+    FOREIGN KEY (pyxis_id) REFERENCES Pyxis(id)
 );
 
 -- Tabela de Responsabilidade de Pedidos de Usuário

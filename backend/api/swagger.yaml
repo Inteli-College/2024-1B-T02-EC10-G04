@@ -36,17 +36,14 @@ definitions:
         type: string
       pyxis_id:
         type: string
-      quantity:
-        type: integer
       responsible_id:
         type: string
       user_id:
         type: string
     required:
     - medicine_ids
-    - observation
     - priority
-    - quantity
+    - pyxis_id
     type: object
   dto.CreatePyxisInputDTO:
     properties:
@@ -130,8 +127,6 @@ definitions:
         type: string
       pyxis_id:
         type: string
-      quantity:
-        type: integer
       responsible:
         $ref: '#/definitions/entity.User'
       responsible_id:
@@ -234,8 +229,6 @@ definitions:
         type: string
       priority:
         type: string
-      quantity:
-        type: integer
       responsible_id:
         type: string
       status:
@@ -251,8 +244,6 @@ definitions:
         type: string
       priority:
         type: string
-      quantity:
-        type: integer
       responsible_id:
         type: string
       status:

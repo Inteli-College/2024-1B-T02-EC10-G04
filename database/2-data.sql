@@ -53,10 +53,10 @@ BEGIN
     SELECT id INTO paracetamol_id FROM Medicines WHERE name = 'Paracetamol';
     SELECT id INTO ibuprofen_id FROM Medicines WHERE name = 'Ibuprofen';
     
-    INSERT INTO Orders (priority, user_id, observation, status, medicine_id, quantity, order_group_id, pyxis_id)
+    INSERT INTO Orders (priority, user_id, observation, status, medicine_id, order_group_id, pyxis_id)
     VALUES 
-        ('red', alice_id, 'Urgent request', 'pending', paracetamol_id, 10, '64773e82-385e-4cb3-aba9-73cbbce2c901', pyxis_id),
-        ('yellow', carlos_id, 'Routine request', 'ongoing', ibuprofen_id, 20, '64773e82-385e-4cb3-aba9-73cbbce2c901', pyxis_id);
+        ('red', alice_id, 'Urgent request', 'pending', paracetamol_id, '64773e82-385e-4cb3-aba9-73cbbce2c901', pyxis_id),
+        ('yellow', carlos_id, 'Routine request', 'ongoing', ibuprofen_id, '64773e82-385e-4cb3-aba9-73cbbce2c901', pyxis_id);
 END
 $$;
 

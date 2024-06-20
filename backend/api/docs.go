@@ -1019,9 +1019,8 @@ const docTemplate = `{
             "type": "object",
             "required": [
                 "medicine_ids",
-                "observation",
                 "priority",
-                "quantity"
+                "pyxis_id"
             ],
             "properties": {
                 "medicine_ids": {
@@ -1038,9 +1037,6 @@ const docTemplate = `{
                 },
                 "pyxis_id": {
                     "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
                 },
                 "responsible_id": {
                     "type": "string"
@@ -1175,9 +1171,6 @@ const docTemplate = `{
                 },
                 "pyxis_id": {
                     "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
                 },
                 "responsible": {
                     "$ref": "#/definitions/entity.User"
@@ -1336,9 +1329,6 @@ const docTemplate = `{
                 "priority": {
                     "type": "string"
                 },
-                "quantity": {
-                    "type": "integer"
-                },
                 "responsible_id": {
                     "type": "string"
                 },
@@ -1361,9 +1351,6 @@ const docTemplate = `{
                 },
                 "priority": {
                     "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
                 },
                 "responsible_id": {
                     "type": "string"

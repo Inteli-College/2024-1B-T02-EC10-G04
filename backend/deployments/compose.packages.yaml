@@ -38,8 +38,6 @@ services:
     env_file:
       - ../.env
     restart: always
-    deploy:
-      replicas: 3
     build:
       context: ..
       dockerfile: build/Dockerfile.conductor

@@ -22,7 +22,7 @@ func (o *OrderUseCase) CreateOrders(input *dto.CreateOrdersInputDTO) ([]*dto.Cre
 	newOrderGroupID := uuid.New().String()
 	createdOrders := []*dto.CreateOrderOutputDTO{}
 	for _, medicine_id := range input.Medicine_IDs {
-		order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, medicine_id, input.Quantity, input.Responsible_ID, newOrderGroupID, input.Pyxis_ID)
+		order := entity.NewOrder(input.Priority, input.User_ID, input.Observation, medicine_id, input.Responsible_ID, newOrderGroupID, input.Pyxis_ID)
 		res, err := o.orderRepository.CreateOrder(order)
 		if err != nil {
 			return nil, err
@@ -35,7 +35,6 @@ func (o *OrderUseCase) CreateOrders(input *dto.CreateOrdersInputDTO) ([]*dto.Cre
 			Responsible_ID: res.Responsible_ID,
 			Status:         res.Status,
 			Medicine_ID:    res.Medicine_ID,
-			Quantity:       res.Quantity,
 			CreatedAt:      res.CreatedAt,
 			OrderGroup_ID:  res.OrderGroup_ID,
 		})
@@ -57,7 +56,6 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 			Observation: orders[i].Observation,
 			Status:      orders[i].Status,
 			Medicine:    []*entity.Medicine{&orders[i].Medicine},
-			Quantity:    orders[i].Quantity,
 			UpdatedAt:   orders[i].UpdatedAt,
 			CreatedAt:   orders[i].CreatedAt,
 			Responsible: orders[i].Responsible,
@@ -66,7 +64,7 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 
 		next := 1
 		for {
-			if next+i < len(orders) {
+			if next+i < len(orders)-1 {
 				if *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
 					temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
 					next++
@@ -109,7 +107,6 @@ func (o *OrderUseCase) FindOrderById(id string) (*dto.FindOrderOutputDTO, error)
 		Observation: order.Observation,
 		Status:      order.Status,
 		Medicine:    medicines,
-		Quantity:    order.Quantity,
 		UpdatedAt:   order.UpdatedAt,
 		CreatedAt:   order.CreatedAt,
 		Responsible: order.Responsible,
@@ -128,7 +125,6 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 	res.Status = input.Status
 	res.Priority = input.Priority
 	res.Observation = input.Observation
-	res.Quantity = input.Quantity
 	res.Responsible_ID = &input.Responsible_ID
 
 	updatedOrder, err := o.orderRepository.UpdateOrder(res)
@@ -143,7 +139,6 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 		Observation:    updatedOrder.Observation,
 		Status:         updatedOrder.Status,
 		Medicine_ID:    updatedOrder.Medicine_ID,
-		Quantity:       updatedOrder.Quantity,
 		UpdatedAt:      updatedOrder.UpdatedAt,
 		Responsible_ID: updatedOrder.Responsible_ID,
 	}, nil

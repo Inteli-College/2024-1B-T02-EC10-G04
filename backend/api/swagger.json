@@ -1013,9 +1013,8 @@
             "type": "object",
             "required": [
                 "medicine_ids",
-                "observation",
                 "priority",
-                "quantity"
+                "pyxis_id"
             ],
             "properties": {
                 "medicine_ids": {
@@ -1032,9 +1031,6 @@
                 },
                 "pyxis_id": {
                     "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
                 },
                 "responsible_id": {
                     "type": "string"
@@ -1169,9 +1165,6 @@
                 },
                 "pyxis_id": {
                     "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
                 },
                 "responsible": {
                     "$ref": "#/definitions/entity.User"
@@ -1330,9 +1323,6 @@
                 "priority": {
                     "type": "string"
                 },
-                "quantity": {
-                    "type": "integer"
-                },
                 "responsible_id": {
                     "type": "string"
                 },
@@ -1355,9 +1345,6 @@
                 },
                 "priority": {
                     "type": "string"
-                },
-                "quantity": {
-                    "type": "integer"
                 },
                 "responsible_id": {
                     "type": "string"
