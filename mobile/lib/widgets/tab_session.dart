@@ -6,13 +6,13 @@ import 'package:mobile/models/order.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
 
-
 class TabSessionPendingOrders extends StatefulWidget {
   final Future<List<Order>> orders;
 
   @override
   // ignore: library_private_types_in_public_api
-  _TabSessionPendingOrdersState createState() => _TabSessionPendingOrdersState();
+  _TabSessionPendingOrdersState createState() =>
+      _TabSessionPendingOrdersState();
 
   const TabSessionPendingOrders({
     super.key,

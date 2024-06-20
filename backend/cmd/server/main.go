@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/Inteli-College/2024-1B-T02-EC10-G04/api"
+	ourSwagDocs "github.com/Inteli-College/2024-1B-T02-EC10-G04/api"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/configs"
 	initialization "github.com/Inteli-College/2024-1B-T02-EC10-G04/init"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/kafka"
@@ -12,6 +12,7 @@ import (
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/handler"
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/infra/web/middleware"
 	"github.com/joho/godotenv"
+	"github.com/penglongli/gin-metrics/ginmetrics"
 
 	"github.com/Inteli-College/2024-1B-T02-EC10-G04/internal/usecase"
 	ckafka "github.com/confluentinc/confluent-kafka-go/v2/kafka"
@@ -20,9 +21,6 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
-
-// Please use .env file for local development. After that, please comment out the lines below,
-// their dependencies as well, and update the go.mod file with command $ go mod tidy.
 
 func init() {
 	if _, stat_err := os.Stat("./.env"); stat_err == nil {
@@ -34,10 +32,10 @@ func init() {
 
 	if missing_var := initialization.VerifyEnvs(
 		"POSTGRES_URL",
-		"KAFKA_BOOTSTRAP_SERVER",
-		"KAFKA_ORDERS_TOPIC_NAME",
-		"KAFKA_ORDERS_GROUP_ID",
-		"KAFKA_ORDERS_CLIENT_ID",
+		"CONFLUENT_KAFKA_TOPIC_NAME",
+		"CONFLUENT_API_KEY",
+		"CONFLUENT_API_SECRET",
+		"CONFLUENT_BOOTSTRAP_SERVER_SASL",
 		"JWT_SECRET_KEY",
 		"REDIS_PASSWORD",
 		"REDIS_ADDRESS",
@@ -58,7 +56,7 @@ func init() {
 //	@license.name	Apache 2.0
 //	@license.url	http://www.apache.org/licenses/LICENSE-2.0.html
 
-//	@host	localhost
+//	@host	localhost:8080
 //	@BasePath	/api/v1
 
 // @SecurityDefinitions.apikey BearerAuth
@@ -88,15 +86,26 @@ func main() {
 	router.Use(gin.Recovery())
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true, // TODO: change to false and make it for production
-		AllowMethods:     []string{"PUT", "PATCH, POST, GET, OPTIONS, DELETE"},
-		ExposeHeaders:    []string{"Content-Length"},
+		AllowMethods:     []string{"*"},
+		ExposeHeaders:    []string{"*"},
 		AllowCredentials: true,
 	}))
+
+	///////////////////// Logging //////////////////////
+
+	m := ginmetrics.GetMonitor()
+	m.SetMetricPath("/api/v1/metrics")
+	m.Use(router)
+
+	///////////////////// Base Group //////////////////////
 
 	api := router.Group("/api/v1")
 
 	///////////////////// Swagger //////////////////////
+	if swaggerHost, ok := os.LookupEnv("SWAGGER_HOST"); ok {
 
+		ourSwagDocs.SwaggerInfo.Host = swaggerHost
+	}
 	api.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	///////////////////// Healthcheck //////////////////////
@@ -128,8 +137,11 @@ func main() {
 	/////////////////////// Order /////////////////////////
 
 	orderProducerConfigMap := &ckafka.ConfigMap{
-		"bootstrap.servers": os.Getenv("KAFKA_BOOTSTRAP_SERVER"),
-		"client.id":         os.Getenv("KAFKA_ORDERS_CLIENT_ID"),
+		"bootstrap.servers": os.Getenv("CONFLUENT_BOOTSTRAP_SERVER_SASL"),
+		"sasl.mechanisms":   "PLAIN",
+		"security.protocol": "SASL_SSL",
+		"sasl.username":     os.Getenv("CONFLUENT_API_KEY"),
+		"sasl.password":     os.Getenv("CONFLUENT_API_SECRET"),
 	}
 	kafkaProducerRepository := kafka.NewKafkaProducer(orderProducerConfigMap)
 

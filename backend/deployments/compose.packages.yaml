@@ -7,8 +7,6 @@
 # You can add other services your application may depend on here, such as a
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
-version: "3.9"
-
 services:
   nginx:
     image: nginx:latest
@@ -33,8 +31,6 @@ services:
     build:
       context: ..
       dockerfile: build/Dockerfile.server
-    deploy:
-      replicas: 3
     networks:
       - backend
   conductor:
@@ -49,6 +45,7 @@ services:
       dockerfile: build/Dockerfile.conductor
     networks:
       - backend
-  
+
 networks:
   backend:
+
