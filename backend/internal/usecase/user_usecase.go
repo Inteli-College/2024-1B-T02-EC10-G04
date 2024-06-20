@@ -196,6 +196,7 @@ func (u *UserUseCase) LoginUser(input *dto.LoginUserInputDTO) (*dto.LoginUserOut
 		Email:       user.Email,
 		Role:        user.Role,
 		OnDuty:      user.OnDuty,
+		Profession:  user.Profession,
 		CreatedAt:   user.CreatedAt,
 		AccessToken: token,
 	}, nil
