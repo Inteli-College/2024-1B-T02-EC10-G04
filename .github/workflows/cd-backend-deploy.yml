@@ -252,7 +252,7 @@ jobs:
 
       - name: Restart server deployment
         run: |
-          kubectl rollout restart deployment server
+          kubectl rollout restart deployment server --namespace server
 
       - name: Ensure conductor namespace exists
         run: |
@@ -268,4 +268,4 @@ jobs:
 
       - name: Restart conductor deployment
         run: |
-          kubectl rollout restart deployment conductor
+          kubectl rollout restart deployment conductor --namespace conductor
