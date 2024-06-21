@@ -89,6 +89,7 @@ func (h *OrderHandlers) FindOrdersByCollectorHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, output)
 }
+
 // FindOrdersByUserHandler
 // @Summary Retrieve all Order entities by User ID
 // @Description Retrieve all Order entities by User ID
@@ -165,11 +166,11 @@ func (h *OrderHandlers) FindOrderByIdHandler(c *gin.Context) {
 // @Router /orders/{id} [put]
 func (h *OrderHandlers) UpdateOrderHandler(c *gin.Context) {
 	var input dto.UpdateOrderInputDTO
-	input.Order_ID = c.Param("id")
 	if err := c.ShouldBindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	input.Order_ID = c.Param("id")
 	output, err := h.OrderUseCase.UpdateOrder(&input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

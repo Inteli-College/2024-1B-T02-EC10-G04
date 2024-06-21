@@ -123,6 +123,8 @@ definitions:
         type: string
       observation:
         type: string
+      order_id:
+        type: string
       priority:
         type: string
       pyxis_id:
@@ -223,11 +225,9 @@ definitions:
     type: object
   dto.UpdateOrderInputDTO:
     properties:
-      id:
-        type: string
-      medicine_id:
-        type: string
       observation:
+        type: string
+      order_id:
         type: string
       priority:
         type: string
@@ -238,22 +238,26 @@ definitions:
     type: object
   dto.UpdateOrderOutputDTO:
     properties:
-      id:
+      created_at:
         type: string
-      medicine_id:
-        type: string
+      medicines:
+        items:
+          $ref: '#/definitions/entity.Medicine'
+        type: array
       observation:
+        type: string
+      order_id:
         type: string
       priority:
         type: string
-      responsible_id:
-        type: string
+      responsible:
+        $ref: '#/definitions/entity.User'
       status:
         type: string
       updated_at:
         type: string
       user_id:
-        type: string
+        $ref: '#/definitions/entity.User'
     type: object
   dto.UpdatePyxisInputDTO:
     properties:

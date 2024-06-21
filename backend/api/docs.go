@@ -1228,6 +1228,9 @@ const docTemplate = `{
                 "observation": {
                     "type": "string"
                 },
+                "order_id": {
+                    "type": "string"
+                },
                 "priority": {
                     "type": "string"
                 },
@@ -1382,13 +1385,10 @@ const docTemplate = `{
         "dto.UpdateOrderInputDTO": {
             "type": "object",
             "properties": {
-                "id": {
-                    "type": "string"
-                },
-                "medicine_id": {
-                    "type": "string"
-                },
                 "observation": {
+                    "type": "string"
+                },
+                "order_id": {
                     "type": "string"
                 },
                 "priority": {
@@ -1405,20 +1405,26 @@ const docTemplate = `{
         "dto.UpdateOrderOutputDTO": {
             "type": "object",
             "properties": {
-                "id": {
+                "created_at": {
                     "type": "string"
                 },
-                "medicine_id": {
-                    "type": "string"
+                "medicines": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entity.Medicine"
+                    }
                 },
                 "observation": {
+                    "type": "string"
+                },
+                "order_id": {
                     "type": "string"
                 },
                 "priority": {
                     "type": "string"
                 },
-                "responsible_id": {
-                    "type": "string"
+                "responsible": {
+                    "$ref": "#/definitions/entity.User"
                 },
                 "status": {
                     "type": "string"
@@ -1427,7 +1433,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_id": {
-                    "type": "string"
+                    "$ref": "#/definitions/entity.User"
                 }
             }
         },
