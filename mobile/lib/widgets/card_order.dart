@@ -90,15 +90,18 @@ class _CardOrderState extends State<CardOrder> {
                       Row(children: [
                         CircleAvatar(
                           backgroundColor: Colors.purple,
-                          child: Text(pyxis?.label?.substring(0, 2) ?? 'MS'),
+                          child: Text(
+                              pyxis?.label?.substring(0, 2).toUpperCase() ??
+                                  'MS',
+                              style: const TextStyle(color: Colors.white)),
                         ),
                         const SizedBox(width: 10),
                         Text(
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16,
                               fontFamily: 'Poppins'),
-                          '${pyxis?.label ?? 'N/A'} - ${widget.orderNumber}',
+                          '${pyxis?.label ?? 'N/A'} - ${widget.orderNumber.substring(0, 7)}',
                         )
                       ]),
                       Container(
@@ -123,7 +126,7 @@ class _CardOrderState extends State<CardOrder> {
                           widget.priority == "red"
                               ? "Urgent"
                               : widget.priority == "green"
-                                  ? "Not Urgent"
+                                  ? "Normal"
                                   : "Moderate",
                           style: TextStyle(
                             color: widget.priority == "red"
@@ -150,8 +153,8 @@ class _CardOrderState extends State<CardOrder> {
                             const SizedBox(width: 5),
                             Text(
                                 style: const TextStyle(
-                                    fontSize: 18, fontFamily: 'Poppins'),
-                                widget.orderStatus),
+                                    fontSize: 14, fontFamily: 'Poppins'),
+                                widget.orderStatus.toLowerCase()),
                           ],
                         ),
                         const SizedBox(height: 5),
@@ -165,12 +168,19 @@ class _CardOrderState extends State<CardOrder> {
                                     padding: const EdgeInsets.only(
                                       top: 2.0,
                                     ),
-                                    child: Text(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: 'Poppins'),
-                                        medicine.name!))
+                                    child: Row(
+                                      children: [
+                                        const Icon(Icons.medication,
+                                            color: AppColors.black50, size: 18),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: 'Poppins'),
+                                            medicine.name!)
+                                      ],
+                                    ))
                             ],
                           ),
                         ),
@@ -187,7 +197,7 @@ class _CardOrderState extends State<CardOrder> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => OrderDetailsPage(
-                                orderNumber: widget.orderNumber.substring(0, 6),
+                                orderNumber: widget.orderNumber.substring(0, 7),
                                 orderDate: formatDateString(widget.orderDate),
                                 orderStatus: widget.orderStatus,
                                 medicines: widget.medicines,
@@ -203,33 +213,29 @@ class _CardOrderState extends State<CardOrder> {
                             ),
                           );
                         },
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'View details',
-                              style: TextStyle(
-                                color: AppColors.secondary,
-                                fontFamily: 'Poppins',
-                              ),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  'View details',
-                                  style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    color: AppColors.black50,
-                                  ),
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios_rounded,
+                        child: const Align(
+                          alignment: Alignment.centerRight,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'View details',
+                                style: TextStyle(
+                                  fontFamily: 'Poppins',
                                   color: AppColors.black50,
-                                  size: 16,
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              SizedBox(
+                                  width:
+                                      4), // Espaçamento opcional entre o texto e o ícone
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: AppColors.black50,
+                                size: 24,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],

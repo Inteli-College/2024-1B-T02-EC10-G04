@@ -19,7 +19,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   String name = '';
   String email = '';
-  String role = '';
+  String profession = '';
   String initials = '';
 
   late TextEditingController _nameController;
@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> _initializeProfile() async {
     name = await LocalStorageService().getValue('name') ?? '';
     email = await LocalStorageService().getValue('email') ?? '';
-    role = await LocalStorageService().getValue('role') ?? '';
+    profession = await LocalStorageService().getValue('profession') ?? '';
 
     // Update the controllers with the values obtained
     setState(() {
@@ -146,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    role,
+                    profession,
                     style: const TextStyle(
                       color: AppColors.black50,
                       fontSize: 16,
