@@ -36,7 +36,7 @@ class _CheckOrderPageState extends State<CheckOrderPage> {
   }
 
   void _createOrder(){
-    _ordersController.createOrder(context, args.medicinesIds, _textController.text);
+    _ordersController.createOrder(context, args.medicinesIds, _textController.text, args.idPyxis);
   }
 
   @override

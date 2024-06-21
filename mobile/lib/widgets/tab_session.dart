@@ -53,7 +53,7 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                                     DateFormat('yyyy-MM-dd')
                                         .format(selectedDate) &&
                                 order.status != "completed" &&
-                                order.status != "cancelled";
+                                order.status != "refused";
                           }).toList();
                           return ListView.builder(
                             itemCount: filteredOrders.length,
@@ -73,9 +73,9 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                                         ? AppColors.success
                                         : AppColors.warning,
                                 priority: filteredOrders[index].priority!,
-                                pyxis: 'MS-01D',
+                                pyxis: filteredOrders[index].pyxis_id!,
                                 iconStatus: filteredOrders[index].status ==
-                                        "requested"
+                                        "ongoing"
                                     ? const Icon(
                                         Icons.change_circle,
                                         color: AppColors.warning,
@@ -92,7 +92,7 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                                                 color: AppColors.success,
                                               )
                                             : filteredOrders[index].status ==
-                                                    "cancelled"
+                                                    "refused"
                                                 ? const Icon(
                                                     Icons.cancel,
                                                     color: AppColors.error,
@@ -102,7 +102,8 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                                                     color: AppColors.error,
                                                   ),
                                 medicines: filteredOrders[index].medicines!,
-                                date: snapshot.data![index].createdAt!,
+                                date: filteredOrders[index].createdAt!,
+                                observation: filteredOrders[index].observation!,
                               );
                             },
                           );

@@ -13,6 +13,8 @@ class OrderService {
   List<Order> userOrders = [];
 
   Future<List<Order>> getOrders() async {
+    role = await LocalStorageService().getValue('role');
+    accessToken = await LocalStorageService().getValue('access_token');
     // ignore: prefer_typing_uninitialized_variables
     try {
       var accessToken = await LocalStorageService().getValue('access_token');
@@ -44,12 +46,12 @@ class OrderService {
             'Failed to load orders, status code: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to load medicine orders: $e');
+      throw Exception('Failed to load orders: $e');
     }
   }
 
   Future<Map<String, dynamic>> createOrder(
-      List<String> medicineIds, String observation) async {
+      List<String> medicineIds, String observation, String pyxis) async {
     var accessToken = await LocalStorageService().getValue('access_token');
     var id = await LocalStorageService().getValue('id');
     try {
@@ -67,6 +69,7 @@ class OrderService {
           "on_duty": true,
           "quantity": 1,
           "priority": "green",
+          "pyxis_id": pyxis,
         }),
       );
 

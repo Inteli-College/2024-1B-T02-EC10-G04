@@ -8,10 +8,10 @@ class OrdersController {
 
   OrdersController({required this.orderService});
 
-  Future<void> createOrder(BuildContext context, List<String> medicineIds,
-      String observation) async {
+  Future<void> createOrder(BuildContext context, List<String> medicineIds, String observation, String pyxis_id) async {
+
     try {
-      final response = await orderService.createOrder(medicineIds, observation);
+      final response = await orderService.createOrder(medicineIds, observation, pyxis_id);
 
       if (response.isNotEmpty) {
         showModal(

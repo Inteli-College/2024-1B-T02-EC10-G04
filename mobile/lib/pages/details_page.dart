@@ -22,21 +22,22 @@ class OrderDetailsPage extends StatefulWidget {
   final List<Medicines> medicines;
   final String role;
   final String orderId;
+  final String observation;
 
-  const OrderDetailsPage({
-    super.key,
-    required this.orderNumber,
-    required this.orderDate,
-    required this.orderStatus,
-    required this.onPressed,
-    required this.color,
-    required this.priority,
-    required this.pyxis,
-    required this.iconStatus,
-    required this.medicines,
-    required this.role,
-    required this.orderId,
-  });
+  OrderDetailsPage(
+      {super.key,
+      required this.orderNumber,
+      required this.orderDate,
+      required this.orderStatus,
+      required this.onPressed,
+      required this.color,
+      required this.priority,
+      required this.pyxis,
+      required this.iconStatus,
+      required this.medicines,
+      required this.role,
+      required this.orderId,
+      required this.observation});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -232,6 +233,18 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                           ),
                           const Divider(),
                         ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 16.0),
+                      child: Text(
+                        "Observation: ${widget.observation}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Poppins',
+                          color: AppColors.grey2,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     widget.role == 'collector'

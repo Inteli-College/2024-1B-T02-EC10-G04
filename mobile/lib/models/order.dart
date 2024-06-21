@@ -10,6 +10,7 @@ class Order {
   String? status;
   String? updatedAt;
   User? user;
+  String? pyxis_id;
 
   Order({
     this.createdAt,
@@ -21,6 +22,7 @@ class Order {
     this.status,
     this.updatedAt,
     this.user,
+    this.pyxis_id,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
@@ -41,6 +43,7 @@ class Order {
     status = json['status'];
     updatedAt = json['updated_at'];
     user = json['user'] != null ? User.fromJson(json['user']) : null;
+    pyxis_id = json['pyxis_id'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,6 +58,7 @@ class Order {
     data['quantity'] = quantity;
     data['status'] = status;
     data['updated_at'] = updatedAt;
+    data['pyxis_id'] = pyxis_id;
     if (user != null) {
       data['user'] = user!.toJson();
     }
