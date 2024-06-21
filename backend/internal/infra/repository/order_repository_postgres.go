@@ -179,17 +179,15 @@ func (r *OrderRepositoryPostgres) UpdateOrder(order *entity.OrderComplete) (*ent
 	err := r.db.QueryRowx(
 		`UPDATE orders 
 		 SET updated_at = CURRENT_TIMESTAMP, 
-		     priority = $1, 
-		     observation = $2, 
-		     status = $3, 
-		     medicine_id = $4, 
-		     responsible_id = $6 
-		 WHERE id = $7 
+		     priority = COALESCE($1, priority), 
+		     observation = COALESCE($2, observation),
+		     status = COALESCE($3, status),
+		     responsible_id = COALESCE($4, responsible_id)
+		 WHERE id = $5 
 		 RETURNING id, priority, user_id, observation, status, medicine_id, updated_at, responsible_id`,
 		order.Priority,
 		order.Observation,
 		order.Status,
-		order.Medicine_ID,
 		order.Responsible_ID, // Considerando que order.Responsible pode ser nulo
 		order.ID,
 	).StructScan(&updatedOrder)

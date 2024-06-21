@@ -11,4 +11,3 @@ resource "aws_vpc" "prod_vpc" {
     menageBy = "Terraform"
   }
 }
-
