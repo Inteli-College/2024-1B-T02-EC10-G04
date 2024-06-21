@@ -53,6 +53,7 @@ func (o *OrderUseCase) FindOrdersByUser(id string) ([]*dto.FindOrderOutputDTO, e
 	for i := 0; i < len(orders); i++ {
 		temp := dto.FindOrderOutputDTO{
 			ID:          orders[i].ID,
+			Order_ID:    *orders[i].OrderGroup_ID,
 			Priority:    orders[i].Priority,
 			User:        orders[i].User,
 			Observation: orders[i].Observation,
@@ -62,6 +63,19 @@ func (o *OrderUseCase) FindOrdersByUser(id string) ([]*dto.FindOrderOutputDTO, e
 			CreatedAt:   orders[i].CreatedAt,
 			Responsible: orders[i].Responsible,
 			Pyxis_ID:    orders[i].Pyxis_ID,
+		}
+		next := 1
+		for {
+			if next+i < len(orders)-1 {
+				if *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
+					temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
+					next++
+					continue
+				}
+			} else {
+				i = i + next
+				break
+			}
 		}
 		ordersOutput = append(ordersOutput, &temp)
 	}
@@ -77,6 +91,7 @@ func (o *OrderUseCase) FindOrdersByCollector(id string) ([]*dto.FindOrderOutputD
 	for i := 0; i < len(orders); i++ {
 		temp := dto.FindOrderOutputDTO{
 			ID:          orders[i].ID,
+			Order_ID:    *orders[i].OrderGroup_ID,
 			Priority:    orders[i].Priority,
 			User:        orders[i].User,
 			Observation: orders[i].Observation,
@@ -86,6 +101,19 @@ func (o *OrderUseCase) FindOrdersByCollector(id string) ([]*dto.FindOrderOutputD
 			CreatedAt:   orders[i].CreatedAt,
 			Responsible: orders[i].Responsible,
 			Pyxis_ID:    orders[i].Pyxis_ID,
+		}
+		next := 1
+		for {
+			if next+i < len(orders)-1 {
+				if *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
+					temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
+					next++
+					continue
+				}
+			} else {
+				i = i + next
+				break
+			}
 		}
 		ordersOutput = append(ordersOutput, &temp)
 	}

@@ -45,6 +45,7 @@ type CreateOrderOutputDTO struct {
 
 type FindOrderOutputDTO struct {
 	ID             string             `json:"id"`
+	Order_ID       string             `json:"order_id"`
 	Priority       string             `json:"priority"`
 	Observation    *string            `json:"observation"`
 	Status         string             `json:"status"`
