@@ -125,6 +125,7 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 	for i := 0; i < len(orders); i++ {
 		temp := dto.FindOrderOutputDTO{
 			ID:          orders[i].ID,
+			Order_ID:    *orders[i].OrderGroup_ID,
 			Priority:    orders[i].Priority,
 			User:        orders[i].User,
 			Observation: orders[i].Observation,
