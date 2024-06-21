@@ -37,9 +37,9 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _initializeProfile() async {
-    name = await LocalStorageService().getValue('name') as String? ?? '';
-    email = await LocalStorageService().getValue('email') as String? ?? '';
-    role = await LocalStorageService().getValue('role') as String? ?? '';
+    name = await LocalStorageService().getValue('name') ?? '';
+    email = await LocalStorageService().getValue('email') ?? '';
+    role = await LocalStorageService().getValue('role') ?? '';
 
     // Update the controllers with the values obtained
     setState(() {

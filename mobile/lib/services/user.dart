@@ -85,4 +85,22 @@ class UserService {
     }
     return {};
   }
+
+  Future<List> getAllUsers() async {
+    var accessToken = await localStorageService.getValue('access_token');
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/users'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $accessToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var body = jsonDecode(response.body);
+      return body;
+    }
+    return [];
+  }
 }

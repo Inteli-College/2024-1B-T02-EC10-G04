@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:mobile/controller/orders.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/models/medicines.dart';
+import 'package:mobile/models/user.dart';
 import 'package:mobile/services/orders.dart';
+import 'package:mobile/services/user.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/widgets/role_dropdown.dart';
+import 'package:mobile/widgets/selected_dropdown.dart';
 
-class OrderDetailsPage extends StatelessWidget {
-  late final OrdersController _ordersController =
-      OrdersController(orderService: OrderService());
-
+class OrderDetailsPage extends StatefulWidget {
   final String orderNumber;
   final String orderDate;
   final String orderStatus;
@@ -22,7 +23,7 @@ class OrderDetailsPage extends StatelessWidget {
   final String role;
   final String orderId;
 
-  OrderDetailsPage({
+  const OrderDetailsPage({
     super.key,
     required this.orderNumber,
     required this.orderDate,
@@ -38,6 +39,46 @@ class OrderDetailsPage extends StatelessWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
+  _OrderDetailsPageState createState() => _OrderDetailsPageState();
+}
+
+class _OrderDetailsPageState extends State<OrderDetailsPage> {
+  late OrdersController _ordersController;
+  List<User> users = [];
+  String? selectedPriority;
+  String? selectedCollectorId;
+
+  @override
+  void initState() {
+    super.initState();
+    _ordersController = OrdersController(orderService: OrderService());
+    _initializeProfile();
+    _initializePriority();
+  }
+
+  void _initializePriority() {
+    setState(() {
+      selectedPriority =
+          widget.priority[0].toUpperCase() + widget.priority.substring(1);
+    });
+  }
+
+  Future<void> _initializeProfile() async {
+    var userList = await UserService().getAllUsers();
+    setState(() {
+      users = userList
+          .where((user) =>
+              user['role'] == 'collector') // Filtra por role específico
+          .map((user) => User.fromJson(user))
+          .toList();
+    });
+  }
+
+  bool get isButtonEnabled =>
+      selectedPriority != null && selectedCollectorId != null;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.secondary,
@@ -45,21 +86,25 @@ class OrderDetailsPage extends StatelessWidget {
         backgroundColor: AppColors.secondary,
         elevation: 0,
         leading: Padding(
-            padding: const EdgeInsets.only(left: 20),
-            child: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_rounded,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed('/orders');
-              },
-            )),
-        title: const Text('Order details',
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins')),
+          padding: const EdgeInsets.only(left: 20),
+          child: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_rounded,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed('/orders');
+            },
+          ),
+        ),
+        title: const Text(
+          'Order details',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Poppins',
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -108,7 +153,7 @@ class OrderDetailsPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Pixys - $pyxis',
+                                    'Pixys - ${widget.pyxis}',
                                     style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontFamily: 'Poppins',
@@ -117,7 +162,7 @@ class OrderDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Order nº $orderNumber - $orderDate',
+                                    'Order nº ${widget.orderNumber} - ${widget.orderDate}',
                                     style: const TextStyle(
                                       color: AppColors.grey3,
                                       fontFamily: 'Poppins',
@@ -129,19 +174,19 @@ class OrderDetailsPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 20),
                           Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: AppColors.grey5,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                  child: Row(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppColors.grey5,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Center(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  iconStatus,
+                                  widget.iconStatus,
                                   const SizedBox(width: 5),
                                   Text(
-                                    orderStatus,
+                                    widget.orderStatus,
                                     style: const TextStyle(
                                       color: AppColors.black50,
                                       fontSize: 14,
@@ -149,7 +194,9 @@ class OrderDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                              ))),
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 20),
                           const Divider(),
                           Padding(
@@ -168,17 +215,16 @@ class OrderDetailsPage extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 10),
-                                for (Medicines medicine in medicines)
+                                for (Medicines medicine in widget.medicines)
                                   Padding(
-                                    padding: const EdgeInsets.only(
-                                      top: 2.0,
-                                    ),
+                                    padding: const EdgeInsets.only(top: 2.0),
                                     child: Text(
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: 'Poppins'),
                                       medicine.name!,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: 'Poppins',
+                                      ),
                                     ),
                                   ),
                               ],
@@ -188,7 +234,7 @@ class OrderDetailsPage extends StatelessWidget {
                         ],
                       ),
                     ),
-                    role == 'collector'
+                    widget.role == 'collector'
                         ? Column(
                             children: [
                               const SizedBox(height: 20),
@@ -203,7 +249,10 @@ class OrderDetailsPage extends StatelessWidget {
                                       label: 'Finish Order',
                                       onPressed: () {
                                         _ordersController.updateOrder(
-                                            context, orderId, 'completed');
+                                          context,
+                                          widget.orderId,
+                                          'completed',
+                                        );
                                       },
                                     ),
                                     const SizedBox(height: 16),
@@ -211,12 +260,16 @@ class OrderDetailsPage extends StatelessWidget {
                                       text: TextSpan(
                                         text: 'Refuse order',
                                         style: const TextStyle(
-                                            color: AppColors.grey3,
-                                            fontSize: 16),
+                                          color: AppColors.grey3,
+                                          fontSize: 16,
+                                        ),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () {
                                             _ordersController.updateOrder(
-                                                context, orderId, 'refused');
+                                              context,
+                                              widget.orderId,
+                                              'refused',
+                                            );
                                           },
                                       ),
                                     ),
@@ -225,19 +278,65 @@ class OrderDetailsPage extends StatelessWidget {
                               ),
                             ],
                           )
-                        : Center(
-                            child: TextButton(
-                              onPressed: onPressed,
-                              child: const Text(
-                                'Request Again',
-                                style: TextStyle(
-                                  color: AppColors.secondary,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
+                        : widget.role == 'user'
+                            ? Center(
+                                child: TextButton(
+                                  onPressed: widget.onPressed,
+                                  child: const Text(
+                                    'Request Again',
+                                    style: TextStyle(
+                                      color: AppColors.secondary,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
+                              )
+                            : Column(
+                                children: [
+                                  SelectedDropdown(
+                                    title: 'Priority',
+                                    items: const ['Green', 'Yellow', 'Red'],
+                                    value: selectedPriority!,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedPriority = value;
+                                      });
+                                    },
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Dropdown(
+                                    title: 'Collector',
+                                    items: users
+                                        .map((user) => user.name)
+                                        .where((name) => name != null)
+                                        .cast<String>()
+                                        .toList(),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedCollectorId = users
+                                            .firstWhere(
+                                                (user) => user.name == value)
+                                            .id;
+                                      });
+                                    },
+                                  ),
+                                  const SizedBox(height: 16),
+                                  CustomButton(
+                                    receivedColor: AppColors.secondary,
+                                    isEnabled: isButtonEnabled,
+                                    label: 'Assign Order',
+                                    onPressed: () {
+                                      _ordersController.assignOrder(
+                                        context,
+                                        widget.orderId,
+                                        selectedCollectorId!,
+                                        selectedPriority!.toLowerCase(),
+                                      );
+                                    },
+                                  ),
+                                ],
                               ),
-                            ),
-                          ),
                   ],
                 ),
               ),

@@ -12,59 +12,28 @@ class OrderService {
   List<Order> orders = [];
   List<Order> userOrders = [];
 
-  OrderService() {
-    _initializeLocalStorage();
-  }
-
-  Future<void> _initializeLocalStorage() async {
-    try {
-      accessToken = await LocalStorageService().getValue('access_token');
-      id = await LocalStorageService().getValue('id');
-      role = await LocalStorageService().getValue('role');
-
-      if (accessToken == null) {
-        throw Exception("Token is null");
-      }
-    } catch (e) {
-      print("Error initializing token: $e");
-      // Handle error, e.g., by setting accessToken to a default value or rethrowing the exception
-    }
-  }
-
   Future<List<Order>> getOrders() async {
-    _initializeLocalStorage(); // Ensure local storage is initialized
     // ignore: prefer_typing_uninitialized_variables
-    var response;
     try {
-      if (role == "user") {
-        response = await http.get(
-          Uri.parse('$baseUrl/orders/user'),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $accessToken',
-          },
-        );
+      var accessToken = await LocalStorageService().getValue('access_token');
+
+      var finalUrl = '$baseUrl/orders';
+
+      switch (role) {
+        case "user":
+          finalUrl = '$baseUrl/orders/user';
+        case "collector":
+          finalUrl = '$baseUrl/orders/collector';
+          break;
       }
 
-      if (role == "collector") {
-        response = await http.get(
-          Uri.parse('$baseUrl/orders/collector'),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $accessToken',
-          },
-        );
-      }
-
-      if (role == "admin" || role == "manager") {
-        response = await http.get(
-          Uri.parse('$baseUrl/orders'),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer $accessToken',
-          },
-        );
-      }
+      var response = await http.get(
+        Uri.parse(finalUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         List<dynamic> jsonResponse = json.decode(response.body);
@@ -81,7 +50,8 @@ class OrderService {
 
   Future<Map<String, dynamic>> createOrder(
       List<String> medicineIds, String observation) async {
-    await _initializeLocalStorage(); // Ensure local storage is initialized
+    var accessToken = await LocalStorageService().getValue('access_token');
+    var id = await LocalStorageService().getValue('id');
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/orders'),
@@ -114,7 +84,6 @@ class OrderService {
 
   Future<Map<String, dynamic>> updateOrder(
       String orderId, String status) async {
-    await _initializeLocalStorage();
     try {
       final response = await http.put(
         Uri.parse('$baseUrl/orders/$orderId'),
@@ -125,6 +94,31 @@ class OrderService {
         body: jsonEncode(<String, dynamic>{
           "status": status,
         }),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+        return body;
+      } else {
+        throw Exception(
+            'Failed to create order, status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create order: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> assignOrder(
+      String orderId, String userId, String priority) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/orders/$orderId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(
+            <String, dynamic>{"priority": priority, "responsible_id": orderId}),
       );
 
       if (response.statusCode == 201 || response.statusCode == 200) {

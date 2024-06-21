@@ -87,7 +87,7 @@ class CardOrder extends StatelessWidget {
                     priority == "red"
                         ? "Urgent"
                         : priority == "green"
-                            ? "Not Urgent"
+                            ? "Normal"
                             : "Moderate",
                     style: TextStyle(
                       color: priority == "red"
@@ -177,15 +177,30 @@ class CardOrder extends StatelessWidget {
                     );
                   },
                   child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                          style: TextStyle(
-                              fontFamily: 'Poppins', color: AppColors.black50),
-                          'View details'),
-                      Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: AppColors.black50,
-                        size: 16,
+                        'View details',
+                        style: TextStyle(
+                          color: AppColors.secondary,
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'View details',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: AppColors.black50,
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: AppColors.black50,
+                            size: 16,
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -2,26 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
 
 // ignore: must_be_immutable
-class Dropdown extends StatefulWidget {
+class SelectedDropdown extends StatefulWidget {
   final ValueChanged<String?>? onChanged;
   final List<String> items;
   final String title;
+  String value;
 
-  const Dropdown({
-    super.key,
-    this.onChanged,
-    required this.items,
-    required this.title,
-  });
+  SelectedDropdown(
+      {super.key,
+      this.onChanged,
+      required this.items,
+      required this.title,
+      required this.value});
 
   @override
   // ignore: library_private_types_in_public_api
   _DropdownState createState() => _DropdownState();
 }
 
-class _DropdownState extends State<Dropdown> {
-  String? selectedRole;
-
+class _DropdownState extends State<SelectedDropdown> {
   @override
   Widget build(BuildContext context) {
     return Theme(
@@ -41,7 +40,7 @@ class _DropdownState extends State<Dropdown> {
           labelText: widget.title,
           labelStyle: const TextStyle(fontFamily: 'Poppins'),
         ),
-        value: selectedRole,
+        value: widget.value,
         icon: const Icon(Icons.arrow_drop_down),
         items: widget.items.map((role) {
           return DropdownMenuItem<String>(
@@ -51,7 +50,7 @@ class _DropdownState extends State<Dropdown> {
         }).toList(),
         onChanged: (value) {
           setState(() {
-            selectedRole = value!;
+            widget.value = value!;
             if (widget.onChanged != null) {
               widget.onChanged!(value);
             }

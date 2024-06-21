@@ -7,6 +7,7 @@ class NavBarContainer extends StatefulWidget {
   const NavBarContainer({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _NavBarContainerState createState() => _NavBarContainerState();
 }
 
