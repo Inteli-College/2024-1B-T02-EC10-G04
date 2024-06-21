@@ -9,16 +9,7 @@ import 'package:mobile/logic/navbar_state.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String name;
-  final String role;
-  final String email;
-
-  const ProfilePage({
-    super.key,
-    required this.name,
-    required this.role,
-    required this.email,
-  });
+  const ProfilePage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -26,12 +17,41 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late final TextEditingController _nameController =
-      TextEditingController(text: widget.name);
-  late final TextEditingController _emailController =
-      TextEditingController(text: widget.email);
+  String name = '';
+  String email = '';
+  String role = '';
+  String initials = '';
+
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize controllers with empty values
+    _nameController = TextEditingController(text: '');
+    _emailController = TextEditingController(text: '');
+
+    _initializeProfile();
+  }
+
+  Future<void> _initializeProfile() async {
+    name = await LocalStorageService().getValue('name') as String? ?? '';
+    email = await LocalStorageService().getValue('email') as String? ?? '';
+    role = await LocalStorageService().getValue('role') as String? ?? '';
+
+    // Update the controllers with the values obtained
+    setState(() {
+      _nameController.text = name;
+      _emailController.text = email;
+      initials = getInitials(name);
+    });
+  }
+
   String getInitials(String name) {
-    List<String> nameParts = name.split(' ');
+    List<String> nameParts =
+        name.trim().split(' ').where((part) => part.isNotEmpty).toList();
     String initials = '';
     if (nameParts.isNotEmpty) {
       initials = nameParts.map((part) => part[0]).take(2).join();
@@ -62,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
 
-    String initials = getInitials(widget.name);
+    String initials = getInitials(name);
     Color avatarColor = getRandomColor();
 
     return Scaffold(
@@ -117,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    widget.name,
+                    name,
                     style: const TextStyle(
                       color: AppColors.primary,
                       fontSize: 20,
@@ -126,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    widget.role,
+                    role,
                     style: const TextStyle(
                       color: AppColors.black50,
                       fontSize: 16,

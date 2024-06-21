@@ -18,7 +18,6 @@ class OrderService {
 
   Future<void> _initializeLocalStorage() async {
     try {
-
       accessToken = await LocalStorageService().getValue('access_token');
       id = await LocalStorageService().getValue('id');
       role = await LocalStorageService().getValue('role');
@@ -33,43 +32,52 @@ class OrderService {
   }
 
   Future<List<Order>> getOrders() async {
+    await _initializeLocalStorage(); // Ensure local storage is initialized
     try {
+      var finalUrl = '$baseUrl/orders';
+
+      if (role != 'admin') {
+        finalUrl = '$baseUrl/orders/$role';
+      }
+
       final response = await http.get(
-        Uri.parse('$baseUrl/orders'),
+        Uri.parse(finalUrl),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
         },
       );
 
-      if (response.statusCode == 200  || response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         List<dynamic> jsonResponse = json.decode(response.body);
         orders = jsonResponse.map((order) => Order.fromJson(order)).toList();
+
         if (role == 'user') {
-          
           userOrders = orders.where((order) => order.user?.id == id).toList();
           if (userOrders.isNotEmpty) {
             return userOrders;
           } else {
             throw Exception('No orders found for user');
           }
-        }
-        if(role == 'collector'){
-
-        }
-        if (role == 'manager' || role == 'admin') {
+        } else if (role == 'collector') {
+          // Handle 'collector' role if needed
+        } else if (role == 'manager' || role == 'admin') {
           return orders;
         }
+
         throw Exception('No orders found');
       } else {
-        throw Exception('No orders found');
+        throw Exception(
+            'Failed to load orders, status code: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to load medicine orders');
+      throw Exception('Failed to load medicine orders: $e');
     }
   }
 
-  Future<Map<String, dynamic>> createOrder(List<String> medicineIds, String observation) async {
+  Future<Map<String, dynamic>> createOrder(
+      List<String> medicineIds, String observation) async {
+    await _initializeLocalStorage(); // Ensure local storage is initialized
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/orders'),
@@ -78,23 +86,25 @@ class OrderService {
           'Authorization': 'Bearer $accessToken',
         },
         body: jsonEncode(<String, dynamic>{
-        "medicine_ids": medicineIds,
-        "user_id": id,
-        "observation": observation == "" ? "Order without comments" : observation,
-        "on_duty": true,
-        "quantity": 1,
-        "priority": "green",
-      }),
+          "medicine_ids": medicineIds,
+          "user_id": id,
+          "observation":
+              observation == "" ? "Order without comments" : observation,
+          "on_duty": true,
+          "quantity": 1,
+          "priority": "green",
+        }),
       );
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         var body = jsonDecode(response.body);
         return body;
+      } else {
+        throw Exception(
+            'Failed to create order, status code: ${response.statusCode}');
       }
-      return {};
-
     } catch (e) {
-      throw Exception('Failed to load medicine orders');
+      throw Exception('Failed to create order: $e');
     }
   }
 }
