@@ -31,11 +31,52 @@ func (r *OrderRepositoryPostgres) CreateOrder(order *entity.Order) (*entity.Orde
 	return &createdOrder, nil
 }
 
+func (r *OrderRepositoryPostgres) FindOrdersByUser(id string) ([]*entity.OrderComplete, error) {
+	var ordersCompleteByUser []*entity.OrderComplete
+	err := r.db.Select(&ordersCompleteByUser, `SELECT 
+		o.id as "id", o.priority, o.observation, o.status, 
+		o.created_at as "created_at", o.updated_at as "updated_at",
+		o.user_id, o.medicine_id, o.responsible_id, o.order_group_id, o.pyxis_id,
+		u.id as "user.id", u.name as "user.name", u.email as "user.email", 
+		u.password as "user.password", u.role as "user.role", 
+		u.created_at as "user.created_at", u.updated_at as "user.updated_at", u.on_duty as "user.on_duty", u.profession as "user.profession",
+		m.id as "medicine.id", m.batch as "medicine.batch", m.name as "medicine.name", 
+		m.stripe as "medicine.stripe", m.created_at as "medicine.created_at", m.updated_at as "medicine.updated_at"
+		FROM orders o
+		JOIN users u ON o.user_id = u.id
+		JOIN medicines m ON o.medicine_id = m.id
+		WHERE o.user_id = $1
+		`, id)
+	if err != nil {
+		return nil, err
+	}
+	return ordersCompleteByUser, nil
+}
+
+func (r *OrderRepositoryPostgres) FindOrdersByCollector(id string) ([]*entity.OrderComplete, error) {
+	var ordersCompleteByCollector []*entity.OrderComplete
+	err := r.db.Select(&ordersCompleteByCollector, `SELECT 
+		o.id as "id", o.priority, o.observation, o.status, 
+		o.created_at as "created_at", o.updated_at as "updated_at",
+		o.user_id, o.medicine_id, o.responsible_id, o.order_group_id, o.pyxis_id,
+		u.id as "user.id", u.name as "user.name", u.email as "user.email", 
+		u.password as "user.password", u.role as "user.role", 
+		u.created_at as "user.created_at", u.updated_at as "user.updated_at", u.on_duty as "user.on_duty", u.profession as "user.profession",
+		m.id as "medicine.id", m.batch as "medicine.batch", m.name as "medicine.name", 
+		m.stripe as "medicine.stripe", m.created_at as "medicine.created_at", m.updated_at as "medicine.updated_at"
+		FROM orders o
+		JOIN users u ON o.user_id = u.id
+		JOIN medicines m ON o.medicine_id = m.id
+		WHERE o.responsible_id = $1
+		`, id)
+	if err != nil {
+		return nil, err
+	}
+	return ordersCompleteByCollector, nil
+}
+
 func (r *OrderRepositoryPostgres) FindAllOrders() ([]*entity.OrderComplete, error) {
 	var ordersComplete []*entity.OrderComplete
-	log.Print("cheguei")
-
-	// Primeira consulta para obter todas as informações menos o responsible
 	err := r.db.Select(&ordersComplete, `SELECT 
 		o.id as "id", o.priority, o.observation, o.status, 
 		o.created_at as "created_at", o.updated_at as "updated_at",
@@ -52,7 +93,6 @@ func (r *OrderRepositoryPostgres) FindAllOrders() ([]*entity.OrderComplete, erro
 		return nil, err
 	}
 
-	// Segunda consulta para preencher o campo responsible onde responsible_id não é nulo
 	for _, order := range ordersComplete {
 		if order.Responsible_ID != nil {
 			var responsible entity.User
@@ -73,8 +113,6 @@ func (r *OrderRepositoryPostgres) FindAllOrders() ([]*entity.OrderComplete, erro
 
 func (r *OrderRepositoryPostgres) FindAllOrdersByOrderGroup(order_group_id string) ([]*entity.OrderComplete, error) {
 	var ordersComplete []*entity.OrderComplete
-	log.Print("cheguei")
-
 	err := r.db.Select(&ordersComplete, `SELECT 
 		o.id as "id", o.priority, o.observation, o.status, 
 		o.created_at as "created_at", o.updated_at as "updated_at",

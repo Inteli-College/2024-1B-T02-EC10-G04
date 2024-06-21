@@ -276,6 +276,68 @@ const docTemplate = `{
                 }
             }
         },
+        "/orders/collector": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all Order entities by Collector ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Retrieve all Order entities by Collector ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.FindOrderOutputDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders/user": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "description": "Retrieve all Order entities by User ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Retrieve all Order entities by User ID",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.FindOrderOutputDTO"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/orders/{id}": {
             "get": {
                 "security": [
@@ -1522,7 +1584,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:8080",
+	Host:             "10.254.19.89",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Manager API",

@@ -347,7 +347,7 @@ definitions:
       updated_at:
         type: string
     type: object
-host: localhost:8080
+host: 10.254.19.89
 info:
   contact:
     email: gomedicine@inteli.edu.br
@@ -589,6 +589,44 @@ paths:
       security:
       - BearerAuth: []
       summary: Update an Order entity
+      tags:
+      - Orders
+  /orders/collector:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all Order entities by Collector ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.FindOrderOutputDTO'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Retrieve all Order entities by Collector ID
+      tags:
+      - Orders
+  /orders/user:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all Order entities by User ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.FindOrderOutputDTO'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Retrieve all Order entities by User ID
       tags:
       - Orders
   /pyxis:

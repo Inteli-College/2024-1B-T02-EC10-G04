@@ -42,6 +42,54 @@ func (o *OrderUseCase) CreateOrders(input *dto.CreateOrdersInputDTO) ([]*dto.Cre
 	return createdOrders, nil
 }
 
+func (o *OrderUseCase) FindOrdersByUser(id string) ([]*dto.FindOrderOutputDTO, error) {
+	orders, err := o.orderRepository.FindOrdersByUser(id)
+	if err != nil {
+		return nil, err
+	}
+	var ordersOutput []*dto.FindOrderOutputDTO
+	for i := 0; i < len(orders); i++ {
+		temp := dto.FindOrderOutputDTO{
+			ID:          orders[i].ID,
+			Priority:    orders[i].Priority,
+			User:        orders[i].User,
+			Observation: orders[i].Observation,
+			Status:      orders[i].Status,
+			Medicine:    []*entity.Medicine{&orders[i].Medicine},
+			UpdatedAt:   orders[i].UpdatedAt,
+			CreatedAt:   orders[i].CreatedAt,
+			Responsible: orders[i].Responsible,
+			Pyxis_ID:    orders[i].Pyxis_ID,
+		}
+		ordersOutput = append(ordersOutput, &temp)
+	}
+	return ordersOutput, nil
+}
+
+func (o *OrderUseCase) FindOrdersByCollector(id string) ([]*dto.FindOrderOutputDTO, error) {
+	orders, err := o.orderRepository.FindOrdersByCollector(id)
+	if err != nil {
+		return nil, err
+	}
+	var ordersOutput []*dto.FindOrderOutputDTO
+	for i := 0; i < len(orders); i++ {
+		temp := dto.FindOrderOutputDTO{
+			ID:          orders[i].ID,
+			Priority:    orders[i].Priority,
+			User:        orders[i].User,
+			Observation: orders[i].Observation,
+			Status:      orders[i].Status,
+			Medicine:    []*entity.Medicine{&orders[i].Medicine},
+			UpdatedAt:   orders[i].UpdatedAt,
+			CreatedAt:   orders[i].CreatedAt,
+			Responsible: orders[i].Responsible,
+			Pyxis_ID:    orders[i].Pyxis_ID,
+		}
+		ordersOutput = append(ordersOutput, &temp)
+	}
+	return ordersOutput, nil
+}
+
 func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 	orders, err := o.orderRepository.FindAllOrders()
 	if err != nil {
