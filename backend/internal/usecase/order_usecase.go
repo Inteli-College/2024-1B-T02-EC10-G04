@@ -185,7 +185,9 @@ func (o *OrderUseCase) UpdateOrder(input *dto.UpdateOrderInputDTO) (*dto.UpdateO
 		Responsible: responsibleUser,
 	}
 	for i, order := range res {
-		order.Priority = *input.Priority
+		if input.Priority != nil {
+			order.Priority = *input.Priority
+		}
 		order.Observation = input.Observation
 		// TODO: change status to pointer
 		if input.Status != nil {
