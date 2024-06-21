@@ -32,40 +32,45 @@ class OrderService {
   }
 
   Future<List<Order>> getOrders() async {
-    await _initializeLocalStorage(); // Ensure local storage is initialized
+    // ignore: prefer_typing_uninitialized_variables
+    var response;
     try {
-      var finalUrl = '$baseUrl/orders';
 
-      if (role != 'admin') {
-        finalUrl = '$baseUrl/orders/$role';
+      if (role == "user"){
+        response = await http.get(
+          Uri.parse('$baseUrl/orders'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken',
+          },
+        );
       }
 
-      final response = await http.get(
-        Uri.parse(finalUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $accessToken',
-        },
-      );
+      if (role == "collector"){
+        response = await http.get(
+          Uri.parse('$baseUrl/orders/collector'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken',
+          },
+        );
+      }
+
+      if (role == "admin" || role == "manager"){
+        response = await http.get(
+          Uri.parse('$baseUrl/orders'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $accessToken',
+          },
+        );
+      }
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         List<dynamic> jsonResponse = json.decode(response.body);
         orders = jsonResponse.map((order) => Order.fromJson(order)).toList();
+        return orders;
 
-        if (role == 'user') {
-          userOrders = orders.where((order) => order.user?.id == id).toList();
-          if (userOrders.isNotEmpty) {
-            return userOrders;
-          } else {
-            throw Exception('No orders found for user');
-          }
-        } else if (role == 'collector') {
-          // Handle 'collector' role if needed
-        } else if (role == 'manager' || role == 'admin') {
-          return orders;
-        }
-
-        throw Exception('No orders found');
       } else {
         throw Exception(
             'Failed to load orders, status code: ${response.statusCode}');
