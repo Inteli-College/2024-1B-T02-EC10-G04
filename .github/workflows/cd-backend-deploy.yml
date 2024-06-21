@@ -7,6 +7,7 @@ on:
     paths:
         - 'backend/**'
         - 'database/**'
+        - 'dashboard/**'
   workflow_dispatch:
 
 permissions:
