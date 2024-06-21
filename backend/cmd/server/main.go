@@ -157,7 +157,7 @@ func main() {
 			orderGroup.GET("/collector", middleware.AuthMiddleware(userRepository, []string{"collector"}), orderHandlers.FindOrdersByCollectorHandler)
 			orderGroup.GET("/user", middleware.AuthMiddleware(userRepository, []string{"user"}), orderHandlers.FindOrdersByUserHandler)
 			orderGroup.GET("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.FindOrderByIdHandler)
-			orderGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.UpdateOrderHandler)
+			orderGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin","manager","collector"}), orderHandlers.UpdateOrderHandler)
 			orderGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.DeleteOrderHandler)
 		}
 	}
