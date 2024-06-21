@@ -347,7 +347,7 @@ definitions:
       updated_at:
         type: string
     type: object
-host: 10.254.19.89
+host: localhost:8080
 info:
   contact:
     email: gomedicine@inteli.edu.br
