@@ -107,7 +107,8 @@ func main() {
 
 	kafkaConsumerRepository := kafka.NewKafkaConsumer([]string{os.Getenv("CONFLUENT_KAFKA_TOPIC_NAME")}, consumerConfigMap)
 	orderRepository := repository.NewOrderRepositoryPostgres(db)
-	ordersUseCase := usecase.NewOrderUseCase(orderRepository)
+	userRepository := repository.NewUserRepositoryPostgres(db)
+	ordersUseCase := usecase.NewOrderUseCase(orderRepository, userRepository)
 
 	go func() {
 		if err := kafkaConsumerRepository.Consume(msgChan); err != nil {
