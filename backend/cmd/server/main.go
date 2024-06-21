@@ -193,7 +193,7 @@ func main() {
 		{
 			pyxisGroup.POST("", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.CreatePyxisHandler)
 			pyxisGroup.GET("", middleware.AuthMiddleware(userRepository, []string{"admin", "user"}), pyxisHandlers.FindAllPyxisHandler)
-			pyxisGroup.GET("/:id", middleware.AuthMiddleware(userRepository, []string{"admin", "user"}), pyxisHandlers.FindPyxisByIdHandler)
+			pyxisGroup.GET("/:id", middleware.AuthMiddleware(userRepository, []string{"admin", "user", "collector", "manager"}), pyxisHandlers.FindPyxisByIdHandler)
 			pyxisGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.UpdatePyxisHandler)
 			pyxisGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.DeletePyxisHandler)
 			pyxisGroup.POST("/:id/register-medicine", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.RegisterMedicinePyxisHandler)
