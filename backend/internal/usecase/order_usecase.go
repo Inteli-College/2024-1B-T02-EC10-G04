@@ -66,12 +66,10 @@ func (o *OrderUseCase) FindOrdersByUser(id string) ([]*dto.FindOrderOutputDTO, e
 		}
 		next := 1
 		for {
-			if next+i < len(orders)-1 {
-				if *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
-					temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
-					next++
-					continue
-				}
+			if next+i < len(orders)-1 && *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
+				temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
+				next++
+				continue
 			} else {
 				i = i + next
 				break
@@ -104,12 +102,10 @@ func (o *OrderUseCase) FindOrdersByCollector(id string) ([]*dto.FindOrderOutputD
 		}
 		next := 1
 		for {
-			if next+i < len(orders)-1 {
-				if *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
-					temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
-					next++
-					continue
-				}
+			if next+i < len(orders)-1 && *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
+				temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
+				next++
+				continue
 			} else {
 				i = i + next
 				break
@@ -142,12 +138,10 @@ func (o *OrderUseCase) FindAllOrders() ([]*dto.FindOrderOutputDTO, error) {
 
 		next := 1
 		for {
-			if next+i < len(orders)-1 {
-				if *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
-					temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
-					next++
-					continue
-				}
+			if next+i < len(orders)-1 && *orders[i+next].OrderGroup_ID == *orders[i].OrderGroup_ID {
+				temp.Medicine = append(temp.Medicine, &orders[i+next].Medicine)
+				next++
+				continue
 			} else {
 				i = i + next
 				break
