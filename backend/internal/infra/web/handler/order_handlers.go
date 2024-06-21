@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -63,6 +64,53 @@ func (h *OrderHandlers) CreateOrdersHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Order created successfully"})
+}
+
+// FindOrdersByCollector
+// @Summary Retrieve all Order entities by Collector ID
+// @Description Retrieve all Order entities by Collector ID
+// @Tags Orders
+// @Accept json
+// @Produce json
+// @Success 200 {array} dto.FindOrderOutputDTO
+// @Security BearerAuth
+// @Router /orders/collector [get]
+func (h *OrderHandlers) FindOrdersByCollectorHandler(c *gin.Context) {
+	userID, exists := c.Get("userID")
+	log.Printf("userID: %v", userID)
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+	output, err := h.OrderUseCase.FindOrdersByCollector(userID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, output)
+}
+// FindOrdersByUserHandler
+// @Summary Retrieve all Order entities by User ID
+// @Description Retrieve all Order entities by User ID
+// @Tags Orders
+// @Accept json
+// @Produce json
+// @Success 200 {array} dto.FindOrderOutputDTO
+// @Security BearerAuth
+// @Router /orders/user [get]
+func (h *OrderHandlers) FindOrdersByUserHandler(c *gin.Context) {
+	userID, exists := c.Get("userID")
+	log.Printf("userID: %v", userID)
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+	output, err := h.OrderUseCase.FindOrdersByUser(userID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, output)
 }
 
 // FindAllOrdersHandler

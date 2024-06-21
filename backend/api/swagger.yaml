@@ -591,6 +591,44 @@ paths:
       summary: Update an Order entity
       tags:
       - Orders
+  /orders/collector:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all Order entities by Collector ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.FindOrderOutputDTO'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Retrieve all Order entities by Collector ID
+      tags:
+      - Orders
+  /orders/user:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all Order entities by User ID
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.FindOrderOutputDTO'
+            type: array
+      security:
+      - BearerAuth: []
+      summary: Retrieve all Order entities by User ID
+      tags:
+      - Orders
   /pyxis:
     get:
       consumes:

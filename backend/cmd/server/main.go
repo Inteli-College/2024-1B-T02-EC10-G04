@@ -153,8 +153,9 @@ func main() {
 		orderGroup := api.Group("/orders")
 		{
 			orderGroup.POST("", middleware.AuthMiddleware(userRepository, []string{"admin", "user"}), orderHandlers.CreateOrdersHandler)
-			orderGroup.GET("", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.FindAllOrdersHandler)
-			// TODO: update order by id to only show the order if the user has created it
+			orderGroup.GET("", middleware.AuthMiddleware(userRepository, []string{"admin", "manager"}), orderHandlers.FindAllOrdersHandler)
+			orderGroup.GET("/collector", middleware.AuthMiddleware(userRepository, []string{"collector"}), orderHandlers.FindOrdersByCollectorHandler)
+			orderGroup.GET("/user", middleware.AuthMiddleware(userRepository, []string{"user"}), orderHandlers.FindOrdersByUserHandler)
 			orderGroup.GET("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.FindOrderByIdHandler)
 			orderGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.UpdateOrderHandler)
 			orderGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.DeleteOrderHandler)
