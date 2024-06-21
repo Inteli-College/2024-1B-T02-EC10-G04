@@ -59,7 +59,8 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                             itemCount: filteredOrders.length,
                             itemBuilder: (context, index) {
                               return CardOrder(
-                                orderId: filteredOrders[index].id!,
+                                id: filteredOrders[index].id!,
+                                orderId: filteredOrders[index].orderId!,
                                 role: widget.role,
                                 orderNumber:
                                     "Nº ${filteredOrders[index].id!.substring(0, 6).toUpperCase()}",

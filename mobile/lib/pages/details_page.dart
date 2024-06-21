@@ -24,23 +24,23 @@ class OrderDetailsPage extends StatefulWidget {
   final String orderId;
   final String observation;
 
-  OrderDetailsPage(
-      {super.key,
-      required this.orderNumber,
-      required this.orderDate,
-      required this.orderStatus,
-      required this.onPressed,
-      required this.color,
-      required this.priority,
-      required this.pyxis,
-      required this.iconStatus,
-      required this.medicines,
-      required this.role,
-      required this.orderId,
-      required this.observation});
+  OrderDetailsPage({
+    super.key,
+    required this.orderNumber,
+    required this.orderDate,
+    required this.orderStatus,
+    required this.onPressed,
+    required this.color,
+    required this.priority,
+    required this.pyxis,
+    required this.iconStatus,
+    required this.medicines,
+    required this.role,
+    required this.orderId,
+    required this.observation,
+  });
 
   @override
-  // ignore: library_private_types_in_public_api
   _OrderDetailsPageState createState() => _OrderDetailsPageState();
 }
 
@@ -69,8 +69,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
     var userList = await UserService().getAllUsers();
     setState(() {
       users = userList
-          .where((user) =>
-              user['role'] == 'collector') // Filtra por role específico
+          .where((user) => user['role'] == 'collector')
           .map((user) => User.fromJson(user))
           .toList();
     });
@@ -247,109 +246,104 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                         ),
                       ),
                     ),
-                    widget.role == 'collector'
-                        ? Column(
-                            children: [
-                              const SizedBox(height: 20),
-                              Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CustomButton(
-                                      receivedColor: AppColors.secondary,
-                                      isEnabled: true,
-                                      label: 'Finish Order',
-                                      onPressed: () {
-                                        _ordersController.updateOrder(
-                                          context,
-                                          widget.orderId,
-                                          'completed',
-                                        );
-                                      },
-                                    ),
-                                    const SizedBox(height: 16),
-                                    RichText(
-                                      text: TextSpan(
-                                        text: 'Refuse order',
-                                        style: const TextStyle(
-                                          color: AppColors.grey3,
-                                          fontSize: 16,
-                                        ),
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            _ordersController.updateOrder(
-                                              context,
-                                              widget.orderId,
-                                              'refused',
-                                            );
-                                          },
-                                      ),
-                                    ),
-                                  ],
+                    const SizedBox(height: 20),
+                    if (widget.role == 'collector') ...[
+                      const SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CustomButton(
+                              receivedColor: AppColors.secondary,
+                              isEnabled: true,
+                              label: 'Finish Order',
+                              onPressed: () {
+                                _ordersController.updateOrder(
+                                  context,
+                                  widget.orderId,
+                                  'completed',
+                                );
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Refuse order',
+                                style: const TextStyle(
+                                  color: AppColors.grey3,
+                                  fontSize: 16,
                                 ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    _ordersController.updateOrder(
+                                      context,
+                                      widget.orderId,
+                                      'refused',
+                                    );
+                                  },
                               ),
-                            ],
-                          )
-                        : widget.role == 'user'
-                            ? Center(
-                                child: TextButton(
-                                  onPressed: widget.onPressed,
-                                  child: const Text(
-                                    'Request Again',
-                                    style: TextStyle(
-                                      color: AppColors.secondary,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            : Column(
-                                children: [
-                                  SelectedDropdown(
-                                    title: 'Priority',
-                                    items: const ['Green', 'Yellow', 'Red'],
-                                    value: selectedPriority!,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedPriority = value;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Dropdown(
-                                    title: 'Collector',
-                                    items: users
-                                        .map((user) => user.name)
-                                        .where((name) => name != null)
-                                        .cast<String>()
-                                        .toList(),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedCollectorId = users
-                                            .firstWhere(
-                                                (user) => user.name == value)
-                                            .id;
-                                      });
-                                    },
-                                  ),
-                                  const SizedBox(height: 16),
-                                  CustomButton(
-                                    receivedColor: AppColors.secondary,
-                                    isEnabled: isButtonEnabled,
-                                    label: 'Assign Order',
-                                    onPressed: () {
-                                      _ordersController.assignOrder(
-                                        context,
-                                        widget.orderId,
-                                        selectedCollectorId!,
-                                        selectedPriority!.toLowerCase(),
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ] else if (widget.role == 'user') ...[
+                      Center(
+                        child: TextButton(
+                          onPressed: widget.onPressed,
+                          child: const Text(
+                            'Request Again',
+                            style: TextStyle(
+                              color: AppColors.secondary,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ] else if (widget.role == 'admin' ||
+                        widget.role == 'manager') ...[
+                      SelectedDropdown(
+                        title: 'Priority',
+                        items: const ['Green', 'Yellow', 'Red'],
+                        value: selectedPriority!,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedPriority = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      Dropdown(
+                        title: 'Collector',
+                        items: users
+                            .map((user) => user.name)
+                            .where((name) => name != null)
+                            .cast<String>()
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedCollectorId = users
+                                .firstWhere((user) => user.name == value)
+                                .id;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      CustomButton(
+                        receivedColor: AppColors.secondary,
+                        isEnabled: isButtonEnabled,
+                        label: 'Assign Order',
+                        onPressed: () {
+                          _ordersController.assignOrder(
+                            context,
+                            widget.orderId,
+                            selectedCollectorId!,
+                            selectedPriority!.toLowerCase(),
+                          );
+                        },
+                      ),
+                    ],
                   ],
                 ),
               ),

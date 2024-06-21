@@ -13,10 +13,9 @@ class OrderService {
   List<Order> userOrders = [];
 
   Future<List<Order>> getOrders() async {
-    role = await LocalStorageService().getValue('role');
-    accessToken = await LocalStorageService().getValue('access_token');
     // ignore: prefer_typing_uninitialized_variables
     try {
+      role = await LocalStorageService().getValue('role');
       var accessToken = await LocalStorageService().getValue('access_token');
 
       var finalUrl = '$baseUrl/orders';
@@ -41,10 +40,8 @@ class OrderService {
         List<dynamic> jsonResponse = json.decode(response.body);
         orders = jsonResponse.map((order) => Order.fromJson(order)).toList();
         return orders;
-      } else {
-        throw Exception(
-            'Failed to load orders, status code: ${response.statusCode}');
       }
+      return [];
     } catch (e) {
       throw Exception('Failed to load orders: $e');
     }

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:mobile/models/pyxis.dart';
 
 class CardOrder extends StatefulWidget {
+  final String id;
   final String orderNumber;
   final String orderDate;
   final String orderStatus;
@@ -23,6 +24,7 @@ class CardOrder extends StatefulWidget {
 
   const CardOrder({
     super.key,
+    required this.id,
     required this.orderNumber,
     required this.orderDate,
     required this.orderStatus,

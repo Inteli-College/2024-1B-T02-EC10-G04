@@ -1,5 +1,6 @@
 import 'package:mobile/models/medicines.dart';
 import 'package:mobile/models/user.dart';
+
 class Order {
   String? createdAt;
   String? id;
@@ -11,6 +12,7 @@ class Order {
   String? updatedAt;
   User? user;
   String? pyxis_id;
+  String? orderId;
 
   Order({
     this.createdAt,
@@ -23,18 +25,20 @@ class Order {
     this.updatedAt,
     this.user,
     this.pyxis_id,
+    this.orderId,
   });
 
   Order.fromJson(Map<String, dynamic> json) {
     createdAt = json['created_at'];
     id = json['id'];
+    orderId = json['order_id'];
     medicines = <Medicines>[];
     if (json['medicine'] != null) {
       json['medicine'].forEach((x) {
         var medicine = Medicines.fromJson(x);
         if (medicines != null) {
           medicines!.add(medicine);
-        }      
+        }
       });
     }
     observation = json['observation'];

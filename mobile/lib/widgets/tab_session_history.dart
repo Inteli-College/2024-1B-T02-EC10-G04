@@ -44,7 +44,8 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return CardOrder(
-                                orderId: snapshot.data![index].id!,
+                                id: snapshot.data![index].id!,
+                                orderId: snapshot.data![index].orderId!,
                                 role: widget.role,
                                 orderNumber:
                                     "Nº ${snapshot.data![index].id!.substring(0, 6).toUpperCase()}",
@@ -94,8 +95,7 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                           );
                         } else if (snapshot.hasError) {
                           return const Padding(
-                            padding: EdgeInsets.all(
-                                16.0), 
+                            padding: EdgeInsets.all(16.0),
                             child: Text(
                               'Orders not found!',
                               style: TextStyle(
