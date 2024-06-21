@@ -36,12 +36,12 @@ class _NavBarContainerState extends State<NavBarContainer> {
           topRight: Radius.circular(50.0),
         ),
         border: Border(
-          left: BorderSide(
-              color: Color.fromARGB(255, 243, 243, 244), width: 0.5),
-          right: BorderSide(
-              color: Color.fromARGB(255, 243, 243, 244), width: 0.5),
-          top: BorderSide(
-              color: Color.fromARGB(255, 243, 243, 244), width: 0.5),
+          left:
+              BorderSide(color: Color.fromARGB(255, 243, 243, 244), width: 0.5),
+          right:
+              BorderSide(color: Color.fromARGB(255, 243, 243, 244), width: 0.5),
+          top:
+              BorderSide(color: Color.fromARGB(255, 243, 243, 244), width: 0.5),
         ),
         color: AppColors.white50,
       ),
@@ -63,9 +63,7 @@ class _NavBarContainerState extends State<NavBarContainer> {
                 label: 'Create',
                 index: 1,
                 route: '/qr-code',
-              )
-            else
-              const SizedBox.shrink(),
+              ),
             const NavBarIcon(
               icon: Icons.person,
               label: 'Profile',

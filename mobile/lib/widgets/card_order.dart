@@ -14,6 +14,8 @@ class CardOrder extends StatelessWidget {
   final Icon iconStatus;
   final List<Medicines> medicines;
   final String date;
+  final String role;
+  final String orderId;
 
   const CardOrder({
     super.key,
@@ -27,6 +29,8 @@ class CardOrder extends StatelessWidget {
     required this.iconStatus,
     required this.medicines,
     required this.date,
+    required this.role,
+    required this.orderId,
   });
 
   @override
@@ -65,14 +69,32 @@ class CardOrder extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: priority == "red" ? Colors.red[100] : priority == "green" ? Colors.green[100] : Colors.yellow[100],
+                    color: priority == "red"
+                        ? Colors.red[100]
+                        : priority == "green"
+                            ? Colors.green[100]
+                            : Colors.yellow[100],
                     borderRadius: BorderRadius.circular(5),
-                    border: Border.all(color: priority == "red" ? AppColors.error : priority == "green" ? AppColors.success : AppColors.warning,),
+                    border: Border.all(
+                      color: priority == "red"
+                          ? AppColors.error
+                          : priority == "green"
+                              ? AppColors.success
+                              : AppColors.warning,
+                    ),
                   ),
                   child: Text(
-                    priority == "red" ? "Urgent" : priority == "green" ? "Not Urgent" : "Moderate",
+                    priority == "red"
+                        ? "Urgent"
+                        : priority == "green"
+                            ? "Not Urgent"
+                            : "Moderate",
                     style: TextStyle(
-                      color: priority == "red" ? AppColors.error : priority == "green" ? AppColors.success : AppColors.warning,
+                      color: priority == "red"
+                          ? AppColors.error
+                          : priority == "green"
+                              ? AppColors.success
+                              : AppColors.warning,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -82,48 +104,50 @@ class CardOrder extends StatelessWidget {
             const SizedBox(height: 10),
             const Divider(),
             Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              padding: const EdgeInsets.only(top: 10.0, bottom: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          iconStatus,
-                          const SizedBox(width: 5),
-                          Text(
-                              style: const TextStyle(
-                                  fontSize: 18, fontFamily: 'Poppins'),
-                              orderStatus),
-                        ],
-                      ),
-                      const SizedBox(height: 5),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 30.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              for (Medicines medicine in medicines)
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 2.0,),
-                                  child: Text(
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'Poppins'),
-                                    medicine.name!)
-                                ) 
-                            ],
-                          )),
+                      iconStatus,
+                      const SizedBox(width: 5),
+                      Text(
+                          style: const TextStyle(
+                              fontSize: 18, fontFamily: 'Poppins'),
+                          orderStatus),
                     ],
                   ),
-                ),
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (Medicines medicine in medicines)
+                          Padding(
+                              padding: const EdgeInsets.only(
+                                top: 2.0,
+                              ),
+                              child: Text(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: 'Poppins'),
+                                  medicine.name!))
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // TextButton(
                 //   onPressed: () {
-                  
+
                 //   },
                 //   child: const Text('Request Again',
                 //       style: TextStyle(
@@ -146,6 +170,8 @@ class CardOrder extends StatelessWidget {
                           priority: priority,
                           pyxis: pyxis,
                           iconStatus: iconStatus,
+                          role: role,
+                          orderId: orderId,
                         ),
                       ),
                     );

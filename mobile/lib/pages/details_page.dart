@@ -1,9 +1,15 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/controller/orders.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/models/medicines.dart';
-
+import 'package:mobile/services/orders.dart';
+import 'package:mobile/widgets/custom_button.dart';
 
 class OrderDetailsPage extends StatelessWidget {
+  late final OrdersController _ordersController =
+      OrdersController(orderService: OrderService());
+
   final String orderNumber;
   final String orderDate;
   final String orderStatus;
@@ -13,8 +19,10 @@ class OrderDetailsPage extends StatelessWidget {
   final String pyxis;
   final Icon iconStatus;
   final List<Medicines> medicines;
+  final String role;
+  final String orderId;
 
-  const OrderDetailsPage({
+  OrderDetailsPage({
     super.key,
     required this.orderNumber,
     required this.orderDate,
@@ -25,6 +33,8 @@ class OrderDetailsPage extends StatelessWidget {
     required this.pyxis,
     required this.iconStatus,
     required this.medicines,
+    required this.role,
+    required this.orderId,
   });
 
   @override
@@ -132,63 +142,102 @@ class OrderDetailsPage extends StatelessWidget {
                                   const SizedBox(width: 5),
                                   Text(
                                     orderStatus,
-                                    style:
-                                        const TextStyle(
-                                          color: AppColors.black50,
-                                          fontSize: 14,
-                                          fontFamily: 'Poppins',
-                                          ),
+                                    style: const TextStyle(
+                                      color: AppColors.black50,
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                    ),
                                   ),
                                 ],
                               ))),
                           const SizedBox(height: 20),
                           const Divider(),
                           Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Medicines requested:",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontFamily: 'Poppins',
-                                      color: AppColors.grey2,
-                                      fontWeight: FontWeight.w600,
+                            padding:
+                                const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Medicines requested:",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontFamily: 'Poppins',
+                                    color: AppColors.grey2,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                for (Medicines medicine in medicines)
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 2.0,
+                                    ),
+                                    child: Text(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: 'Poppins'),
+                                      medicine.name!,
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
-                                  for (Medicines medicine in medicines)
-                                    Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 2.0,
-                                        ),
-                                        child: Text(
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: 'Poppins'),
-                                            medicine.name!))
-                                ],
-                              )),
+                              ],
+                            ),
+                          ),
                           const Divider(),
                         ],
                       ),
                     ),
-                    Center(
-                      child: TextButton(
-                        onPressed: onPressed,
-                        child: const Text(
-                          'Request Again',
-                          style: TextStyle(
-                            color: AppColors.secondary,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
+                    role == 'collector'
+                        ? Column(
+                            children: [
+                              const SizedBox(height: 20),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CustomButton(
+                                      receivedColor: AppColors.secondary,
+                                      isEnabled: true,
+                                      label: 'Finish Order',
+                                      onPressed: () {
+                                        _ordersController.updateOrder(
+                                            context, orderId, 'completed');
+                                      },
+                                    ),
+                                    const SizedBox(height: 16),
+                                    RichText(
+                                      text: TextSpan(
+                                        text: 'Refuse order',
+                                        style: const TextStyle(
+                                            color: AppColors.grey3,
+                                            fontSize: 16),
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () {
+                                            _ordersController.updateOrder(
+                                                context, orderId, 'refused');
+                                          },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )
+                        : Center(
+                            child: TextButton(
+                              onPressed: onPressed,
+                              child: const Text(
+                                'Request Again',
+                                style: TextStyle(
+                                  color: AppColors.secondary,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),

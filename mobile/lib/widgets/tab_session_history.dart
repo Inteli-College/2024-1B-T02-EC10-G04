@@ -5,6 +5,7 @@ import 'package:mobile/models/order.dart';
 
 class TabSessionHistory extends StatefulWidget {
   final Future<List<Order>> orders;
+  final String role;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -13,6 +14,7 @@ class TabSessionHistory extends StatefulWidget {
   const TabSessionHistory({
     super.key,
     required this.orders,
+    required this.role,
   });
 }
 
@@ -30,47 +32,60 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                   child: FutureBuilder<List<Order>>(
                       future: widget.orders,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(
                               color: AppColors.secondary,
                             ),
                           );
-                        } 
-                        else if (snapshot.hasData) {
+                        } else if (snapshot.hasData) {
                           return ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return CardOrder(
-                                orderNumber: "Nº ${snapshot.data![index].id!.substring(0, 6).toUpperCase()}",
+                                orderId: snapshot.data![index].id!,
+                                role: widget.role,
+                                orderNumber:
+                                    "Nº ${snapshot.data![index].id!.substring(0, 6).toUpperCase()}",
                                 orderDate: snapshot.data![index].createdAt!,
-                                orderStatus: snapshot.data![index].status!.toUpperCase(),
+                                orderStatus:
+                                    snapshot.data![index].status!.toUpperCase(),
                                 onPressed: () {},
-                                color: snapshot.data![index].priority == "red" ? AppColors.error : snapshot.data![index].priority == "green" ? AppColors.success : AppColors.warning,
+                                color: snapshot.data![index].priority == "red"
+                                    ? AppColors.error
+                                    : snapshot.data![index].priority == "green"
+                                        ? AppColors.success
+                                        : AppColors.warning,
                                 priority: snapshot.data![index].priority!,
                                 pyxis: 'MS-01D',
-                                iconStatus:
-                                snapshot.data![index].status == "requested" ?
-                                const Icon(
-                                 Icons.change_circle,
-                                 color: AppColors.warning,
-                                )
-                                : snapshot.data![index].status == "pending" ? 
-                                const Icon(
-                                 Icons.change_circle,
-                                 color: AppColors.warning,
-                                ) : snapshot.data![index].status == "completed" ? 
-                                const Icon(
-                                 Icons.check_circle,
-                                 color: AppColors.success,
-                                ) : snapshot.data![index].status == "cancelled" ?
-                                const Icon(
-                                 Icons.cancel,
-                                 color: AppColors.error,
-                                ) : const Icon(
-                                 Icons.cancel,
-                                 color: AppColors.error,
-                                ),
+                                iconStatus: snapshot.data![index].status ==
+                                        "requested"
+                                    ? const Icon(
+                                        Icons.change_circle,
+                                        color: AppColors.warning,
+                                      )
+                                    : snapshot.data![index].status == "pending"
+                                        ? const Icon(
+                                            Icons.change_circle,
+                                            color: AppColors.warning,
+                                          )
+                                        : snapshot.data![index].status ==
+                                                "completed"
+                                            ? const Icon(
+                                                Icons.check_circle,
+                                                color: AppColors.success,
+                                              )
+                                            : snapshot.data![index].status ==
+                                                    "cancelled"
+                                                ? const Icon(
+                                                    Icons.cancel,
+                                                    color: AppColors.error,
+                                                  )
+                                                : const Icon(
+                                                    Icons.cancel,
+                                                    color: AppColors.error,
+                                                  ),
                                 medicines: snapshot.data![index].medicines!,
                                 date: snapshot.data![index].createdAt!,
                               );

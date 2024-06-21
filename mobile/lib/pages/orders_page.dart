@@ -25,6 +25,7 @@ class _OrdersPageState extends State<OrdersPage> {
   late Timer _timer;
 
   String name = '';
+  String role = '';
 
   @override
   void initState() {
@@ -32,13 +33,14 @@ class _OrdersPageState extends State<OrdersPage> {
 
     _initializeName();
     futureMedicineOrders = orderService.getOrders();
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 15), (timer) {
       _fetchData();
     });
   }
 
   Future<void> _initializeName() async {
     name = await LocalStorageService().getValue('name') ?? '';
+    role = await LocalStorageService().getValue('role') ?? '';
     setState(() {});
   }
 
@@ -112,9 +114,11 @@ class _OrdersPageState extends State<OrdersPage> {
                         children: [
                           TabSessionPendingOrders(
                             orders: futureMedicineOrders,
+                            role: role,
                           ),
                           TabSessionHistory(
                             orders: futureMedicineOrders,
+                            role: role,
                           ),
                         ],
                       ),

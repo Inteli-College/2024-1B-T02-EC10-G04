@@ -8,6 +8,7 @@ import 'package:mobile/logic/calendar_funcitons.dart';
 
 class TabSessionPendingOrders extends StatefulWidget {
   final Future<List<Order>> orders;
+  final String role;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -17,6 +18,7 @@ class TabSessionPendingOrders extends StatefulWidget {
   const TabSessionPendingOrders({
     super.key,
     required this.orders,
+    required this.role,
   });
 }
 
@@ -33,14 +35,14 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                   child: FutureBuilder<List<Order>>(
                       future: widget.orders,
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(
                               color: AppColors.secondary,
                             ),
                           );
-                        } 
-                        else if (snapshot.hasData) {
+                        } else if (snapshot.hasData) {
                           DateTime selectedDate =
                               Provider.of<CalendarLogic>(context).selectedDay ??
                                   DateTime.now();
@@ -57,6 +59,8 @@ class _TabSessionPendingOrdersState extends State<TabSessionPendingOrders> {
                             itemCount: filteredOrders.length,
                             itemBuilder: (context, index) {
                               return CardOrder(
+                                orderId: filteredOrders[index].id!,
+                                role: widget.role,
                                 orderNumber:
                                     "Nº ${filteredOrders[index].id!.substring(0, 6).toUpperCase()}",
                                 orderDate: filteredOrders[index].createdAt!,
