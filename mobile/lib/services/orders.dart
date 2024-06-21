@@ -85,6 +85,7 @@ class OrderService {
   Future<Map<String, dynamic>> updateOrder(
       String orderId, String status) async {
     try {
+      var accessToken = await LocalStorageService().getValue('access_token');
       final response = await http.put(
         Uri.parse('$baseUrl/orders/$orderId'),
         headers: <String, String>{
@@ -111,6 +112,7 @@ class OrderService {
   Future<Map<String, dynamic>> assignOrder(
       String orderId, String userId, String priority) async {
     try {
+      var accessToken = await LocalStorageService().getValue('access_token');
       final response = await http.put(
         Uri.parse('$baseUrl/orders/$orderId'),
         headers: <String, String>{
