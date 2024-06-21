@@ -192,12 +192,12 @@ func main() {
 
 		{
 			pyxisGroup.POST("", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.CreatePyxisHandler)
-			pyxisGroup.GET("", middleware.AuthMiddleware(userRepository, []string{"admin", "user"}), pyxisHandlers.FindAllPyxisHandler)
+			pyxisGroup.GET("", middleware.AuthMiddleware(userRepository, []string{"admin", "user", "collector", "manager"}), pyxisHandlers.FindAllPyxisHandler)
 			pyxisGroup.GET("/:id", middleware.AuthMiddleware(userRepository, []string{"admin", "user", "collector", "manager"}), pyxisHandlers.FindPyxisByIdHandler)
 			pyxisGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.UpdatePyxisHandler)
 			pyxisGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.DeletePyxisHandler)
 			pyxisGroup.POST("/:id/register-medicine", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.RegisterMedicinePyxisHandler)
-			pyxisGroup.GET("/:id/medicines", middleware.AuthMiddleware(userRepository, []string{"admin", "user"}), pyxisHandlers.GetMedicinesPyxisHandler)
+			pyxisGroup.GET("/:id/medicines", middleware.AuthMiddleware(userRepository, []string{"admin", "user", "collector", "manager"}), pyxisHandlers.GetMedicinesPyxisHandler)
 			pyxisGroup.DELETE("/:id/medicines", middleware.AuthMiddleware(userRepository, []string{"admin"}), pyxisHandlers.DisassociateMedicinePyxisHandler)
 			pyxisGroup.POST("/qrcode", middleware.AuthMiddleware(userRepository, []string{"admin", "user"}), pyxisHandlers.GeneratePyxisQRCodeHandler)
 		}
