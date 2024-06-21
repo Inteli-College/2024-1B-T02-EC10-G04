@@ -125,12 +125,12 @@ func main() {
 		{
 			userGroup.POST("", userHandlers.CreateUser)
 			userGroup.POST("/login", userHandlers.LoginUser)
-			userGroup.GET("", middleware.AuthMiddleware(userRepository, []string{"admin"}), userHandlers.FindAllUsersHandler)
+			userGroup.GET("", middleware.AuthMiddleware(userRepository, []string{"admin", "manager"}), userHandlers.FindAllUsersHandler)
 			// TODO: update find user by id to only show the user that is logged in
-			userGroup.GET("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), userHandlers.FindUserByIdHandler)
+			userGroup.GET("/:id", middleware.AuthMiddleware(userRepository, []string{"admin", "manager"}), userHandlers.FindUserByIdHandler)
 			// TODO: update update user by id to only update the user that is logged in
-			userGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), userHandlers.UpdateUserHandler)
-			userGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), userHandlers.DeleteUserHandler)
+			userGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin", "manager"}), userHandlers.UpdateUserHandler)
+			userGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, []string{"admin", "manager"}), userHandlers.DeleteUserHandler)
 		}
 	}
 
@@ -157,7 +157,7 @@ func main() {
 			orderGroup.GET("/collector", middleware.AuthMiddleware(userRepository, []string{"collector"}), orderHandlers.FindOrdersByCollectorHandler)
 			orderGroup.GET("/user", middleware.AuthMiddleware(userRepository, []string{"user"}), orderHandlers.FindOrdersByUserHandler)
 			orderGroup.GET("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.FindOrderByIdHandler)
-			orderGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin","manager","collector"}), orderHandlers.UpdateOrderHandler)
+			orderGroup.PUT("/:id", middleware.AuthMiddleware(userRepository, []string{"admin", "manager", "collector"}), orderHandlers.UpdateOrderHandler)
 			orderGroup.DELETE("/:id", middleware.AuthMiddleware(userRepository, []string{"admin"}), orderHandlers.DeleteOrderHandler)
 		}
 	}
