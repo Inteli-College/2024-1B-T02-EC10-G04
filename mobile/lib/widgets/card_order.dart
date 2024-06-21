@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/colors.dart';
 import 'package:mobile/pages/details_page.dart';
 import 'package:mobile/models/medicines.dart';
+import 'package:mobile/services/pyxis.dart';
+import 'package:intl/intl.dart';
+import 'package:mobile/models/pyxis.dart';
 
-class CardOrder extends StatelessWidget {
+class CardOrder extends StatefulWidget {
   final String orderNumber;
   final String orderDate;
   final String orderStatus;
@@ -16,6 +19,8 @@ class CardOrder extends StatelessWidget {
   final String date;
   final String role;
   final String orderId;
+  final String observation;
+
 
   const CardOrder({
     super.key,
@@ -31,10 +36,44 @@ class CardOrder extends StatelessWidget {
     required this.date,
     required this.role,
     required this.orderId,
+    required this.observation,
   });
 
   @override
+  _CardOrderState createState() => _CardOrderState();
+
+}
+
+
+class _CardOrderState extends State<CardOrder> {
+  late Future<Pyxis?> pyxisData;
+  final PyxisService pyxisService = PyxisService();
+
+  @override
+  void initState() {
+    super.initState();
+    pyxisData = pyxisService.getPyxisById(widget.pyxis);
+  }
+
+  String formatDateString(String dateString) {
+    DateTime dateTime = DateTime.parse(dateString);
+    return DateFormat('dd/MM/yyyy').format(dateTime);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return FutureBuilder<Pyxis?>(
+      future: pyxisData,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text('Error loading pyxis data'));
+        } else if (!snapshot.hasData) {
+          return const Center(child: Text('No data available'));
+        } else {
+          Pyxis? pyxis = snapshot.data;
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -54,7 +93,7 @@ class CardOrder extends StatelessWidget {
                 Row(children: [
                   CircleAvatar(
                     backgroundColor: Colors.purple,
-                    child: Text(pyxis.substring(0, 2)),
+                    child: Text(pyxis?.label?.substring(0, 2) ?? 'MS'),
                   ),
                   const SizedBox(width: 10),
                   Text(
@@ -62,37 +101,37 @@ class CardOrder extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                         fontFamily: 'Poppins'),
-                    '$pyxis - $orderNumber',
+                    '${pyxis?.label ?? 'N/A'} - ${widget.orderNumber}',
                   )
                 ]),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: priority == "red"
+                    color: widget.priority == "red"
                         ? Colors.red[100]
-                        : priority == "green"
+                        : widget.priority == "green"
                             ? Colors.green[100]
                             : Colors.yellow[100],
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
-                      color: priority == "red"
+                      color: widget.priority == "red"
                           ? AppColors.error
-                          : priority == "green"
+                          : widget.priority == "green"
                               ? AppColors.success
                               : AppColors.warning,
                     ),
                   ),
                   child: Text(
-                    priority == "red"
+                    widget.priority == "red"
                         ? "Urgent"
-                        : priority == "green"
+                        : widget.priority == "green"
                             ? "Not Urgent"
                             : "Moderate",
                     style: TextStyle(
-                      color: priority == "red"
+                      color: widget.priority == "red"
                           ? AppColors.error
-                          : priority == "green"
+                          : widget.priority == "green"
                               ? AppColors.success
                               : AppColors.warning,
                       fontWeight: FontWeight.bold,
@@ -110,12 +149,12 @@ class CardOrder extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      iconStatus,
+                      widget.iconStatus,
                       const SizedBox(width: 5),
                       Text(
                           style: const TextStyle(
                               fontSize: 18, fontFamily: 'Poppins'),
-                          orderStatus),
+                          widget.orderStatus),
                     ],
                   ),
                   const SizedBox(height: 5),
@@ -124,7 +163,7 @@ class CardOrder extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for (Medicines medicine in medicines)
+                        for (Medicines medicine in widget.medicines)
                           Padding(
                               padding: const EdgeInsets.only(
                                 top: 2.0,
@@ -145,33 +184,24 @@ class CardOrder extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // TextButton(
-                //   onPressed: () {
-
-                //   },
-                //   child: const Text('Request Again',
-                //       style: TextStyle(
-                //         color: AppColors.secondary,
-                //         fontFamily: 'Poppins',
-                //       )),
-                // ),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => OrderDetailsPage(
-                          orderNumber: orderNumber.substring(0, 6),
-                          orderDate: "2024-06-07",
-                          orderStatus: orderStatus,
-                          medicines: medicines,
+                          orderNumber: widget.orderNumber.substring(0, 6),
+                          orderDate: formatDateString(widget.orderDate),
+                          orderStatus: widget.orderStatus,
+                          medicines: widget.medicines,
                           onPressed: () {},
                           color: AppColors.warning,
-                          priority: priority,
-                          pyxis: pyxis,
-                          iconStatus: iconStatus,
-                          role: role,
-                          orderId: orderId,
+                          priority: widget.priority,
+                          pyxis: pyxis?.label ?? 'N/A',
+                          iconStatus: widget.iconStatus,
+                          role: widget.role,
+                          orderId: widget.orderId,
+                          observation: widget.observation,
                         ),
                       ),
                     );
@@ -197,4 +227,6 @@ class CardOrder extends StatelessWidget {
       ),
     );
   }
-}
+  },
+  );
+}}

@@ -58,9 +58,9 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                                         ? AppColors.success
                                         : AppColors.warning,
                                 priority: snapshot.data![index].priority!,
-                                pyxis: 'MS-01D',
+                                pyxis: snapshot.data![index].pyxis_id!,
                                 iconStatus: snapshot.data![index].status ==
-                                        "requested"
+                                        "ongoing"
                                     ? const Icon(
                                         Icons.change_circle,
                                         color: AppColors.warning,
@@ -77,7 +77,7 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                                                 color: AppColors.success,
                                               )
                                             : snapshot.data![index].status ==
-                                                    "cancelled"
+                                                    "refused"
                                                 ? const Icon(
                                                     Icons.cancel,
                                                     color: AppColors.error,
@@ -88,13 +88,14 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                                                   ),
                                 medicines: snapshot.data![index].medicines!,
                                 date: snapshot.data![index].createdAt!,
+                                observation: snapshot.data![index].observation!,
                               );
                             },
                           );
                         } else if (snapshot.hasError) {
                           return const Padding(
                             padding: EdgeInsets.all(
-                                16.0), // Define o padding desejado
+                                16.0), 
                             child: Text(
                               'Orders not found!',
                               style: TextStyle(

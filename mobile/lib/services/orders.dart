@@ -32,6 +32,8 @@ class OrderService {
   }
 
   Future<List<Order>> getOrders() async {
+    role = await LocalStorageService().getValue('role');
+    accessToken = await LocalStorageService().getValue('access_token');
     _initializeLocalStorage(); // Ensure local storage is initialized
     // ignore: prefer_typing_uninitialized_variables
     var response;
@@ -46,7 +48,7 @@ class OrderService {
         );
       }
 
-      if (role == "collector") {
+      else if (role == "collector") {
         response = await http.get(
           Uri.parse('$baseUrl/orders/collector'),
           headers: <String, String>{
@@ -56,7 +58,7 @@ class OrderService {
         );
       }
 
-      if (role == "admin" || role == "manager") {
+      else if (role == "admin" || role == "manager") {
         response = await http.get(
           Uri.parse('$baseUrl/orders'),
           headers: <String, String>{
@@ -75,12 +77,12 @@ class OrderService {
             'Failed to load orders, status code: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Failed to load medicine orders: $e');
+      throw Exception('Failed to load orders: $e');
     }
   }
 
   Future<Map<String, dynamic>> createOrder(
-      List<String> medicineIds, String observation) async {
+      List<String> medicineIds, String observation, String pyxis) async {
     await _initializeLocalStorage(); // Ensure local storage is initialized
     try {
       final response = await http.post(
@@ -97,6 +99,7 @@ class OrderService {
           "on_duty": true,
           "quantity": 1,
           "priority": "green",
+          "pyxis_id": pyxis,
         }),
       );
 

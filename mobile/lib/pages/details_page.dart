@@ -21,21 +21,22 @@ class OrderDetailsPage extends StatelessWidget {
   final List<Medicines> medicines;
   final String role;
   final String orderId;
+  final String observation;
 
-  OrderDetailsPage({
-    super.key,
-    required this.orderNumber,
-    required this.orderDate,
-    required this.orderStatus,
-    required this.onPressed,
-    required this.color,
-    required this.priority,
-    required this.pyxis,
-    required this.iconStatus,
-    required this.medicines,
-    required this.role,
-    required this.orderId,
-  });
+  OrderDetailsPage(
+      {super.key,
+      required this.orderNumber,
+      required this.orderDate,
+      required this.orderStatus,
+      required this.onPressed,
+      required this.color,
+      required this.priority,
+      required this.pyxis,
+      required this.iconStatus,
+      required this.medicines,
+      required this.role,
+      required this.orderId,
+      required this.observation});
 
   @override
   Widget build(BuildContext context) {
@@ -225,19 +226,17 @@ class OrderDetailsPage extends StatelessWidget {
                               ),
                             ],
                           )
-                        : Center(
-                            child: TextButton(
-                              onPressed: onPressed,
-                              child: const Text(
-                                'Request Again',
-                                style: TextStyle(
-                                  color: AppColors.secondary,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.w500,
-                                ),
+                        : Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              "Observation: ${observation}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontFamily: 'Poppins',
+                                color: AppColors.grey2,
+                                fontWeight: FontWeight.w600,
                               ),
-                            ),
-                          ),
+                            ))
                   ],
                 ),
               ),
