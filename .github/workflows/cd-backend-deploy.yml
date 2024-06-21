@@ -211,6 +211,15 @@ jobs:
         run: |
           docker buildx build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./build/Dockerfile.server .
 
+      - name: Build Dashboard
+        working-directory: ./dashboard/
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: dashboard
+          IMAGE_TAG: latest
+        run: |
+          docker buildx build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG --push -f ./Dockerfile .
+
   kubernetes:
     name: "Deploy to EKS"
     needs: [terraform, build]
@@ -275,3 +284,19 @@ jobs:
       - name: Restart conductor deployment
         run: |
           kubectl rollout restart deployment conductor --namespace conductor
+
+      - name: Ensure dashboard namespace exists
+        run: |
+          kubectl get namespace dashboard || kubectl create namespace dashboard
+
+      - name: Deploy to EKS - Dashboard
+        working-directory: deploy/charts-aws/
+        run: |
+          helm upgrade --install dashboard dashboard/ \
+          --namespace dashboard \
+          --values dashboard/values.yaml \
+          --set image.tag=latest
+
+      - name: Restart dashboard deployment
+        run: |
+          kubectl rollout restart deployment dashboard --namespace dashboard
