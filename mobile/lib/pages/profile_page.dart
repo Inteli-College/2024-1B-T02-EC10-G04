@@ -5,18 +5,11 @@ import 'package:mobile/models/colors.dart';
 import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/logic/navbar_state.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
-  final String name;
-  final String role;
-  final String email;
-
-  const ProfilePage({
-    super.key,
-    required this.name,
-    required this.role,
-    required this.email,
-  });
+  const ProfilePage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -24,13 +17,41 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late final TextEditingController _nameController =
-      TextEditingController(text: widget.name);
-  late final TextEditingController _emailController =
-      TextEditingController(text: widget.email);
+  String name = '';
+  String email = '';
+  String profession = '';
+  String initials = '';
+
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize controllers with empty values
+    _nameController = TextEditingController(text: '');
+    _emailController = TextEditingController(text: '');
+
+    _initializeProfile();
+  }
+
+  Future<void> _initializeProfile() async {
+    name = await LocalStorageService().getValue('name') ?? '';
+    email = await LocalStorageService().getValue('email') ?? '';
+    profession = await LocalStorageService().getValue('profession') ?? '';
+
+    // Update the controllers with the values obtained
+    setState(() {
+      _nameController.text = name;
+      _emailController.text = email;
+      initials = getInitials(name);
+    });
+  }
 
   String getInitials(String name) {
-    List<String> nameParts = name.split(' ');
+    List<String> nameParts =
+        name.trim().split(' ').where((part) => part.isNotEmpty).toList();
     String initials = '';
     if (nameParts.isNotEmpty) {
       initials = nameParts.map((part) => part[0]).take(2).join();
@@ -50,15 +71,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final navBarState = Provider.of<NavBarState>(context);
+
     Future<void> logout() async {
       await LocalStorageService().cleanValues();
       if (mounted) {
         // ignore: use_build_context_synchronously
         Navigator.of(context).pushReplacementNamed('/login');
+        navBarState.setSelectedIndex(0);
       }
     }
 
-    String initials = getInitials(widget.name);
+    String initials = getInitials(name);
     Color avatarColor = getRandomColor();
 
     return Scaffold(
@@ -113,7 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    widget.name,
+                    name,
                     style: const TextStyle(
                       color: AppColors.primary,
                       fontSize: 20,
@@ -122,7 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Text(
-                    widget.role,
+                    profession,
                     style: const TextStyle(
                       color: AppColors.black50,
                       fontSize: 16,

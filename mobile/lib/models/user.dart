@@ -6,6 +6,7 @@ class User {
   String? name;
   bool? onDuty;
   String? role;
+  String? profession;
 
   User(
       {this.createdAt,
@@ -14,7 +15,8 @@ class User {
       this.id,
       this.name,
       this.onDuty,
-      this.role});
+      this.role,
+      this.profession});
 
   User.fromJson(Map<String, dynamic> json) {
     createdAt = json['created_at'];
@@ -23,6 +25,7 @@ class User {
     name = json['name'];
     onDuty = json['on_duty'];
     role = json['role'];
+    profession = json['profession'];
   }
 
   Map<String, dynamic> toJson() {
@@ -34,6 +37,7 @@ class User {
     data['name'] = name;
     data['on_duty'] = onDuty;
     data['role'] = role;
+    data['profession'] = profession;
     return data;
   }
 }

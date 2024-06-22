@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
+import 'package:mobile/logic/local_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/widgets/calendar.dart';
 import 'package:mobile/models/colors.dart';
@@ -8,32 +9,56 @@ import 'package:mobile/models/order.dart';
 import 'package:mobile/services/orders.dart';
 import 'package:mobile/widgets/tab_session_history.dart';
 import 'package:mobile/widgets/tab_session.dart';
+import 'dart:async';
 
 class OrdersPage extends StatefulWidget {
-  final String name;
+  const OrdersPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
   _OrdersPageState createState() => _OrdersPageState();
-
-  const OrdersPage({super.key, required this.name});
 }
 
 class _OrdersPageState extends State<OrdersPage> {
   late Future<List<Order>> futureMedicineOrders;
   final OrderService orderService = OrderService();
-  
+  late Timer _timer;
+
+  String name = '';
+  String role = '';
+
   @override
   void initState() {
     super.initState();
-    
+
+    _initializeName();
     futureMedicineOrders = orderService.getOrders();
+    _timer = Timer.periodic(const Duration(seconds: 15), (timer) {
+      _fetchData();
+    });
+  }
+
+  Future<void> _initializeName() async {
+    name = await LocalStorageService().getValue('name') ?? '';
+    role = await LocalStorageService().getValue('role') ?? '';
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  void _fetchData() {
+    setState(() {
+      futureMedicineOrders = orderService.getOrders();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Provider.of<CalendarLogic>(context);
-    late String name = widget.name;
 
     return DefaultTabController(
       length: 2,
@@ -89,9 +114,11 @@ class _OrdersPageState extends State<OrdersPage> {
                         children: [
                           TabSessionPendingOrders(
                             orders: futureMedicineOrders,
+                            role: role,
                           ),
                           TabSessionHistory(
                             orders: futureMedicineOrders,
+                            role: role,
                           ),
                         ],
                       ),

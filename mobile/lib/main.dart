@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile/logic/calendar_funcitons.dart';
-import 'package:mobile/logic/local_storage.dart';
 import 'package:mobile/logic/navbar_state.dart';
 import 'package:mobile/pages/orders_page.dart';
 import 'package:provider/provider.dart';
@@ -21,20 +20,14 @@ Future<void> main() async {
   } catch (error) {
     print("Error loading .env.front file: $error");
   } finally {
-    String? name = await LocalStorageService().getValue('name');
-    String? role = await LocalStorageService().getValue('role');
-    String? email = await LocalStorageService().getValue('email');
-
-    runApp(HomeScreen(name: name, role: role, email: email));
+    runApp(const HomeScreen());
   }
 }
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen(
-      {super.key, required this.name, required this.role, required this.email});
-  final String? name;
-  final String? role;
-  final String? email;
+  const HomeScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,18 +44,10 @@ class HomeScreen extends StatelessWidget {
           '/onboarding': (context) => const OnboardingScreen(),
           '/login': (context) => const LoginScreen(),
           '/signup': (context) => const SignUpScreen(),
-          NewOrderPage.routeName: (context) =>
-          const NewOrderPage(),
-          CheckOrderPage.routeName: (context) => 
-          const CheckOrderPage(),
-          '/orders': (BuildContext context) => OrdersPage(
-                name: name ?? 'Unknown',
-              ),
-          '/profile': (context) => ProfilePage(
-                name: name ?? 'Unknown',
-                role: role ?? 'Unknown',
-                email: email ?? 'Unknown',
-              ),
+          NewOrderPage.routeName: (context) => const NewOrderPage(),
+          CheckOrderPage.routeName: (context) => const CheckOrderPage(),
+          '/orders': (BuildContext context) => const OrdersPage(),
+          '/profile': (context) => const ProfilePage(),
           '/qr-code': (context) => const QRCodePage(),
           '/settings': (context) => const SettingsPage(),
         },

@@ -12,55 +12,126 @@ class OrderService {
   List<Order> orders = [];
   List<Order> userOrders = [];
 
-  OrderService() {
-    _initializeLocalStorage();
-  }
-
-  Future<void> _initializeLocalStorage() async {
-    try {
-
-      accessToken = await LocalStorageService().getValue('access_token');
-      id = await LocalStorageService().getValue('id');
-      role = await LocalStorageService().getValue('role');
-
-      if (accessToken == null) {
-        throw Exception("Token is null");
-      }
-    } catch (e) {
-      print("Error initializing token: $e");
-      // Handle error, e.g., by setting accessToken to a default value or rethrowing the exception
-    }
-  }
-
   Future<List<Order>> getOrders() async {
+    // ignore: prefer_typing_uninitialized_variables
     try {
-      final response = await http.get(
-        Uri.parse('$baseUrl/orders'),
+      role = await LocalStorageService().getValue('role');
+      var accessToken = await LocalStorageService().getValue('access_token');
+
+      var finalUrl = '$baseUrl/orders';
+
+      switch (role) {
+        case "user":
+          finalUrl = '$baseUrl/orders/user';
+        case "collector":
+          finalUrl = '$baseUrl/orders/collector';
+          break;
+      }
+
+      var response = await http.get(
+        Uri.parse(finalUrl),
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $accessToken',
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         List<dynamic> jsonResponse = json.decode(response.body);
         orders = jsonResponse.map((order) => Order.fromJson(order)).toList();
-        if (role == 'user') {
-          
-          userOrders = orders.where((order) => order.user?.id == id).toList();
-          if (userOrders.isNotEmpty) {
-            return userOrders;
-          } else {
-            throw Exception('No orders found for user');
-          }
-        }
-        return [];
-      } else {
-        return [];
+        return orders;
       }
+      return [];
     } catch (e) {
-      throw Exception('Failed to load medicine orders');
+      throw Exception('Failed to load orders: $e');
     }
   }
 
+  Future<Map<String, dynamic>> createOrder(
+      List<String> medicineIds, String observation, String pyxis) async {
+    var accessToken = await LocalStorageService().getValue('access_token');
+    var id = await LocalStorageService().getValue('id');
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/orders'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "medicine_ids": medicineIds,
+          "user_id": id,
+          "observation":
+              observation == "" ? "Order without comments" : observation,
+          "on_duty": true,
+          "quantity": 1,
+          "priority": "green",
+          "pyxis_id": pyxis,
+        }),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+        return body;
+      } else {
+        throw Exception(
+            'Failed to create order, status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create order: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> updateOrder(
+      String orderId, String status) async {
+    try {
+      var accessToken = await LocalStorageService().getValue('access_token');
+      final response = await http.put(
+        Uri.parse('$baseUrl/orders/$orderId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "status": status,
+        }),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+        return body;
+      } else {
+        throw Exception(
+            'Failed to create order, status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create order: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>> assignOrder(
+      String orderId, String userId, String priority) async {
+    try {
+      var accessToken = await LocalStorageService().getValue('access_token');
+      final response = await http.put(
+        Uri.parse('$baseUrl/orders/$orderId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(
+            <String, dynamic>{"priority": priority, "responsible_id": orderId}),
+      );
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        var body = jsonDecode(response.body);
+        return body;
+      } else {
+        throw Exception(
+            'Failed to create order, status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to create order: $e');
+    }
+  }
 }

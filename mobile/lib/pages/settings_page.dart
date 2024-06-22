@@ -4,6 +4,8 @@ import 'package:mobile/widgets/navbar.dart';
 import 'package:mobile/widgets/input_text.dart';
 import 'package:mobile/widgets/password_rule.dart';
 import 'package:mobile/widgets/custom_button.dart';
+import 'package:mobile/controller/user.dart';
+import 'package:mobile/services/user.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({
@@ -16,9 +18,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late TextEditingController _previousPasswordController =
+  late TextEditingController _newPasswordController =
       TextEditingController();
-  late TextEditingController _newPasswordController = TextEditingController();
+  late TextEditingController _repeatedPassword = TextEditingController();
+  late UserController _userController; 
   bool _showContainer = false;
   bool _isUpperCase = false;
   bool _isLowerCase = false;
@@ -26,6 +29,7 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _isSpecialChar = false;
   bool _isMinLength = false;
   bool _isButtonEnabled = false;
+  bool _isPasswordsMatch = false;
   var showPreviousPassword = true;
   var showNewPassword = true;
   IconData iconType = Icons.visibility;
@@ -33,16 +37,17 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    _previousPasswordController = TextEditingController();
+    _userController = UserController(userService: UserService());
     _newPasswordController = TextEditingController();
-    _previousPasswordController.addListener(_onTextChanged);
+    _repeatedPassword = TextEditingController();
     _newPasswordController.addListener(_onTextChanged);
+    _repeatedPassword.addListener(_onTextChanged);
   }
 
   @override
   void dispose() {
-    _previousPasswordController.dispose();
     _newPasswordController.dispose();
+    _repeatedPassword.dispose();
     super.dispose();
   }
 
@@ -64,6 +69,13 @@ class _SettingsPageState extends State<SettingsPage> {
     });
   }
 
+  void _updatePassword() {
+    if (_isButtonEnabled) {
+      _userController.updatePassword(
+          context, _repeatedPassword.text);
+    }
+  }
+
   void _onTextChanged() {
     setState(() {
       final newPassword = _newPasswordController.text;
@@ -74,7 +86,8 @@ class _SettingsPageState extends State<SettingsPage> {
       _isNumber = RegExp(r'[0-9]').hasMatch(newPassword);
       _isSpecialChar = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(newPassword);
       _isMinLength = newPassword.length >= 8;
-      _isButtonEnabled = _isUpperCase && _isLowerCase && _isNumber && _isSpecialChar && _isMinLength;
+      _isPasswordsMatch = _newPasswordController.text == _repeatedPassword.text;
+      _isButtonEnabled = _isUpperCase && _isLowerCase && _isNumber && _isSpecialChar && _isMinLength && _isPasswordsMatch;
     });
     });
   }
@@ -135,8 +148,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           onPressed: _onViewPreviousPassword,
                         ),
-                    label: 'Previous Password',
-                    controller: _previousPasswordController,
+                    label: 'New Password',
+                    controller: _newPasswordController,
                     obscureText: showPreviousPassword,
                   ),
                   const SizedBox(height: 16.0),
@@ -148,8 +161,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                           onPressed: _onViewNewPassword,
                         ),
-                    label: 'New Password',
-                    controller: _newPasswordController,
+                    label: 'Password again',
+                    controller: _repeatedPassword,
                     obscureText: showNewPassword,
                   ),
                   const SizedBox(height: 16.0),
@@ -184,6 +197,18 @@ class _SettingsPageState extends State<SettingsPage> {
                                 label: '8 characters',
                                 text: _newPasswordController.text,
                               ),
+                              if(_isPasswordsMatch)
+                              const PasswordRule(
+                                expression: "a",
+                                label: 'Passwords match',
+                                text: "a",
+                              )
+                              else
+                              const PasswordRule(
+                                expression: "a",
+                                label: 'Passwords match',
+                                text: "b",
+                              )
                             ],
                           ))
                       : const SizedBox(),
@@ -192,7 +217,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     receivedColor: AppColors.secondary,
                     isEnabled: _isButtonEnabled,
                     label: 'Submit',
-                    onPressed: () {},
+                    onPressed: _updatePassword,
                   )
                 ],
               ),

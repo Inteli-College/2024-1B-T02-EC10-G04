@@ -39,10 +39,11 @@ class UserController {
     }
   }
 
-  Future<void> signup(
-      BuildContext context, String name, String email, String password) async {
+  Future<void> signup(BuildContext context, String name, String email,
+      String password, String profession) async {
     try {
-      final response = await userService.signup(name, email, password);
+      final response =
+          await userService.signup(name, email, password, profession);
 
       if (response.isNotEmpty) {
         showModal(
@@ -69,4 +70,36 @@ class UserController {
       // Handle login failure
     }
   }
+
+  Future<void> updatePassword(BuildContext context, String newPassword) async {
+    try {
+      final response = await userService.updatePassword(newPassword);
+
+      if (response.isNotEmpty) {
+        showModal(
+            // ignore: use_build_context_synchronously
+            context,
+            "Password updated!",
+            "Your password has been successfully updated!",
+            Icons.check,
+            AppColors.success,
+            "");
+        return;
+      }
+      showModal(
+          // ignore: use_build_context_synchronously
+          context,
+          "Oops! Something Went Wrong",
+          "Something went wrong. Please check the new password!",
+          Icons.error,
+          AppColors.error,
+          "");
+
+      // Handle login success
+    } catch (e) {
+      // Handle login failure
+    }
+  }
+
+  
 }

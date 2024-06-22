@@ -5,6 +5,7 @@ import 'package:mobile/pages/new_orders_page.dart';
 import 'package:mobile/models/qrcode.dart';
 import 'package:mobile/services/pyxis.dart';
 import 'package:mobile/models/pyxis.dart';
+import 'package:mobile/controller/pyxis.dart';
 
 class QRCodePage extends StatefulWidget {
   const QRCodePage({super.key});
@@ -33,7 +34,7 @@ class _QRCodePageState extends State<QRCodePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pushNamed('/orders');
           },
@@ -79,42 +80,47 @@ class _QRCodePageState extends State<QRCodePage> {
 
   void _onQRViewCreated(QRViewController controller) async {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) async{
+    controller.scannedDataStream.listen((scanData) async {
       if (!_isScanning) {
         setState(() {
           _isScanning = true;
         });
         controller.pauseCamera();
 
-        try{
+        try {
           PyxisService pyxisService = PyxisService();
-          Pyxis pyxis = await pyxisService.getPyxisById(scanData.code!);
-          print(pyxis);
+          PyxisController pyxisController = PyxisController(pyxisService: pyxisService);
+          Pyxis? pyxis = await pyxisController.getPyxisById(context, scanData.code!);
 
           if (pyxis == null) {
-            throw Exception('Pyxis not found');
+            controller.resumeCamera();
+            setState(() {
+              _isScanning = false;
+            });
+            return;
           }
 
           Navigator.pushNamed(
-          context, 
-          NewOrderPage.routeName,
-          arguments: QRCodeArguments(
-            scanData.code!,
-            pyxis.label!,
-          ))
-          .then((_) {
+            // ignore: use_build_context_synchronously
+            context,
+            NewOrderPage.routeName,
+            arguments: QRCodeArguments(
+              scanData.code!,
+              pyxis.label!,
+            ),
+          ).then((_) {
+            controller.resumeCamera();
+            setState(() {
+              _isScanning = false;
+            });
+          });
+        } catch (e) {
+          print(e);
           controller.resumeCamera();
           setState(() {
             _isScanning = false;
           });
-        });
-
-
-        } catch (e) {
-          print(e);
         }
-
-        
       }
     });
   }

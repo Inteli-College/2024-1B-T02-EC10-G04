@@ -5,6 +5,7 @@ import 'package:mobile/models/order.dart';
 
 class TabSessionHistory extends StatefulWidget {
   final Future<List<Order>> orders;
+  final String role;
 
   @override
   // ignore: library_private_types_in_public_api
@@ -13,6 +14,7 @@ class TabSessionHistory extends StatefulWidget {
   const TabSessionHistory({
     super.key,
     required this.orders,
+    required this.role,
   });
 }
 
@@ -30,51 +32,70 @@ class _TabSessionHistoryState extends State<TabSessionHistory> {
                   child: FutureBuilder<List<Order>>(
                       future: widget.orders,
                       builder: (context, snapshot) {
-                        if (snapshot.hasData) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.secondary,
+                            ),
+                          );
+                        } else if (snapshot.hasData) {
                           return ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return CardOrder(
-                                orderNumber: "Order: ${snapshot.data![index].id!.substring(0, 6).toUpperCase()}",
+                                id: snapshot.data![index].id!,
+                                orderId: snapshot.data![index].orderId!,
+                                role: widget.role,
+                                orderNumber:
+                                    "Nº ${snapshot.data![index].id!.substring(0, 6).toUpperCase()}",
                                 orderDate: snapshot.data![index].createdAt!,
-                                orderStatus: snapshot.data![index].status!.toUpperCase(),
+                                orderStatus:
+                                    snapshot.data![index].status!.toUpperCase(),
                                 onPressed: () {},
-                                color: snapshot.data![index].priority == "red" ? AppColors.error : snapshot.data![index].priority == "green" ? AppColors.success : AppColors.warning,
+                                color: snapshot.data![index].priority == "red"
+                                    ? AppColors.error
+                                    : snapshot.data![index].priority == "green"
+                                        ? AppColors.success
+                                        : AppColors.warning,
                                 priority: snapshot.data![index].priority!,
-                                pyxis: 'MS-01D',
-                                iconStatus:
-                                snapshot.data![index].status == "requested" ?
-                                const Icon(
-                                 Icons.change_circle,
-                                 color: AppColors.warning,
-                                )
-                                : snapshot.data![index].status == "pending" ? 
-                                const Icon(
-                                 Icons.change_circle,
-                                 color: AppColors.warning,
-                                ) : snapshot.data![index].status == "completed" ? 
-                                const Icon(
-                                 Icons.check_circle,
-                                 color: AppColors.success,
-                                ) : snapshot.data![index].status == "cancelled" ?
-                                const Icon(
-                                 Icons.cancel,
-                                 color: AppColors.error,
-                                ) : const Icon(
-                                 Icons.cancel,
-                                 color: AppColors.error,
-                                ),
-                                //medicineList.map((medicine) => medicine['name'] as String).toList();
-                                medicines: [
-                                  snapshot.data![index].medicine!.name!,
-                                ]
+                                pyxis: snapshot.data![index].pyxis_id!,
+                                iconStatus: snapshot.data![index].status ==
+                                        "ongoing"
+                                    ? const Icon(
+                                        Icons.change_circle,
+                                        color: AppColors.warning,
+                                      )
+                                    : snapshot.data![index].status == "pending"
+                                        ? const Icon(
+                                            Icons.change_circle,
+                                            color: AppColors.warning,
+                                          )
+                                        : snapshot.data![index].status ==
+                                                "completed"
+                                            ? const Icon(
+                                                Icons.check_circle,
+                                                color: AppColors.success,
+                                              )
+                                            : snapshot.data![index].status ==
+                                                    "refused"
+                                                ? const Icon(
+                                                    Icons.cancel,
+                                                    color: AppColors.error,
+                                                  )
+                                                : const Icon(
+                                                    Icons.cancel,
+                                                    color: AppColors.error,
+                                                  ),
+                                medicines: snapshot.data![index].medicines!,
+                                date: snapshot.data![index].createdAt!,
+                                observation: snapshot.data![index].observation!,
                               );
                             },
                           );
                         } else if (snapshot.hasError) {
                           return const Padding(
-                            padding: EdgeInsets.all(
-                                16.0), // Define o padding desejado
+                            padding: EdgeInsets.all(16.0),
                             child: Text(
                               'Orders not found!',
                               style: TextStyle(

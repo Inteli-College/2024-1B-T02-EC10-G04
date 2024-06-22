@@ -1,6 +1,6 @@
 class QRCodeArguments {
-  final String IdPyxis;
+  final String idPyxis;
   final String pyxis;
 
-  QRCodeArguments(this.IdPyxis, this.pyxis);
+  QRCodeArguments(this.idPyxis, this.pyxis);
 }
