@@ -38,7 +38,7 @@ Você pode achar mais informações sobre o projeto, acessado o link da [documen
 3. `make env`: para criar todas as variáveis de ambiente necessárias para rodar o projeto.
 4. `make infra`: para buildar a infraestrutura do projeto.
 5. `make run`: para rodar o projeto.
-6. Acesse o link [localhost:8080/docs](http://localhost:8000/docs) para acessar a documentação da API.
+6. Acesse o link [localhost:8080/api/v1/docs/index.html](http://localhost:8000/api/v1/docs/index.html) para acessar a documentação da API.
 
 ### Front-end
 
