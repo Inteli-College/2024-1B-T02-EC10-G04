@@ -13,7 +13,12 @@ Nosso sistema possui um perfil de gerente, onde o usuário é o Farmacêutico. N
 
 ### Vídeo da Demo
 
-<iframe style={{border: '1px solid rgba(0, 0, 0, 0.1)'}} width="800" height="450" src="https://www.youtube.com/embed/sLEjTQxIgcI" allowfullscreen></iframe>
+<iframe style={{border: '1px solid rgba(0, 0, 0, 0.1)'}} width="800" height="450" src="https://www.youtube.com/embed/1fByzsewpEc" allowfullscreen></iframe>
 
+## Perfil de Collector
 
+Nosso sistema possui um perfil de collector, onde o usuário é o Auxiliar de Farmácia. Neste perfil, o usuário pode visualizar as requisições de medicamentos, visualizar os detalhes de uma requisição, completar uma requisição, rejeitar uma requisição e visualizar o histórico de requisições.
 
+### Vídeo da Demo
+
+<iframe style={{border: '1px solid rgba(0, 0, 0, 0.1)'}} width="800" height="450" src="https://www.youtube.com/embed/YLPMm0nyhEo" allowfullscreen></iframe>
